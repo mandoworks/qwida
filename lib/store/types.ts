@@ -72,5 +72,5 @@ export interface EventStore {
   /** Wipes everything and loads the given events (the synthetic seed). */
   reset(seed: NewEvent[]): Promise<void>;
   /** ISO timestamp of the last reset. Pollers drop local state when it changes. */
-  lastResetAt(): Promise<string>;
+  lastResetAt(householdId?: string): Promise<string>;
 }
