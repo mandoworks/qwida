@@ -31,4 +31,3 @@ Hand drawn artwork by Yari provides the human warmth and cultural resonance for 
 
 ## Asset Delivery
 - PNG assets exported from Procreate (ink `#1B1A17`, transparent background) are dropped into `public/art/`.
-- Alternatively, files can be uploaded through the war room Arte tab at `https://qwida.mando.works/warroom`.
