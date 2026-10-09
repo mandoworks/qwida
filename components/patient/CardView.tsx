@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { BigButton } from "@/components/ui/BigButton";
 import { FenceNotice } from "@/components/ui/FenceNotice";
+import { Loading } from "./Loading";
+import { useFirstLoad } from "./useFirstLoad";
 import { SpeakerIcon } from "./Icons";
 import { cardKey, inkOn, latestWeekcard, speechText } from "./logic";
 import { useLocalValue } from "./useLocalValue";
@@ -59,7 +61,8 @@ function useReadAloud() {
 }
 
 export function CardView() {
-  const { events } = useEvents();
+  const { events, error } = useEvents();
+  const loaded = useFirstLoad(events.length > 0, error);
   const [, setSeen] = useLocalValue("quida.seenCard");
   const { speaking, unsupported, toggle } = useReadAloud();
   const latest = latestWeekcard(events);
@@ -68,6 +71,8 @@ export function CardView() {
   useEffect(() => {
     if (key) setSeen(key);
   }, [key, setSeen]);
+
+  if (!latest && !loaded) return <Loading />;
 
   if (!latest) {
     return (
@@ -148,6 +153,8 @@ export function CardView() {
       )}
 
       {removed && <FenceNotice className="text-patient" />}
+
+      <p className="text-patient text-ink-soft">Esta tarjeta la aprobó Marisol.</p>
     </article>
   );
 }

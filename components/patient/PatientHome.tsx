@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useSyncExternalStore, type ReactNode } from "react";
+import { FenceNotice } from "@/components/ui/FenceNotice";
 import { useEvents } from "@/lib/client/useEvents";
 import { InstallHint } from "./InstallHint";
 import { CameraIcon, CardIcon, MicIcon, VoiceIcon } from "./Icons";
@@ -28,22 +29,28 @@ function Tile({
   href: string;
   icon: ReactNode;
   title: string;
-  hint?: string;
+  hint: string;
   highlight?: boolean;
 }) {
   return (
     <Link
       href={href}
-      className={`flex min-h-36 w-full flex-col items-center justify-center gap-2 rounded-3xl border-2 px-5 py-5 text-center transition-transform active:scale-[0.98] ${
+      className={`flex min-h-[168px] w-full flex-col items-start gap-3 rounded-3xl border-2 p-5 text-left transition-transform active:scale-[0.98] ${
         highlight ? "border-accent bg-accent text-accent-ink ring-4 ring-warn" : "border-ink bg-surface text-ink"
       }`}
     >
       {icon}
       <span className="text-3xl font-bold">{title}</span>
-      {hint && <span className="text-patient leading-snug">{hint}</span>}
+      <span className={`text-patient leading-snug ${highlight ? "" : "text-ink-soft"}`}>{hint}</span>
+      <span aria-hidden="true" className="ml-auto self-end text-3xl leading-none">
+        ›
+      </span>
     </Link>
   );
 }
+
+/** Fictional number from the 555-01XX range reserved for fiction. Synthetic data only. */
+const MARISOL_TEL = "tel:+14075550142";
 
 export function PatientHome() {
   const { events } = useEvents();
@@ -60,8 +67,12 @@ export function PatientHome() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header>
-        <h1 className="text-4xl font-bold leading-tight">{greeting}, Doña Carmen</h1>
+      <header className="flex flex-col gap-2">
+        <Link href="/" className="-mb-2 self-end py-2 text-lg text-ink-soft underline underline-offset-4">
+          Cambiar de rol
+        </Link>
+        <h1 className="text-4xl font-bold leading-tight">{greeting}, Doña Carmen.</h1>
+        <p className="text-patient text-ink-soft">Toque un botón. Nada más.</p>
       </header>
 
       <Notices notices={notices} onDismiss={dismiss} />
@@ -76,16 +87,25 @@ export function PatientHome() {
       )}
 
       <nav aria-label="Qué quiere hacer" className="flex flex-col gap-5">
-        <Tile href="/paciente/grabar" icon={<MicIcon />} title="Grabar mi cita" />
-        <Tile
-          href="/paciente/foto"
-          icon={<CameraIcon />}
-          title="Foto"
-          hint="Presione aquí para mandar una foto"
-        />
-        <Tile href="/paciente/tarjeta" icon={<CardIcon />} title="Mi tarjeta" highlight={isNew} />
         <Tile href="/paciente/hablar" icon={<VoiceIcon />} title="Hablar" hint="Un mensaje de voz para Marisol" />
+        <Tile href="/paciente/foto" icon={<CameraIcon />} title="Foto" hint="Toque aquí para mandar una foto" />
+        <Tile href="/paciente/grabar" icon={<MicIcon />} title="Grabar mi cita" hint="Toque aquí para grabar la consulta" />
+        <Tile
+          href="/paciente/tarjeta"
+          icon={<CardIcon />}
+          title="Mi tarjeta"
+          hint="Toque aquí para ver su semana"
+          highlight={isNew}
+        />
       </nav>
+
+      <p className="text-center">
+        <a href={MARISOL_TEL} className="inline-block py-3 text-lg text-ink-soft underline underline-offset-4">
+          Llamar a Marisol
+        </a>
+      </p>
+
+      <FenceNotice className="text-lg" />
 
       <InstallHint />
     </div>

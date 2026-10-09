@@ -1,14 +1,14 @@
+import Link from "next/link";
 import { CardView } from "@/components/patient/CardView";
 import { ScreenShell } from "@/components/patient/ScreenShell";
-import { BigButton } from "@/components/ui/BigButton";
 
 export default function TarjetaPage() {
   return (
     <ScreenShell title="Mi tarjeta">
       <CardView />
-      <BigButton href="/paciente/medicinas" variant="secondary">
-        Mis medicinas
-      </BigButton>
+      <Link href="/paciente/medicinas" className="py-3 text-center text-patient font-bold text-accent underline underline-offset-4">
+        Ver mis medicinas
+      </Link>
     </ScreenShell>
   );
 }
