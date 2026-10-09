@@ -35,13 +35,13 @@ function Tile({
   return (
     <Link
       href={href}
-      className={`flex min-h-[168px] w-full flex-col items-start gap-3 rounded-3xl border-2 p-5 text-left transition-transform active:scale-[0.98] ${
+      className={`flex min-h-[168px] w-full flex-col items-start gap-3 rounded-3xl border-2 p-5 text-left shadow-tile transition-transform active:scale-[0.98] ${
         highlight ? "border-accent bg-accent text-accent-ink ring-4 ring-warn" : "border-ink bg-surface text-ink"
       }`}
     >
       {icon}
-      <span className="text-3xl font-bold">{title}</span>
-      <span className={`text-patient leading-snug ${highlight ? "" : "text-ink-soft"}`}>{hint}</span>
+      <span className="text-p-tile font-bold">{title}</span>
+      <span className={`text-p-label ${highlight ? "" : "text-ink-soft"}`}>{hint}</span>
       <span aria-hidden="true" className="ml-auto self-end text-3xl leading-none">
         ›
       </span>
@@ -68,11 +68,11 @@ export function PatientHome() {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-2">
-        <Link href="/" className="-mb-2 self-end py-2 text-lg text-ink-soft underline underline-offset-4">
+        <Link href="/" className="-mb-2 self-end py-2 text-p-meta text-ink-mute underline underline-offset-4">
           Cambiar de rol
         </Link>
-        <h1 className="text-4xl font-bold leading-tight">{greeting}, Doña Carmen.</h1>
-        <p className="text-patient text-ink-soft">Toque un botón. Nada más.</p>
+        <h1 className="text-p-hero font-bold">{greeting}, Doña Carmen.</h1>
+        <p className="text-p-body text-ink-soft">Toque un botón. Nada más.</p>
       </header>
 
       <Notices notices={notices} onDismiss={dismiss} />
@@ -80,7 +80,7 @@ export function PatientHome() {
       {isNew && (
         <p
           role="status"
-          className="rounded-2xl border-2 border-warn bg-surface px-5 py-4 text-patient font-bold text-warn"
+          className="rounded-2xl border-2 border-warn bg-warn-soft px-5 py-4 text-p-body font-bold text-ink"
         >
           Nueva tarjeta de Marisol
         </p>
@@ -100,12 +100,12 @@ export function PatientHome() {
       </nav>
 
       <p className="text-center">
-        <a href={MARISOL_TEL} className="inline-block py-3 text-lg text-ink-soft underline underline-offset-4">
+        <a href={MARISOL_TEL} className="inline-block py-3 text-p-meta text-ink-mute underline underline-offset-4">
           Llamar a Marisol
         </a>
       </p>
 
-      <FenceNotice className="text-lg" />
+      <FenceNotice className="text-p-meta" />
 
       <InstallHint />
     </div>

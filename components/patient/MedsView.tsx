@@ -21,12 +21,12 @@ export function MedsView() {
     <div className="flex flex-col gap-5">
       {!loaded && <Loading />}
       {loaded && items.length === 0 && (
-        <p role="status" className="rounded-2xl border-2 border-line bg-surface px-5 py-6 text-patient">
+        <p role="status" className="rounded-2xl border-2 border-line-strong bg-sand px-5 py-6 text-p-body">
           Todavía no hay medicinas confirmadas.
         </p>
       )}
       {loaded && <MedSchedule items={items} size="patient" />}
-      <FenceNotice className="text-patient" />
+      <FenceNotice className="text-p-body" />
     </div>
   );
 }

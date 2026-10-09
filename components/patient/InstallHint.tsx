@@ -19,7 +19,7 @@ export function InstallHint() {
   return (
     <aside
       aria-label="Consejo"
-      className="flex items-center justify-between gap-3 rounded-2xl border-2 border-line bg-surface px-4 py-3 text-xl"
+      className="flex items-center justify-between gap-3 rounded-2xl border-2 border-line-strong bg-sand px-4 py-3 text-p-meta"
     >
       <p>Agregue Quida a su pantalla de inicio</p>
       <button

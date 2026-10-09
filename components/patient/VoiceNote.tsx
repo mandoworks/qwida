@@ -84,7 +84,7 @@ export function VoiceNote() {
 
       {(phase === "review" || phase === "failed") && (
         <>
-          <p className="text-patient font-bold">¿Se lo enviamos a Marisol?</p>
+          <p className="text-p-body font-bold">¿Se lo enviamos a Marisol?</p>
           <BigButton onClick={send}>Sí</BigButton>
           <BigButton variant="secondary" onClick={() => setPhase("idle")}>
             No, otra vez
@@ -93,25 +93,25 @@ export function VoiceNote() {
       )}
 
       {phase === "sent" && (
-        <p role="status" className="rounded-2xl border-2 border-ok bg-surface px-5 py-4 text-patient font-bold">
+        <p role="status" className="rounded-2xl border-2 border-ok bg-ok-soft px-5 py-4 text-p-body font-bold">
           Gracias, se lo enviamos a Marisol.
         </p>
       )}
 
       {phase === "failed" && (
-        <p role="alert" className="rounded-2xl border-2 border-danger bg-surface px-5 py-4 text-patient text-danger">
+        <p role="alert" className="rounded-2xl border-2 border-danger bg-danger-soft px-5 py-4 text-p-body text-danger">
           No se pudo enviar. Intente otra vez.
         </p>
       )}
 
       {phase === "denied" && (
-        <p role="alert" className="rounded-2xl border-2 border-danger bg-surface px-5 py-4 text-patient text-danger">
+        <p role="alert" className="rounded-2xl border-2 border-danger bg-danger-soft px-5 py-4 text-p-body text-danger">
           No pudimos usar el micrófono. Pídale ayuda a Marisol.
         </p>
       )}
 
       {phase !== "denied" && (
-        <p className="text-patient text-ink-soft">Simulado: el texto de la nota es de prueba, todavía no se transcribe.</p>
+        <p className="text-p-body text-ink-soft">Simulado: el texto de la nota es de prueba, todavía no se transcribe.</p>
       )}
     </div>
   );

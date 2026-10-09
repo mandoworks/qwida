@@ -76,9 +76,10 @@ export function CardView() {
 
   if (!latest) {
     return (
-      <p role="status" className="rounded-2xl border-2 border-line bg-surface px-5 py-6 text-patient">
-        Marisol todavía no le ha enviado su tarjeta.
-      </p>
+      <div role="status" className="flex flex-col gap-3 rounded-2xl border-2 border-line-strong bg-sand px-5 py-6">
+        <p className="text-p-body">Marisol todavía no le ha enviado su tarjeta.</p>
+        <p className="text-p-body text-ink-soft">Cuando Marisol apruebe su tarjeta, aparecerá aquí.</p>
+      </div>
     );
   }
 
@@ -100,7 +101,7 @@ export function CardView() {
         className="rounded-2xl bg-accent px-5 py-4 text-accent-ink"
         style={headStyle}
       >
-        <h2 className="text-3xl font-bold leading-tight">{card.title}</h2>
+        <h2 className="text-p-title">{card.title}</h2>
       </header>
 
       <BigButton
@@ -112,7 +113,7 @@ export function CardView() {
         {speaking ? "Detener" : "Escuchar"}
       </BigButton>
       {unsupported && (
-        <p role="alert" className="text-patient text-danger">
+        <p role="alert" className="text-p-body text-danger">
           Este teléfono no puede leer en voz alta.
         </p>
       )}
@@ -127,13 +128,13 @@ export function CardView() {
             )}
             <div className="flex min-w-0 flex-col gap-2">
               <p
-                className="w-fit rounded-lg bg-ink px-3 py-1 text-patient font-bold text-bg"
+                className="w-fit rounded-lg bg-ink px-3 py-1 text-p-label text-bg"
                 style={dayStyle}
               >
                 {item.day}
                 {item.time ? `, ${item.time}` : ""}
               </p>
-              <p className="text-patient">{item.text}</p>
+              <p className="text-p-body">{item.text}</p>
             </div>
           </li>
         ))}
@@ -141,10 +142,10 @@ export function CardView() {
 
       {card.questionsForDoctor.length > 0 && (
         <section aria-label="Para preguntarle al doctor" className="flex flex-col gap-3">
-          <h3 className="text-3xl font-bold">Para preguntarle al doctor</h3>
+          <h3 className="text-p-subtitle">Para preguntarle al doctor</h3>
           <ul className="flex flex-col gap-3">
             {card.questionsForDoctor.map((q, i) => (
-              <li key={i} className="rounded-2xl border-2 border-line bg-surface px-4 py-3 text-patient">
+              <li key={i} className="rounded-2xl border-2 border-line-strong bg-surface px-4 py-3 text-p-body">
                 {q}
               </li>
             ))}
@@ -152,9 +153,9 @@ export function CardView() {
         </section>
       )}
 
-      {removed && <FenceNotice className="text-patient" />}
+      {removed && <FenceNotice className="text-p-body" />}
 
-      <p className="text-patient text-ink-soft">Esta tarjeta la aprobó Marisol.</p>
+      <p className="text-p-body text-ink-soft">Esta tarjeta la aprobó Marisol.</p>
     </article>
   );
 }
