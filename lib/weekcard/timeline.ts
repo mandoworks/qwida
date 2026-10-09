@@ -1,0 +1,118 @@
+import { normalize } from "@/lib/fence";
+import type { EventStatus, QuidaEvent } from "@/lib/store/types";
+
+export type TimelineGroup = "cita" | "receta" | "referido" | "nota" | "alerta";
+export const TIMELINE_GROUPS: TimelineGroup[] = ["cita", "receta", "referido", "nota", "alerta"];
+
+const GROUP_OF: Record<string, TimelineGroup> = {
+  appointment: "cita",
+  rx_handwritten: "receta",
+  rx_label: "receta",
+  med_schedule: "receta",
+  referido: "referido",
+  visit: "nota",
+  voice_note: "nota",
+  weekcard: "nota",
+  nudge: "nota",
+  fence: "alerta",
+};
+
+export type TimelineRow = {
+  id: string;
+  group: TimelineGroup;
+  status: EventStatus;
+  at: string;
+  /** Data derived Spanish text, for example "Cita de cardiología". */
+  title: string;
+  /** Extra facts already computed, so the row is a pure function of the event. */
+  facts: { key: "doctor" | "place" | "specialty" | "date" | "expires" | "prescriptions" | "questions" | "drug" | "source" | "days"; value: string }[];
+  /** Matches the specialty text filter. */
+  search: string;
+};
+
+const str = (v: unknown): string | null => (typeof v === "string" && v.trim() ? v.trim() : null);
+
+function factsFor(e: QuidaEvent): TimelineRow["facts"] {
+  const p = e.payload;
+  const facts: TimelineRow["facts"] = [];
+  const push = (key: TimelineRow["facts"][number]["key"], value: string | null | undefined) => {
+    if (value) facts.push({ key, value });
+  };
+  if (e.kind === "appointment") {
+    push("specialty", str(p.specialty));
+    push("doctor", str(p.doctor));
+    push("place", str(p.place));
+    push("date", str(p.date));
+  } else if (e.kind === "referido") {
+    push("specialty", str(p.specialty));
+    push("expires", str(p.expires_on));
+    push("doctor", str(p.referring_doctor));
+  } else if (e.kind === "med_schedule") {
+    push("drug", [str(p.drug), str(p.dose)].filter(Boolean).join(" "));
+    push("specialty", str(p.pharmacy));
+  } else if (e.kind === "rx_handwritten" || e.kind === "rx_label") {
+    const fields = (p.fields ?? {}) as Record<string, { value?: unknown }>;
+    const read = (k: string) => str(fields[k]?.value);
+    push("drug", [read("drug"), read("strength")].filter(Boolean).join(" "));
+    push("specialty", read("specialty"));
+    push("place", read("pharmacy"));
+  } else if (e.kind === "visit") {
+    const prescriptions = Array.isArray(p.prescriptions) ? p.prescriptions.length : 0;
+    const questions = Array.isArray(p.questions_back) ? p.questions_back.length : 0;
+    push("prescriptions", prescriptions ? String(prescriptions) : null);
+    push("questions", questions ? String(questions) : null);
+    const specialty = str(p.specialty);
+    push("specialty", specialty);
+  } else if (e.kind === "voice_note") {
+    push("source", str(p.text));
+  } else if (e.kind === "weekcard") {
+    const items = Array.isArray(p.items) ? p.items.length : 0;
+    push("prescriptions", items ? String(items) : null);
+  } else if (e.kind === "fence") {
+    push("source", str(p.context));
+  } else if (e.kind === "nudge") {
+    push("source", str(p.text));
+  }
+  return facts;
+}
+
+function titleFor(e: QuidaEvent, facts: TimelineRow["facts"]): string {
+  const value = (key: TimelineRow["facts"][number]["key"]) =>
+    facts.find((f) => f.key === key)?.value ?? null;
+  switch (GROUP_OF[e.kind]) {
+    case "cita":
+      return `Cita de ${value("specialty") ?? "seguimiento"}`;
+    case "receta":
+      return e.kind === "med_schedule" ? `Horario confirmado: ${value("drug") ?? "medicamento"}` : `Receta: ${value("drug") ?? "sin nombre"}`;
+    case "referido":
+      return `Referido de ${value("specialty") ?? "especialidad"}`;
+    case "alerta":
+      return e.payload.emergency === true ? "Alerta: palabras de emergencia" : "Alerta: cambio de medicina";
+    default:
+      if (e.kind === "visit") return "Grabación de la visita";
+      if (e.kind === "voice_note") return "Nota de voz";
+      if (e.kind === "weekcard") return "Tarjeta de la semana";
+      return "Recordatorio";
+  }
+}
+
+/** Every event, newest first, with the text the specialty filter searches in. */
+export function timelineRows(events: QuidaEvent[]): TimelineRow[] {
+  return events
+    .filter((e) => GROUP_OF[e.kind])
+    .map((e) => {
+      const facts = factsFor(e);
+      const group = GROUP_OF[e.kind];
+      const search = normalize([titleFor(e, facts), ...facts.map((f) => f.value)].join(" "));
+      return { id: e.id, group, status: e.status, at: e.createdAt, title: titleFor(e, facts), facts, search };
+    })
+    .sort((a, b) => b.at.localeCompare(a.at));
+}
+
+/** `group` is "all" or one of TIMELINE_GROUPS; `specialty` is free text ("cardiología"). */
+export function filterRows(rows: TimelineRow[], group: TimelineGroup | "all", specialty: string): TimelineRow[] {
+  const needle = normalize(specialty);
+  return rows.filter(
+    (r) => (group === "all" || r.group === group) && (needle === "" || r.search.includes(needle)),
+  );
+}
