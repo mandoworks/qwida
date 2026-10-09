@@ -55,13 +55,13 @@ export function ProviderDirectory() {
 
   // Debounced search against /api/providers (MedSeek PR live, local fallback).
   useEffect(() => {
-    const q = nameQuery.trim();
-    if (!specialty && !municipio && !q) {
-      setResults(null);
-      return;
-    }
     let active = true;
     const timer = setTimeout(async () => {
+      if (!specialty && !municipio && !q) {
+        setResults(null);
+        setSearching(false);
+        return;
+      }
       setSearching(true);
       setError(null);
       try {

@@ -21,12 +21,23 @@ const DETAIL_LABEL: Record<Detail, StringKey> = {
   full: "settings.detail.full",
 };
 
+const CHANNELS = ["whatsapp", "call", "both"] as const;
+type Channel = (typeof CHANNELS)[number];
+
+const CHANNEL_LABEL: Record<Channel, StringKey> = {
+  whatsapp: "settings.channel.whatsapp",
+  call: "settings.channel.call",
+  both: "settings.channel.both",
+};
+
 /** Digest detail (SIMULADO), caregiver language, contrast, .ics export, sharing. */
 export function Settings() {
   const { events } = useEvents();
   const { t, lang, setLang } = useLang();
   const [savedDetail, setSavedDetail] = useLocalValue("quida.cuidador.detail");
   const detail: Detail = DETAIL.includes(savedDetail as Detail) ? (savedDetail as Detail) : "points";
+  const [savedChannel, setSavedChannel] = useLocalValue("quida.cuidador.channel");
+  const channel: Channel = CHANNELS.includes(savedChannel as Channel) ? (savedChannel as Channel) : "call";
   const [savedContrast, setSavedContrast] = useLocalValue("quida.cuidador.contrast");
   const highContrast = savedContrast === "high";
   const [downloaded, setDownloaded] = useState<number | null>(null);
@@ -79,6 +90,39 @@ export function Settings() {
           ))}
         </div>
         <p className="text-c-meta text-ink-mute">{t("settings.detail.note")}</p>
+      </fieldset>
+
+      <fieldset className="flex flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+        <legend className="flex items-center gap-2 text-c-title font-bold">
+          {t("settings.channel")}
+          <Badge kind="SIMULADO" />
+        </legend>
+        <p className="text-c-meta text-ink-mute">{t("settings.channel.hint")}</p>
+        <div role="radiogroup" aria-label={t("settings.channel")} className="flex flex-col">
+          {CHANNELS.map((code) => (
+            <button
+              key={code}
+              type="button"
+              role="radio"
+              aria-checked={channel === code}
+              onClick={() => setSavedChannel(code)}
+              className={`flex min-h-tap-c-lg items-center gap-3 border-b border-line px-1 text-left text-c-body motion-quick last:border-b-0 ${
+                channel === code ? "font-bold text-accent" : ""
+              }`}
+            >
+              <span
+                aria-hidden="true"
+                className={`size-4 rounded-full border-2 ${channel === code ? "border-accent bg-accent" : "border-line-strong"}`}
+              />
+              {t(CHANNEL_LABEL[code])}
+            </button>
+          ))}
+        </div>
+        <div className="rounded-well bg-sand p-3 text-c-meta text-ink-soft">
+          <p className="font-bold text-ink">{t("settings.phone.patient")}</p>
+          <p className="mt-1 font-bold text-ink">{t("settings.phone.family")}</p>
+          <p className="mt-2 text-ink-mute">{t("settings.channel.note")}</p>
+        </div>
       </fieldset>
 
       <fieldset className="flex flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">

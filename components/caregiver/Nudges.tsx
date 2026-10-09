@@ -8,7 +8,7 @@ import { todayPR } from "@/lib/photo/dates";
 import { buildNudges, whatsappUrl, type NudgeKind } from "@/lib/weekcard/nudges";
 import type { StringKey } from "@/lib/weekcard/strings";
 import { useClock } from "./clock";
-import { Bell, Copy, Message } from "./icons";
+import { Bell, Copy, Message, Phone } from "./icons";
 import { useLang } from "./lang-context";
 import { Pending } from "./Pending";
 
@@ -20,13 +20,15 @@ const KIND_LABEL: Record<NudgeKind, StringKey> = {
 };
 
 /**
- * Two taps per reminder (4.15): copy the text, or open WhatsApp with it.
- * WhatsApp is a delivery channel only, Quida never sends anything on its own.
+ * Three delivery options per reminder: copy the text, open WhatsApp, or trigger an automated voice call.
+ * Designed for Puerto Rican seniors who do not read text messages but answer the phone.
  */
 export function Nudges() {
   const { events } = useEvents();
   const { t } = useLang();
   const [copied, setCopied] = useState<string | null>(null);
+  const [calling, setCalling] = useState<string | null>(null);
+  const [called, setCalled] = useState<string | null>(null);
   const clock = useClock();
 
   if (clock === null) {
@@ -46,6 +48,34 @@ export function Nudges() {
       setTimeout(() => setCopied(null), 2000);
     } catch {
       setCopied(null);
+    }
+  }
+
+  async function triggerCall(id: string, message: string) {
+    setCalling(id);
+    try {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(`Bendición Doña Carmen. De parte de Marisol: ${message}`);
+        u.lang = "es-US";
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+      }
+      await fetch("/api/call", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: "+17875550192",
+          recipientName: "Doña Carmen",
+          message,
+          trigger: id,
+        }),
+      }).catch(() => {});
+      setCalling(null);
+      setCalled(id);
+      setTimeout(() => setCalled(null), 4000);
+    } catch {
+      setCalling(null);
     }
   }
 
@@ -79,12 +109,30 @@ export function Nudges() {
                   href={whatsappUrl(nudge.message)}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex min-h-tap-c flex-1 items-center justify-center gap-2 rounded-btn border-2 border-accent bg-accent px-4 text-c-body font-bold text-white motion-quick hover:bg-accent-press"
+                  className="flex min-h-tap-c flex-1 items-center justify-center gap-2 rounded-btn border-2 border-line-strong bg-surface px-4 text-c-body font-bold motion-quick hover:bg-sand"
                 >
                   <Message size={20} />
                   {t("nudges.whatsapp")}
                 </a>
+                <button
+                  type="button"
+                  onClick={() => triggerCall(nudge.id, nudge.message)}
+                  disabled={calling === nudge.id}
+                  className="flex min-h-tap-c flex-1 items-center justify-center gap-2 rounded-btn border-2 border-accent bg-accent px-4 text-c-body font-bold text-white motion-quick hover:bg-accent-press"
+                >
+                  <Phone size={20} />
+                  {calling === nudge.id
+                    ? t("nudges.calling")
+                    : called === nudge.id
+                      ? t("nudges.called")
+                      : t("nudges.call")}
+                </button>
               </div>
+              {called === nudge.id && (
+                <div role="status" className="rounded-well bg-sand p-3 text-c-meta font-bold text-accent">
+                  ✓ {t("nudges.called")} · (787) 555-0192 (Simulado · Twilio Voice API)
+                </div>
+              )}
               <p className="text-c-meta text-ink-mute">{t("nudges.foot")}</p>
             </li>
           ))}
@@ -98,6 +146,7 @@ export function Nudges() {
           <Badge kind="SIMULADO" />
         </div>
         <p className="rounded-well bg-sand px-3 py-2 text-c-meta text-ink-mute">{t("nudges.autoNote")}</p>
+        <p className="rounded-well bg-sand px-3 py-2 text-c-meta text-ink-mute">{t("nudges.callNote")}</p>
       </section>
 
       <p role="status" aria-live="polite" className="sr-only">
