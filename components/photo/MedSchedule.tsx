@@ -62,7 +62,7 @@ export function MedSchedule({ items, size = "patient" }: { items: ScheduleItem[]
                         />
                         <span className="font-bold">
                           {i.drug}
-                          {i.dose && <span className="font-normal"> {i.dose}</span>}
+                          {i.dose && <span className={patient ? "" : "font-normal"}> {i.dose}</span>}
                         </span>
                       </li>
                     ))}

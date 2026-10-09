@@ -103,7 +103,7 @@ export function CardView() {
         className="rounded-2xl bg-accent px-5 py-4 text-accent-ink"
         style={headStyle}
       >
-        <h2 className="text-p-title">{card.title}</h2>
+        <h2 className="text-p-title font-bold">{card.title}</h2>
       </header>
 
       <BigButton
@@ -130,7 +130,7 @@ export function CardView() {
             )}
             <div className="flex min-w-0 flex-col gap-2">
               <p
-                className="w-fit rounded-lg bg-ink px-3 py-1 text-p-label text-bg"
+                className="w-fit rounded-lg bg-ink px-3 py-1 text-p-label font-bold text-bg"
                 style={dayStyle}
               >
                 {item.day}
@@ -144,7 +144,7 @@ export function CardView() {
 
       {card.questionsForDoctor.length > 0 && (
         <section aria-label="Para preguntarle al doctor" className="flex flex-col gap-3">
-          <h3 className="text-p-subtitle">Para preguntarle al doctor</h3>
+          <h3 className="text-p-subtitle font-bold">Para preguntarle al doctor</h3>
           <ul className="flex flex-col gap-3">
             {card.questionsForDoctor.map((q, i) => (
               <li key={i} className="rounded-2xl border-2 border-line-strong bg-surface px-4 py-3 text-p-body">

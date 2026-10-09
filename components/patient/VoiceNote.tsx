@@ -187,7 +187,7 @@ export function VoiceNote() {
           {result?.transcript && (
             <div className="rounded-2xl border-2 border-line bg-surface p-4">
               <span className="text-p-meta text-ink-soft">Mensaje registrado:</span>
-              <p className="mt-1 text-p-body font-bold italic text-ink">
+              <p className="mt-1 text-p-body font-bold text-ink">
                 &ldquo;{result.transcript}&rdquo;
               </p>
             </div>
