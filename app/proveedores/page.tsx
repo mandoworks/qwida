@@ -52,6 +52,19 @@ export default function ProveedoresPage() {
             <li key={note}>{note}</li>
           ))}
         </ul>
+        <div className="flex items-center gap-3">
+          <img
+            src="/art/medseek-logo.png"
+            alt="MedSeek"
+            width={120}
+            height={40}
+            loading="lazy"
+            className="h-10 w-auto shrink-0 object-contain"
+          />
+          <p className="text-base text-ink-soft">
+            Datos de proveedores por MedSeek.
+          </p>
+        </div>
         <p className="text-base text-ink-soft">
           {catalog.attribution}. Datos de localización y NPI vía MedSeek PR.{" "}
           <a href={VERIFY_URL} target="_blank" rel="noreferrer noopener" className="font-bold underline">

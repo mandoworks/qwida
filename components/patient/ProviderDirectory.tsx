@@ -237,9 +237,21 @@ export function ProviderDirectory() {
         )}
 
         {source && results !== null && (
-          <p className="mt-4 text-p-meta text-ink-mute">
-            Datos de {source === "medseekpr.com" ? "MedSeek PR (medseekpr.com)" : "nuestro directorio local"}. Quida no recomienda doctores. Datos de ejemplo (SIMULADO).
-          </p>
+          <div className="mt-6 flex items-center justify-center gap-3 border-t-[3px] border-ink-soft pt-5">
+            {source === "medseekpr.com" && (
+              <img
+                src="/art/medseek-logo.png"
+                alt="MedSeek"
+                width={120}
+                height={40}
+                loading="lazy"
+                className="h-10 w-auto shrink-0 object-contain"
+              />
+            )}
+            <p className="text-p-meta text-ink-mute">
+              Datos de proveedores por {source === "medseekpr.com" ? "MedSeek (medseekpr.com)" : "nuestro directorio local"}. Quida no recomienda doctores. Datos de ejemplo (SIMULADO).
+            </p>
+          </div>
         )}
       </section>
 
