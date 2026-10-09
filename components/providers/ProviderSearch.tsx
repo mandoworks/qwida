@@ -5,7 +5,7 @@ import { useEvents } from "@/lib/client/useEvents";
 import { todayPR } from "@/lib/photo/dates";
 import { useClock } from "@/components/caregiver/clock";
 import { providers, type Provider } from "@/lib/providers/catalog";
-import { formatConsulted, readable } from "@/lib/providers/format";
+import { readable } from "@/lib/providers/format";
 import { activeReferido, expiryLine, nudgeEvent } from "@/lib/providers/referido";
 import {
   NO_FILTER,
@@ -228,7 +228,7 @@ export function ProviderSearch() {
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p role="status" className="text-lg">
-          Mostrando {results.length} de {totalBase} profesionales con licencia activa.
+          Mostrando {results.length} de {totalBase} profesionales.
         </p>
 
         <div className="flex items-center gap-2">
@@ -295,7 +295,6 @@ export function ProviderSearch() {
             <li key={provider.license_number}>
               <ProviderCard
                 provider={provider}
-                consultedOn={formatConsulted(provider.fetched_at)}
                 expiry={expiry}
                 sent={sent[provider.license_number] === true}
                 busy={busy === provider.license_number}

@@ -7,7 +7,6 @@ const CAREGIVER_BUTTON = "min-h-0 py-3 text-xl";
 type ProviderCardProps = {
   provider: Provider;
   /** "9 de octubre de 2026", the day the registry was read. */
-  consultedOn: string;
   /** Referral deadline line, only when a confirmed referral exists. */
   expiry: string | null;
   /** True once this caregiver created the call reminder from this card. */
@@ -22,7 +21,7 @@ type ProviderCardProps = {
  * date the registry was read, and the practice phone when NPPES published one.
  * The two questions Quida cannot answer stay on screen as answered questions.
  */
-export function ProviderCard({ provider, consultedOn, expiry, sent, busy, onUseReferido }: ProviderCardProps) {
+export function ProviderCard({ provider, expiry, sent, busy, onUseReferido }: ProviderCardProps) {
   return (
     <article className="flex flex-col gap-3 rounded-2xl border-2 border-line bg-surface p-4 text-lg">
       <header className="flex flex-col gap-1">
@@ -31,9 +30,6 @@ export function ProviderCard({ provider, consultedOn, expiry, sent, busy, onUseR
         <p className="font-bold">{readable(provider.municipio)}</p>
       </header>
 
-      <p>
-        <span className="font-bold text-ok">Licencia activa</span> (verificada el {consultedOn}). Licencia {provider.license_number}.
-      </p>
 
       <p>
         {provider.phone ? (

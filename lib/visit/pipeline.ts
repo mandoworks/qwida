@@ -25,7 +25,8 @@ Reglas:
 - No des consejos médicos ni recomendaciones. Solo extrae.`;
 
 export function hasAiKey(): boolean {
-  return Boolean(process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN);
+  // On Vercel the AI Gateway authenticates through OIDC per request, so no env var is visible here.
+  return Boolean(process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN || process.env.VERCEL);
 }
 
 export async function transcribeVisit(audio: Uint8Array): Promise<string> {

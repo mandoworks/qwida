@@ -7,9 +7,9 @@ import { formatConsulted } from "@/lib/providers/format";
 import { ASES_RULE } from "@/lib/providers/referido";
 
 export const metadata: Metadata = {
-  title: "Profesionales con licencia activa | Quida",
+  title: "Profesionales de la salud en Puerto Rico | Quida",
   description:
-    "Busque profesionales de la salud de Puerto Rico con licencia activa, según el registro público de ORCPS.",
+    "Busque profesionales de la salud de Puerto Rico en el directorio público de MedSeek PR.",
 };
 
 export default function ProveedoresPage() {
@@ -53,7 +53,7 @@ export default function ProveedoresPage() {
           ))}
         </ul>
         <p className="text-base text-ink-soft">
-          {catalog.attribution}. Integración directa con MedSeek PR para datos de localización y NPI.{" "}
+          {catalog.attribution}. Datos de localización y NPI vía MedSeek PR.{" "}
           <a href={VERIFY_URL} target="_blank" rel="noreferrer noopener" className="font-bold underline">
             Verifique cualquier licencia usted misma
           </a>{" "}
