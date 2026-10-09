@@ -11,7 +11,7 @@ and UI rules live in the private war room repo (`qwida-warroom/plan/MASTER-PLAN.
 - Nothing becomes `CONFIRMADO` without a human tap. AI output lands as `BORRADOR`.
 - No em dashes or hyphens joining clauses in prose or UI copy.
 - One owner per path: W1 `lib/store`, `lib/seed`, `lib/fence`, `app/api/{events,reset,visit}`,
-  `components/ui`, `components/capture`; W2 `app/api/photo`, `lib/extract`; W3 `app/cuidador`;
+  `components/ui`, `components/capture`; W2 `app/api/photo`, `lib/extract`; W3 `app/familia`;
   W4 `app/paciente`, `components/patient`.
 - Verify with `npm run build`, `npm run lint`, `npm test`. Workers never push.
 - Shared state: server code calls `getStore()` from `@/lib/store`; client code polls with

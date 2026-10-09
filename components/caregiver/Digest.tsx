@@ -41,10 +41,10 @@ const ACTION_KEY: Record<DigestAction["key"], StringKey> = {
 };
 
 const LINKS: { href: string; key: StringKey }[] = [
-  { href: "/cuidador/linea-de-tiempo", key: "digest.link.timeline" },
-  { href: "/cuidador/tarjeta", key: "digest.link.card" },
+  { href: "/familia/linea-de-tiempo", key: "digest.link.timeline" },
+  { href: "/familia/tarjeta", key: "digest.link.card" },
   { href: "/proveedores", key: "digest.link.specialists" },
-  { href: "/cuidador/ajustes", key: "digest.link.settings" },
+  { href: "/familia/ajustes", key: "digest.link.settings" },
 ];
 
 /** One glance for Marisol: DESIGN.md 4.14 and 5.5. Exactly one primary button. */
@@ -156,7 +156,7 @@ export function Digest() {
 
         {digest.changes.length > MAX_CHANGES && (
           <p className="border-t border-line p-4">
-            <Link href="/cuidador/linea-de-tiempo" className="text-c-body font-bold text-accent underline">
+            <Link href="/familia/linea-de-tiempo" className="text-c-body font-bold text-accent underline">
               {t("digest.changesMore", { n: digest.changes.length })}
             </Link>
           </p>
@@ -204,7 +204,7 @@ export function Digest() {
               {soonRefill.days <= 7 && (
                 <>
                   <p className="text-c-body">{t("digest.refill.soon")}</p>
-                  <Link href="/cuidador/recordatorios" className="text-c-body font-bold text-accent underline">
+                  <Link href="/familia/recordatorios" className="text-c-body font-bold text-accent underline">
                     {t("nav.recordatorios")}
                   </Link>
                 </>
@@ -220,7 +220,7 @@ export function Digest() {
                 today={today}
                 size="caregiver"
               />
-              <Link href="/cuidador/recordatorios" className="text-c-body font-bold text-accent underline">
+              <Link href="/familia/recordatorios" className="text-c-body font-bold text-accent underline">
                 {t("digest.refill.renew")}
               </Link>
             </div>
@@ -237,7 +237,7 @@ export function Digest() {
             <div>
               <p className="text-c-title font-bold">{t("nav.recordatorios")}</p>
               <p className="text-c-body text-ink-soft">{t("nudges.lead")}</p>
-              <Link href="/cuidador/recordatorios" className="text-c-body font-bold text-accent underline">
+              <Link href="/familia/recordatorios" className="text-c-body font-bold text-accent underline">
                 {t("nudges.title")}
               </Link>
             </div>

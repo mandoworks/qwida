@@ -1,6 +1,6 @@
 // Minimal app shell cache for venue network hiccups. API calls are never cached.
 const CACHE = "quida-shell-v1";
-const SHELL = ["/", "/paciente", "/cuidador", "/manifest.webmanifest", "/icons/icon-192.png"];
+const SHELL = ["/", "/paciente", "/familia", "/manifest.webmanifest", "/icons/icon-192.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

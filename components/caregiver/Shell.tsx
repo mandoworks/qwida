@@ -10,13 +10,13 @@ import { LangProvider } from "./LangProvider";
 import { useLang } from "./lang-context";
 
 const SECTIONS: { href: string; key: StringKey; icon: "home" | "check" | "timeline" | "card" | "bell" | "settings" | "search" }[] = [
-  { href: "/cuidador", key: "nav.inicio", icon: "home" },
-  { href: "/cuidador/revisar", key: "nav.revisar", icon: "check" },
-  { href: "/cuidador/linea-de-tiempo", key: "nav.tiempo", icon: "timeline" },
-  { href: "/cuidador/tarjeta", key: "nav.tarjeta", icon: "card" },
-  { href: "/cuidador/recordatorios", key: "nav.recordatorios", icon: "bell" },
+  { href: "/familia", key: "nav.inicio", icon: "home" },
+  { href: "/familia/revisar", key: "nav.revisar", icon: "check" },
+  { href: "/familia/linea-de-tiempo", key: "nav.tiempo", icon: "timeline" },
+  { href: "/familia/tarjeta", key: "nav.tarjeta", icon: "card" },
+  { href: "/familia/recordatorios", key: "nav.recordatorios", icon: "bell" },
   { href: "/proveedores", key: "nav.especialistas", icon: "search" },
-  { href: "/cuidador/ajustes", key: "nav.ajustes", icon: "settings" },
+  { href: "/familia/ajustes", key: "nav.ajustes", icon: "settings" },
 ];
 
 const ICON = {
@@ -94,7 +94,7 @@ function ShellBody({ children }: { children: ReactNode }) {
             <ul className="flex flex-wrap gap-2 lg:flex-col lg:gap-1">
               {SECTIONS.map((section) => {
                 const active =
-                  section.href === "/cuidador"
+                  section.href === "/familia"
                     ? pathname === section.href
                     : section.href === "/proveedores"
                       ? pathname.startsWith(section.href)

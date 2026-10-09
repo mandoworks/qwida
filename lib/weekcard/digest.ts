@@ -147,11 +147,11 @@ export function buildDigest(events: QuidaEvent[], input: { seenAt: string | null
   const cardAge = card ? daysBetween(input.today, isoDate(card.updatedAt) ?? input.today) : null;
 
   let action: DigestAction | null = null;
-  if (fence) action = { href: "/cuidador/revisar", key: "fence" };
-  else if (pending.length) action = { href: "/cuidador/revisar", key: "review" };
-  else if (cardAge === null || cardAge > 7) action = { href: "/cuidador/tarjeta", key: "weekcard" };
-  else if (next.some((n) => n.kind !== "cita" && n.days <= 7)) action = { href: "/cuidador/recordatorios", key: "reminders" };
-  else action = { href: "/cuidador/linea-de-tiempo", key: "timeline" };
+  if (fence) action = { href: "/familia/revisar", key: "fence" };
+  else if (pending.length) action = { href: "/familia/revisar", key: "review" };
+  else if (cardAge === null || cardAge > 7) action = { href: "/familia/tarjeta", key: "weekcard" };
+  else if (next.some((n) => n.kind !== "cita" && n.days <= 7)) action = { href: "/familia/recordatorios", key: "reminders" };
+  else action = { href: "/familia/linea-de-tiempo", key: "timeline" };
 
   const hero: DigestHero = fence ? "fence" : pending.length ? "warn" : "ok";
   return {

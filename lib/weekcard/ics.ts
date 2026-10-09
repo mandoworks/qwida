@@ -68,7 +68,7 @@ export function buildIcs(events: QuidaEvent[], options: IcsOptions): string {
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Quida//Cuidador//ES",
+    "PRODID:-//Quida//Familia//ES",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     `X-WR-CALNAME:${escapeIcs(calendarName)}`,

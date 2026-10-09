@@ -1,5 +1,5 @@
 import { Digest } from "@/components/caregiver/Digest";
 
-export default function CuidadorHomePage() {
+export default function FamiliaHomePage() {
   return <Digest />;
 }

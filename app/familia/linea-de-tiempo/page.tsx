@@ -1,5 +1,5 @@
 import { Timeline } from "@/components/caregiver/Timeline";
 
-export default function CuidadorTiempoPage() {
+export default function FamiliaTiempoPage() {
   return <Timeline />;
 }

@@ -17,8 +17,8 @@ export default function ProveedoresPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 md:px-6">
-      <Link href="/cuidador" className="text-lg underline">
-        Volver al cuidado
+      <Link href="/familia" className="text-lg underline">
+        Volver al inicio
       </Link>
 
       <h1 className="mt-3 text-3xl font-bold md:text-4xl">Profesionales de la salud en Puerto Rico</h1>

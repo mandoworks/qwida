@@ -1,5 +1,5 @@
 import { Nudges } from "@/components/caregiver/Nudges";
 
-export default function CuidadorRecordatoriosPage() {
+export default function FamiliaRecordatoriosPage() {
   return <Nudges />;
 }

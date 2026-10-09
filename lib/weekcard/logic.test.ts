@@ -106,17 +106,17 @@ describe("buildDigest", () => {
   it("puts the Fence alert first and suggests reviewing it", () => {
     const digest = buildDigest([fence], { seenAt: "2026-10-09T09:00:00.000Z", today: TODAY });
     expect(digest.fence).toMatchObject({ id: fence.id, emergency: true });
-    expect(digest.action).toEqual({ href: "/cuidador/revisar", key: "fence" });
+    expect(digest.action).toEqual({ href: "/familia/revisar", key: "fence" });
     expect(digest.quiet).toBe(false);
   });
 
   it("suggests one single action at a time", () => {
     expect(buildDigest([event({ kind: "visit" })], { seenAt: null, today: TODAY }).action).toEqual({
-      href: "/cuidador/revisar",
+      href: "/familia/revisar",
       key: "review",
     });
     expect(buildDigest([appointment], { seenAt: null, today: TODAY }).action).toEqual({
-      href: "/cuidador/tarjeta",
+      href: "/familia/tarjeta",
       key: "weekcard",
     });
     const withCard = [
@@ -124,7 +124,7 @@ describe("buildDigest", () => {
       event({ kind: "weekcard", status: "CONFIRMADO", updatedAt: "2026-10-09T08:00:00.000Z", payload: { items: [] } }),
     ];
     expect(buildDigest(withCard, { seenAt: null, today: TODAY }).action).toEqual({
-      href: "/cuidador/linea-de-tiempo",
+      href: "/familia/linea-de-tiempo",
       key: "timeline",
     });
   });

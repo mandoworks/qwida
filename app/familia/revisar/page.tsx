@@ -1,5 +1,5 @@
 import { Review } from "@/components/caregiver/Review";
 
-export default function CuidadorRevisarPage() {
+export default function FamiliaRevisarPage() {
   return <Review />;
 }

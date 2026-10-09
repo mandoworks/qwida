@@ -82,14 +82,14 @@ test("5. Foto: el referido muestra cuándo vence", async () => {
   await expect(page.getByText(/^Vence el /)).toBeVisible();
 });
 
-test("6. Cuidador: revisar la visita, aprobar y enviar la tarjeta", async () => {
-  await page.goto("/cuidador/revisar");
+test("6. Familia: revisar la visita, aprobar y enviar la tarjeta", async () => {
+  await page.goto("/familia/revisar");
   await page.getByRole("button", { name: /Grabación de la visita/ }).first().click();
   const item = page.getByRole("article");
   await item.getByRole("button", { name: "Confirmar", exact: true }).click();
   await expect(item.getByText("Confirmado", { exact: true })).toBeVisible();
 
-  await page.goto("/cuidador/tarjeta");
+  await page.goto("/familia/tarjeta");
   await page.getByRole("button", { name: "Generar borrador" }).click();
   const title = page.getByRole("textbox", { name: "Título" });
   await expect(title).toBeVisible({ timeout: AI_TIMEOUT });

@@ -18,8 +18,8 @@ export default function RoleChooser() {
 
         <nav aria-label="Elegir rol" className="flex flex-col gap-5">
           <BigButton href="/paciente">Paciente</BigButton>
-          <BigButton href="/cuidador" variant="secondary">
-            Cuidador
+          <BigButton href="/familia" variant="secondary">
+            Familia
           </BigButton>
         </nav>
 

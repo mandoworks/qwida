@@ -1,7 +1,7 @@
 # Quida
 
 Quida is a Spanish first web app (PWA) for Puerto Rican families caring for an elder. The elder
-talks or takes a photo; the caregiver, on the island or in the States, reviews and approves what
+talks or takes a photo; her family, on the island or in the States, reviews and approves what
 changed; the elder gets back one simple card of what to do. A fixed safety Fence runs before any
 AI: Quida never diagnoses and never changes medication, and emergencies point to 911.
 
@@ -19,7 +19,7 @@ npm i
 npm run dev
 ```
 
-Open http://localhost:3000 and choose Paciente or Cuidador. "Reiniciar demo" reloads the
+Open http://localhost:3000 and choose Paciente or Familia. "Reiniciar demo" reloads the
 synthetic case.
 
 | Variable | Default | Meaning |
@@ -29,7 +29,7 @@ synthetic case.
 
 ## Layout
 
-- `app/` routes: `/` role chooser, `/paciente`, `/cuidador`, `app/api/*` route handlers
+- `app/` routes: `/` role chooser, `/paciente`, `/familia`, `app/api/*` route handlers
 - `lib/store/` `EventStore` interface and the in memory `MockStore`
 - `lib/seed/` the synthetic case
 - `lib/fence/` the deterministic safety tripwire and its fixed copy

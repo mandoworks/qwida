@@ -343,7 +343,7 @@ export function WeekCardEditor() {
                 )}
               </ul>
               <p className="mt-2 text-c-meta text-ink-mute">{t("card.medsNote")}</p>
-              <Link href="/cuidador/revisar" className="text-c-body font-bold text-accent underline">
+              <Link href="/familia/revisar" className="text-c-body font-bold text-accent underline">
                 {t("card.medsLink")}
               </Link>
             </section>
