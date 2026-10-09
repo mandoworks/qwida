@@ -28,12 +28,16 @@ const LABELS: Record<string, string> = {
   issue_date: "Fecha del referido",
   referring_doctor: "Médico que refiere",
   plan: "Plan médico",
+  time: "Hora",
+  doctor: "Médico",
+  place: "Lugar",
+  phone: "Teléfono",
 };
 const DATE_FIELDS = new Set(["date", "issue_date"]);
 const NUMBER_FIELDS = new Set(["times_per_day", "quantity", "refills"]);
 const FREQUENCIES = ["una vez al día", "dos veces al día", "tres veces al día", "cuatro veces al día"];
 
-/** `created` is the new med_schedule for a label; null for a referido, which is confirmed in place. */
+/** `created` is the new med_schedule for a label; null for a referido or a cita, confirmed in place. */
 export type ConfirmResponse = { confirmed: QuidaEvent; created: QuidaEvent | null };
 
 const asText = (v: TrustedField["value"]) => (v === null ? "" : String(v));
@@ -199,6 +203,12 @@ export function ExtractedFields({
       {done?.created?.kind === "med_schedule" && (
         <MedSchedule items={scheduleItems([done.created], todayPR())} size={size} />
       )}
+      {done?.confirmed.kind === "appointment" && typeof done.confirmed.payload.date === "string" && (
+        <p role="status" className="font-bold text-ok">
+          Cita el {formatDia(done.confirmed.payload.date.slice(0, 10))}
+          {typeof done.confirmed.payload.time === "string" ? ` a las ${done.confirmed.payload.time}` : ""}.
+        </p>
+      )}
       {done?.confirmed.kind === "referido" && typeof done.confirmed.payload.expires_on === "string" && (
         <ReferidoCountdown
           specialty={typeof done.confirmed.payload.specialty === "string" ? done.confirmed.payload.specialty : null}
@@ -241,7 +251,7 @@ function FieldRow({
       ) : (
         <input
           id={id}
-          type={DATE_FIELDS.has(name) ? "date" : "text"}
+          type={DATE_FIELDS.has(name) ? "date" : name === "time" ? "time" : "text"}
           inputMode={NUMBER_FIELDS.has(name) ? "numeric" : undefined}
           value={value}
           placeholder={read && !field.prefill ? `Leído: ${read}` : undefined}

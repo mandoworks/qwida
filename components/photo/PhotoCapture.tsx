@@ -52,7 +52,7 @@ export function PhotoCapture({
   householdId?: string;
   onResult?: (result: PhotoResponse) => void;
   onConfirmed?: (r: ConfirmResponse) => void;
-  /** Demo: rx_handwritten, rx_label or referido picks the SIMULADO fixture. */
+  /** Demo: rx_handwritten, rx_label, referido or appointment_slip picks the SIMULADO fixture. */
   hint?: string;
   size?: PhotoSize;
 }) {
@@ -145,7 +145,7 @@ export function PhotoCapture({
             </p>
           ) : (
             phase.result.events
-              .filter((e) => e.kind === "rx_handwritten" || e.kind === "rx_label" || e.kind === "referido")
+              .filter((e) => e.kind === "rx_handwritten" || e.kind === "rx_label" || e.kind === "referido" || (e.kind === "appointment" && e.payload.fields))
               .map((e) => (
                 <ExtractedFields
                   key={e.id}

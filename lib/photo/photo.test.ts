@@ -4,7 +4,8 @@ import { capImage, MAX_IMAGE_CHARS } from "@/lib/store/redis";
 import type { HeardPrescription } from "@/lib/visit/schema";
 import { confirmPhoto } from "./confirm";
 import { formatDia, referidoExpiresOn } from "./dates";
-import { FIXTURE_HANDWRITTEN, FIXTURE_LABEL } from "./fixture";
+import { buildIcs } from "@/lib/weekcard/ics";
+import { FIXTURE_APPOINTMENT, FIXTURE_HANDWRITTEN, FIXTURE_LABEL } from "./fixture";
 import { processPhoto } from "./pipeline";
 import { refillCountdown, unitsPerDose } from "./refill";
 import { applyTrust, deriveSlots, HANDWRITTEN_BADGE, LABEL_RESCAN_TEXT } from "./trust";
@@ -110,6 +111,27 @@ describe("applyTrust", () => {
   });
 });
 
+describe("applyTrust on an appointment card", () => {
+  it("pre-fills printed fields and highlights the hand written phone", () => {
+    const t = applyTrust(FIXTURE_APPOINTMENT);
+    expect(t).toMatchObject({ trusted: true, status: "POR_CONFIRMAR", canSchedule: false });
+    expect(t.fields?.date).toMatchObject({ value: "2026-11-03", prefill: true, highlight: false });
+    expect(t.fields?.time).toMatchObject({ value: "10:30", prefill: true });
+    expect(t.fields?.phone).toMatchObject({ value: null, highlight: true });
+  });
+
+  it("drops a vague date or a 12 hour time instead of trusting it", () => {
+    const appointment = {
+      ...FIXTURE_APPOINTMENT.appointment!,
+      date: { value: "martes", confidence: 0.99, source_text: "martes" },
+      time: { value: "10:30 AM", confidence: 0.99, source_text: "10:30 AM" },
+    };
+    const t = applyTrust({ ...FIXTURE_APPOINTMENT, appointment });
+    expect(t.fields?.date).toMatchObject({ value: null, confidence: 0, highlight: true });
+    expect(t.fields?.time).toMatchObject({ value: null, confidence: 0, highlight: true });
+  });
+});
+
 describe("photo pipeline without a key (SIMULADO)", () => {
   const saved = { key: process.env.AI_GATEWAY_API_KEY, oidc: process.env.VERCEL_OIDC_TOKEN };
   beforeAll(() => {
@@ -147,6 +169,7 @@ describe("photo pipeline without a key (SIMULADO)", () => {
     expect((await processPhoto(store, input(null))).class).toBe("rx_handwritten");
     expect((await processPhoto(store, input(null))).class).toBe("rx_label");
     expect((await processPhoto(store, input(null))).class).toBe("referido");
+    expect((await processPhoto(store, input(null))).class).toBe("appointment_slip");
   });
 
   it("keeps the demo order after a visit saved its own referido", async () => {
@@ -205,6 +228,52 @@ describe("photo pipeline without a key (SIMULADO)", () => {
     const referidos = (await store.list("h")).filter((e) => e.kind === "referido");
     expect(referidos.map((e) => e.id)).toEqual([r.events[0].id]);
   });
+  it("cita card: saved as an appointment POR_CONFIRMAR, confirmed in place with date and time", async () => {
+    const store = new MockStore();
+    const r = await processPhoto(store, input("appointment_slip"));
+    expect(r.class).toBe("appointment_slip");
+    expect(r.message).toBeNull();
+    expect(r.events).toHaveLength(1);
+    expect(r.events[0]).toMatchObject({ kind: "appointment", source: "photo", status: "POR_CONFIRMAR" });
+    expect(r.events[0].payload).toMatchObject({ class: "appointment_slip", simulated: true });
+    expect(r.events[0].payload.date).toBeUndefined();
+
+    const c = await confirm(store, r.events[0].id, { phone: "787 555 0142" });
+    if (!c.ok) throw new Error(c.error);
+    expect(c.created).toBeNull();
+    expect(c.confirmed).toMatchObject({ id: r.events[0].id, status: "CONFIRMADO" });
+    expect(c.confirmed.payload).toMatchObject({
+      date: "2026-11-03T10:30:00-04:00",
+      time: "10:30",
+      specialty: "cardiología",
+      doctor: "Dra. Isabel Montalvo (ficticia)",
+      phone: "787 555 0142",
+      confirmedBy: "caregiver",
+    });
+
+    // Every cita reader picks it up: the calendar export gets a timed event in UTC.
+    const ics = buildIcs(await store.list("h"), { now: "2026-10-09T12:00:00Z" });
+    expect(ics).toContain("DTSTART:20261103T143000Z");
+    expect(ics).toContain("SUMMARY:Cita de cardiología con Dra. Isabel Montalvo (ficticia)");
+  });
+
+  it("cita card: no date means ask, a bad time means ask, a date alone is fine", async () => {
+    const store = new MockStore();
+    const r = await processPhoto(store, input("appointment_slip"));
+    const id = r.events[0].id;
+    expect(await confirm(store, id, { date: "" })).toMatchObject({ ok: false, status: 422 });
+    expect(await confirm(store, id, { time: "10:30 de la mañana" })).toMatchObject({ ok: false, status: 422 });
+    const c = await confirm(store, id, { time: "" });
+    if (!c.ok) throw new Error(c.error);
+    expect(c.confirmed.payload).toMatchObject({ date: "2026-11-03", time: null });
+  });
+
+  it("a cita heard in a visit is not a photo and is confirmed in Revisar instead", async () => {
+    const store = new MockStore();
+    const heardCita = await store.create({ householdId: "h", kind: "appointment", source: "voice", status: "BORRADOR", confidence: null, payload: {} });
+    expect(await confirm(store, heardCita.id)).toMatchObject({ ok: false, status: 400 });
+  });
+
   it("saves the small preview with the event, and returns a photo the store kept out", async () => {
     const store = new MockStore();
     const preview = { bytes: new Uint8Array([9, 9]), mediaType: "image/jpeg" };

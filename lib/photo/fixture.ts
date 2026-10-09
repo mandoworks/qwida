@@ -25,6 +25,7 @@ export const FIXTURE_HANDWRITTEN: PhotoExtraction = {
     date: f("2026-10-09", 0.45, "9/10/26"),
   },
   referido: null,
+  appointment: null,
   unreadable_lines: ["Línea 3: indicaciones ilegibles"],
 };
 
@@ -45,6 +46,7 @@ export const FIXTURE_LABEL: PhotoExtraction = {
     date: f("2026-10-09", 0.95, "10/09/2026"),
   },
   referido: null,
+  appointment: null,
   unreadable_lines: [],
 };
 
@@ -58,17 +60,46 @@ export const FIXTURE_REFERIDO: PhotoExtraction = {
     referring_doctor: f("Dra. Ana Lugo (ficticia)", 0.8, "Dra. A. Lugo"),
     plan: f("Plan de Salud Isla (ficticio)", 0.9, "PLAN DE SALUD ISLA (FICTICIO)"),
   },
+  appointment: null,
   unreadable_lines: [],
+};
+
+/**
+ * The cardiology appointment card for that referido. Date and place are
+ * printed; the phone was written by hand at the front desk.
+ */
+export const FIXTURE_APPOINTMENT: PhotoExtraction = {
+  class: "appointment_slip",
+  prescription: null,
+  referido: null,
+  appointment: {
+    date: f("2026-11-03", 0.93, "MARTES 3 NOV 2026"),
+    time: f("10:30", 0.9, "10:30 AM"),
+    specialty: f("cardiología", 0.95, "CARDIOLOGIA"),
+    doctor: f("Dra. Isabel Montalvo (ficticia)", 0.88, "DRA. I. MONTALVO"),
+    place: f("Centro Cardiovascular de Utuado (ficticio)", 0.9, "CENTRO CARDIOVASCULAR DE UTUADO (FICTICIO)"),
+    phone: f(null, 0.3, "787 55_ ____"),
+  },
+  unreadable_lines: ["Teléfono escrito a mano: no se lee completo"],
 };
 
 export const FIXTURES: Partial<Record<PhotoClass, PhotoExtraction>> = {
   rx_handwritten: FIXTURE_HANDWRITTEN,
   rx_label: FIXTURE_LABEL,
   referido: FIXTURE_REFERIDO,
+  appointment_slip: FIXTURE_APPOINTMENT,
 };
 
-/** Demo order when no hint is given: handwritten, then its label, then the referido. */
-const DEMO_ORDER = ["rx_handwritten", "rx_label", "referido"] as const;
+/**
+ * Demo order when no hint is given, as [event kind saved, fixture]:
+ * handwritten, then its label, then the referido, then the appointment card.
+ */
+const DEMO_ORDER = [
+  ["rx_handwritten", "rx_handwritten"],
+  ["rx_label", "rx_label"],
+  ["referido", "referido"],
+  ["appointment", "appointment_slip"],
+] as const;
 
 /**
  * Fixture for a hint, or the next step of the demo story given what the
@@ -76,6 +107,6 @@ const DEMO_ORDER = ["rx_handwritten", "rx_label", "referido"] as const;
  */
 export function pickFixture(hint: string | null, seenKinds: Set<string>): PhotoExtraction {
   if (hint && FIXTURES[hint as PhotoClass]) return FIXTURES[hint as PhotoClass]!;
-  const next = DEMO_ORDER.find((k) => !seenKinds.has(k)) ?? "rx_label";
+  const next = DEMO_ORDER.find(([kind]) => !seenKinds.has(kind))?.[1] ?? "rx_label";
   return FIXTURES[next]!;
 }

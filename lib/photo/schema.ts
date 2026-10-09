@@ -44,6 +44,17 @@ export const ReferidoFields = z.object({
 });
 export type ReferidoFields = z.infer<typeof ReferidoFields>;
 
+/** An appointment card or slip. Code combines date and time, never the model. */
+export const AppointmentFields = z.object({
+  date: text("Appointment date, as YYYY-MM-DD. Null unless day, month and year are all written."),
+  time: text("Appointment time in 24 hour HH:MM, e.g. '14:30'. Null if no time is written."),
+  specialty: text("Specialty or clinic, e.g. 'cardiología'."),
+  doctor: text("Doctor's name on the card."),
+  place: text("Office, clinic or hospital name and town, as written."),
+  phone: text("Office phone number, as written."),
+});
+export type AppointmentFields = z.infer<typeof AppointmentFields>;
+
 /** What the vision model must return for one photo. */
 export const PhotoExtraction = z.object({
   class: PhotoClass.describe(
@@ -52,6 +63,7 @@ export const PhotoExtraction = z.object({
   ),
   prescription: PrescriptionFields.nullable().describe("Only for rx_handwritten or rx_label, else null."),
   referido: ReferidoFields.nullable().describe("Only for referido, else null."),
+  appointment: AppointmentFields.nullable().describe("Only for appointment_slip, else null."),
   unreadable_lines: z
     .array(z.string())
     .describe("Short Spanish notes for every line or part that could not be read, e.g. 'Línea 3: indicaciones ilegibles'."),
