@@ -2,14 +2,14 @@
   "id": "humacao-endoscopia",
   "title": "Endoscopía digestiva alta y colonoscopía",
   "procedure": "Endoscopía / Colonoscopía",
-  "facility": "Instituto Gastroenterológico de Humacao",
+  "facility": "Centro de gastroenterología (ejemplo)",
   "municipio": "Humacao",
   "summary": "Instrucciones de preparación obligatoria para procedimientos endoscópicos con sedación.",
   "warning_notice": "¡No pierda el viaje! Debe suspender anticoagulantes o aspirina con 7 días de anticipación y venir con acompañante adulto que conduzca.",
-  "source_url": "https://www.institutogastropr.com/protocolo-preparacion.pdf",
+  "source_url": null,
   "fetched_at": "2026-10-09T00:00:00Z",
-  "is_simulated": false,
-  "badge_label": "VERIFICADO",
+  "is_simulated": true,
+  "badge_label": "Ejemplo ilustrativo (SIMULADO)",
   "requirements": [
     {
       "category": "medicamentos",
@@ -35,5 +35,6 @@
       "description": "Orden médica original firmada, tarjeta de plan médico vigente, identificación oficial con foto y autorización de su plan si aplica.",
       "critical": false
     }
-  ]
+  ],
+  "simulated_notice": "Ejemplo ilustrativo (SIMULADO). Preparación típica para endoscopía con sedación; no corresponde a una instalación real. Confirme siempre con su médico."
 }
