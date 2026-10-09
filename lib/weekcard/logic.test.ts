@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { HOUSEHOLD_ID } from "@/lib/seed";
 import type { QuidaEvent } from "@/lib/store/types";
+import { timeLabel12, whenLabel } from "./dates";
 import { buildDigest, changesSince, lastSignal, lowConfidence, pendingItems, refills, upcoming, watchlist } from "./digest";
 import { buildIcs, escapeIcs, foldLine } from "./ics";
+import { canSend, mergeEvent, sendReducer } from "./send";
 import { buildNudges, whatsappUrl } from "./nudges";
 import { filterRows, groupByDay, timelineRows, sourceKey } from "./timeline";
 import { format, STRINGS, t, type StringKey } from "./strings";
@@ -249,6 +251,100 @@ describe("timeline", () => {
     const referred = event({ kind: "rx_label", payload: { fields: { specialty: { value: "nefro-logía" } } } });
     const rows = timelineRows([referred]);
     expect(filterRows(rows, "all", "nefro").map((r) => r.id)).toEqual([referred.id]);
+  });
+
+  it("writes the appointment date in Spanish, never as a raw ISO string", () => {
+    const rows = timelineRows([appointment]);
+    const date = rows[0]!.facts.find((f) => f.key === "date")!.value;
+    expect(date).toBe("sábado 10 de octubre, 2:00 p. m.");
+    expect(date).not.toMatch(/\d{4}-\d{2}-\d{2}T/);
+  });
+
+  it("keeps the sent card and the reminders out of NOTAS DE VOZ", () => {
+    const voice = event({ kind: "voice_note", payload: { text: "Me siento bien." } });
+    const recording = event({ kind: "visit", payload: {} });
+    const card = event({ kind: "weekcard", status: "CONFIRMADO", payload: { items: [] } });
+    const nudge = event({ kind: "nudge", payload: { text: "Recoger la receta." } });
+    const rows = timelineRows([voice, recording, card, nudge]);
+    expect(filterRows(rows, "nota", "").map((r) => r.id).sort()).toEqual([voice.id, recording.id].sort());
+    expect(filterRows(rows, "nota", "").some((r) => r.id === card.id)).toBe(false);
+    expect(filterRows(rows, "nota", "").some((r) => r.id === nudge.id)).toBe(false);
+    expect(rows).toHaveLength(4);
+  });
+});
+
+describe("whenLabel", () => {
+  it("reads the weekday, the day and the hour off the string", () => {
+    expect(whenLabel("2026-10-18T10:00:00.000Z")).toBe("domingo 18 de octubre, 10:00 a. m.");
+    expect(whenLabel("2026-10-17T14:30:00.000Z")).toBe("sábado 17 de octubre, 2:30 p. m.");
+  });
+
+  it("keeps noon and midnight on the twelve hour clock", () => {
+    expect(timeLabel12("2026-10-18T12:00:00.000Z")).toBe("12:00 p. m.");
+    expect(timeLabel12("2026-10-18T00:15:00.000Z")).toBe("12:15 a. m.");
+  });
+
+  it("drops the hour when the event has no time", () => {
+    expect(whenLabel("2026-10-15")).toBe("jueves 15 de octubre");
+  });
+
+  it("returns the same string every call, so nothing reads a clock", () => {
+    const iso = "2026-10-18T10:00:00.000Z";
+    expect(whenLabel(iso)).toBe(whenLabel(iso));
+    expect(whenLabel(null)).toBeNull();
+    expect(timeLabel12(undefined)).toBeNull();
+  });
+});
+
+describe("send", () => {
+  it("goes Enviando… then Enviado, and only in that order", () => {
+    let state = sendReducer("idle", { type: "send" });
+    expect(state).toBe("sending");
+    state = sendReducer(state, { type: "ok" });
+    expect(state).toBe("sent");
+  });
+
+  it("offers a retry after a failed send and sends again from there", () => {
+    const failed = sendReducer(sendReducer("idle", { type: "send" }), { type: "fail" });
+    expect(failed).toBe("failed");
+    expect(sendReducer(failed, { type: "send" })).toBe("sending");
+    expect(sendReducer(sendReducer(failed, { type: "send" }), { type: "ok" })).toBe("sent");
+  });
+
+  it("ignores a response that arrives when nothing is in flight", () => {
+    expect(sendReducer("idle", { type: "ok" })).toBe("idle");
+    expect(sendReducer("failed", { type: "ok" })).toBe("failed");
+  });
+
+  it("does not restart a request that is already running", () => {
+    expect(sendReducer("sending", { type: "send" })).toBe("sending");
+  });
+
+  it("drops the sent seal when the caregiver edits the card again", () => {
+    expect(sendReducer("sent", { type: "edit" })).toBe("idle");
+    expect(sendReducer("failed", { type: "edit" })).toBe("failed");
+  });
+
+  it("only sends once approved, with no emergency words and nothing in flight", () => {
+    expect(canSend({ approved: true, state: "idle", emergency: false })).toBe(true);
+    expect(canSend({ approved: false, state: "idle", emergency: false })).toBe(false);
+    expect(canSend({ approved: true, state: "sending", emergency: false })).toBe(false);
+    expect(canSend({ approved: true, state: "idle", emergency: true })).toBe(false);
+    expect(canSend({ approved: true, state: "idle", emergency: false, busy: true })).toBe(false);
+  });
+
+  it("folds the just sent card in so the screen does not wait on the poll", () => {
+    const card = event({ kind: "weekcard", status: "CONFIRMADO", payload: { items: [] } });
+    const merged = mergeEvent([appointment], card);
+    expect(merged.map((e) => e.id)).toEqual([appointment.id, card.id]);
+    expect(mergeEvent([card], null)).toEqual([card]);
+  });
+
+  it("keeps the newest copy when the poll catches up with its own", () => {
+    const stale = event({ id: "evt-1", kind: "weekcard", status: "BORRADOR", updatedAt: "2026-10-09T08:00:00.000Z" });
+    const fresh = { ...stale, status: "CONFIRMADO" as const, updatedAt: "2026-10-09T09:00:00.000Z" };
+    expect(mergeEvent([stale], fresh)[0]!.status).toBe("CONFIRMADO");
+    expect(mergeEvent([fresh], stale)[0]!.status).toBe("CONFIRMADO");
   });
 });
 

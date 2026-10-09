@@ -1,10 +1,17 @@
 import { normalize } from "@/lib/fence";
 import { daysBetween } from "@/lib/photo/dates";
 import type { EventStatus, QuidaEvent } from "@/lib/store/types";
+import { whenLabel } from "./dates";
 
-export type TimelineGroup = "cita" | "receta" | "referido" | "nota" | "alerta";
+export type TimelineGroup = "cita" | "receta" | "referido" | "nota" | "alerta" | "otro";
+/** The groups a caregiver can filter by. "otro" has no chip, it is the rest. */
 export const TIMELINE_GROUPS: TimelineGroup[] = ["cita", "receta", "referido", "nota", "alerta"];
 
+/**
+ * "nota" is the voice filter: what Doña Carmen said out loud, either a voice
+ * note or a recorded visit. The sent card and the reminders are Quida's own
+ * output, so they sit in "otro" and never show up under NOTAS DE VOZ.
+ */
 const GROUP_OF: Record<string, TimelineGroup> = {
   appointment: "cita",
   rx_handwritten: "receta",
@@ -13,8 +20,8 @@ const GROUP_OF: Record<string, TimelineGroup> = {
   referido: "referido",
   visit: "nota",
   voice_note: "nota",
-  weekcard: "nota",
-  nudge: "nota",
+  weekcard: "otro",
+  nudge: "otro",
   fence: "alerta",
 };
 
@@ -45,7 +52,8 @@ function factsFor(e: QuidaEvent): TimelineRow["facts"] {
     push("specialty", str(p.specialty));
     push("doctor", str(p.doctor));
     push("place", str(p.place));
-    push("date", str(p.date));
+    // Readable Spanish, never the raw ISO the store holds.
+    push("date", whenLabel(str(p.date)));
   } else if (e.kind === "referido") {
     push("specialty", str(p.specialty));
     push("expires", str(p.expires_on));

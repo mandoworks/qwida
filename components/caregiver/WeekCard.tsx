@@ -9,8 +9,10 @@ import { FenceNotice } from "@/components/ui/FenceNotice";
 import { useLocalValue } from "@/components/patient/useLocalValue";
 import { useEvents } from "@/lib/client/useEvents";
 import { HOUSEHOLD_ID } from "@/lib/seed";
+import type { QuidaEvent } from "@/lib/store/types";
 import { lastWeekcard } from "@/lib/weekcard/digest";
 import { CARD_ICONS, CARD_THEMES, type CardItem, type WeekCard } from "@/lib/weekcard/schema";
+import { canSend, mergeEvent, sendReducer, type SendState } from "@/lib/weekcard/send";
 import type { StringKey } from "@/lib/weekcard/strings";
 import { useClock } from "./clock";
 import { Clock, Pencil, Plus, Seal, X } from "./icons";
@@ -22,6 +24,8 @@ type DraftResponse = {
   simulated: boolean;
   removed: string[];
   emergency: boolean;
+  /** Present on /api/weekcard/approve, the CONFIRMADO card that was written. */
+  event?: QuidaEvent;
 };
 
 const THEME_LABEL: Record<(typeof CARD_THEMES)[number]["id"], StringKey> = {
@@ -42,7 +46,7 @@ const blankItem = (): CardItem => ({ day: "", text: "", icon: CARD_ICONS[0] });
  * CONFIRMADO `weekcard` the patient side reads.
  */
 export function WeekCardEditor() {
-  const { events } = useEvents();
+  const polled = useEvents();
   const { t } = useLang();
   const clock = useClock();
   const [card, setCard] = useState<WeekCard | null>(null);
@@ -50,12 +54,17 @@ export function WeekCardEditor() {
   const [removed, setRemoved] = useState<string[]>([]);
   const [emergency, setEmergency] = useState(false);
   const [approved, setApproved] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [sendState, setSendState] = useState<SendState>("idle");
+  const [sentEvent, setSentEvent] = useState<QuidaEvent | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [savedDraftId, setSavedDraftId] = useLocalValue(DRAFT_KEY);
   const autosave = useRef<ReturnType<typeof setTimeout> | null>(null);
   const draftId = useRef<string | null>(savedDraftId ?? null);
+  const sent = sendState === "sent";
+
+  // Fold the card we just sent in, so the screen never waits on the next poll.
+  const events = mergeEvent(polled.events, sentEvent);
 
   const previous = lastWeekcard(events);
   // Read only: the schedule the pharmacy label already confirmed (4.10).
@@ -71,7 +80,8 @@ export function WeekCardEditor() {
   function edit(next: WeekCard) {
     setCard(next);
     setApproved(false);
-    setSent(false);
+    setSendState((state) => sendReducer(state, { type: "edit" }));
+    setSentEvent(null);
     setError(null);
   }
 
@@ -130,7 +140,7 @@ export function WeekCardEditor() {
       setRemoved(draft.removed);
       setEmergency(draft.emergency);
       setApproved(false);
-      setSent(false);
+      setSendState((state) => sendReducer(state, { type: "edit" }));
     } catch {
       setError(t("card.error"));
     } finally {
@@ -138,9 +148,15 @@ export function WeekCardEditor() {
     }
   }
 
+  /**
+   * Three visible steps, never a silent gap: Enviando…, then the sent seal or
+   * the error with a retry. The event the POST returns is folded into the
+   * polled list right away, so the badge and the digest are correct before the
+   * next two second tick.
+   */
   async function send() {
     if (!card) return;
-    setBusy(true);
+    setSendState((state) => sendReducer(state, { type: "send" }));
     setError(null);
     try {
       const res = await fetch("/api/weekcard/approve", {
@@ -154,12 +170,12 @@ export function WeekCardEditor() {
       setRemoved(done.removed);
       setEmergency(done.emergency);
       setCard(done.card);
-      setSent(true);
+      setSentEvent(done.event ?? null);
+      setSendState((state) => sendReducer(state, { type: "ok" }));
       draftId.current = null;
     } catch {
+      setSendState((state) => sendReducer(state, { type: "fail" }));
       setError(t("card.error"));
-    } finally {
-      setBusy(false);
     }
   }
 
@@ -399,11 +415,12 @@ export function WeekCardEditor() {
             </p>
 
             {sent ? (
-              <div role="status" className="flex flex-col gap-2 rounded-card bg-ok-soft p-4">
+              <div role="status" aria-live="polite" className="flex flex-col gap-2 rounded-card bg-ok-soft p-4">
                 <p className="flex items-center gap-2 text-c-title font-bold text-ok">
                   <Seal size={24} />
                   {t("card.sentTo")}
                 </p>
+                <p className="text-c-body text-ok">{t("card.sentOk")}</p>
                 <Link href="/paciente/tarjeta" className="text-c-body font-bold text-accent underline">
                   {t("card.viewAs")}
                 </Link>
@@ -415,11 +432,12 @@ export function WeekCardEditor() {
                 </BigButton>
                 <BigButton
                   onClick={send}
-                  disabled={!approved || busy || emergency}
+                  disabled={!canSend({ approved, state: sendState, emergency, busy })}
                   aria-describedby={approved ? undefined : "send-hint"}
+                  aria-busy={sendState === "sending" ? "true" : undefined}
                   className="min-h-tap-c-lg w-auto text-c-body"
                 >
-                  {busy ? t("card.sending") : t("card.send")}
+                  {sendState === "sending" ? t("card.sending") : sendState === "failed" ? t("card.retry") : t("card.send")}
                 </BigButton>
                 {!approved && (
                   <p id="send-hint" className="w-full text-c-meta text-ink-mute">
