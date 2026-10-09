@@ -42,6 +42,8 @@ export function seedEvents(): NewEvent[] {
         dose: "500 mg",
         frequency: "dos veces al día, con comida",
         slots: ["mañana", "noche"],
+        // Runs out inside the 14 day window so Recordatorios and the digest show a refill.
+        refill: { runs_out_on: dateFromNow(5) },
       },
     },
     {
