@@ -40,7 +40,7 @@ export const FIXTURE_LABEL: PhotoExtraction = {
     quantity: n(30, 0.95, "QTY: 30"),
     refills: n(2, 0.9, "REFILLS: 2"),
     prescriber: f("Dr. Ramón Feliciano (ficticio)", 0.78, "DR R FELICIANO"),
-    pharmacy: f("Farmacia El Pueblo (ficticia)", 0.96, "FARMACIA EL PUEBLO"),
+    pharmacy: f("Farmacia Cocotero (ficticia)", 0.96, "FARMACIA COCOTERO (FICTICIA)"),
     rx_number: f("000123", 0.98, "RX# 000123"),
     date: f("2026-10-09", 0.95, "10/09/2026"),
   },
@@ -56,7 +56,7 @@ export const FIXTURE_REFERIDO: PhotoExtraction = {
     specialty: f("cardiología", 0.95, "CARDIOLOGIA"),
     issue_date: f("2026-10-09", 0.92, "09/oct/2026"),
     referring_doctor: f("Dra. Ana Lugo (ficticia)", 0.8, "Dra. A. Lugo"),
-    plan: f("Plan Vital", 0.9, "PLAN VITAL MCO"),
+    plan: f("Plan de Salud Isla (ficticio)", 0.9, "PLAN DE SALUD ISLA (FICTICIO)"),
   },
   unreadable_lines: [],
 };
