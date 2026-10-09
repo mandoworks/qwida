@@ -1,5 +1,6 @@
 "use client";
 
+import { Art } from "@/components/ui/Art";
 import { BigButton } from "@/components/ui/BigButton";
 import { EmergencyBanner } from "@/components/ui/EmergencyBanner";
 import { FenceNotice } from "@/components/ui/FenceNotice";
@@ -17,13 +18,14 @@ export function Notices({ notices, onDismiss }: { notices: Notice[]; onDismiss: 
         n.type === "fence" ? (
           <div key={n.id} className="flex flex-col gap-3">
             {n.emergency && <EmergencyBanner className="rounded-2xl" />}
-            <FenceNotice className="text-p-body" />
+            <FenceNotice className="text-p-body" art />
             <BigButton variant="secondary" onClick={() => onDismiss(n.id)}>
               Entendido
             </BigButton>
           </div>
         ) : (
           <div key={n.id} role="note" className="flex flex-col gap-3 rounded-2xl border-2 border-warn bg-warn-soft p-5">
+            <Art slot="etiqueta-farmacia" alt="Bolsa de la farmacia con su etiqueta" width={160} height={120} />
             <p className="text-p-body font-bold">{NUDGE_COPY}</p>
             <BigButton href="/paciente/foto" icon={<CameraIcon />}>
               Foto

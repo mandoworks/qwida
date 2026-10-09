@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Art } from "@/components/ui/Art";
 import { BigButton } from "@/components/ui/BigButton";
 import { FenceNotice } from "@/components/ui/FenceNotice";
 import { Loading } from "./Loading";
@@ -77,6 +78,7 @@ export function CardView() {
   if (!latest) {
     return (
       <div role="status" className="flex flex-col gap-3 rounded-2xl border-2 border-line-strong bg-sand px-5 py-6">
+        <Art slot="vacio-tarjeta" alt="Un sobre en camino con un corazón" width={240} height={160} />
         <p className="text-p-body">Marisol todavía no le ha enviado su tarjeta.</p>
         <p className="text-p-body text-ink-soft">Cuando Marisol apruebe su tarjeta, aparecerá aquí.</p>
       </div>
@@ -153,7 +155,7 @@ export function CardView() {
         </section>
       )}
 
-      {removed && <FenceNotice className="text-p-body" />}
+      {removed && <FenceNotice className="text-p-body" art />}
 
       <p className="text-p-body text-ink-soft">Esta tarjeta la aprobó Marisol.</p>
     </article>

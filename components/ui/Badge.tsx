@@ -1,3 +1,5 @@
+import { Art } from "./Art";
+
 export type BadgeKind = "BORRADOR" | "POR_CONFIRMAR" | "CONFIRMADO" | "SINTETICO" | "SIMULADO";
 
 const STYLES: Record<BadgeKind, { label: string; className: string; title: string }> = {
@@ -31,12 +33,19 @@ const STYLES: Record<BadgeKind, { label: string; className: string; title: strin
 /** Status vocabulary shared by both sides. Accepts store statuses directly. */
 export function Badge({ kind, className = "" }: { kind: BadgeKind; className?: string }) {
   const s = STYLES[kind];
-  return (
+  const badge = (
     <span
       title={s.title}
       className={`inline-flex items-center rounded-md border-2 px-2 py-0.5 text-sm font-bold tracking-wide ${s.className} ${className}`}
     >
       {s.label}
+    </span>
+  );
+  if (kind !== "CONFIRMADO") return badge;
+  return (
+    <span className="inline-flex items-center gap-2">
+      <Art slot="sello-confirmado" alt="" width={40} />
+      {badge}
     </span>
   );
 }

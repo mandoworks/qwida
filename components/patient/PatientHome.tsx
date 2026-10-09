@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useSyncExternalStore, type ReactNode } from "react";
+import { Art } from "@/components/ui/Art";
 import { FenceNotice } from "@/components/ui/FenceNotice";
 import { useEvents } from "@/lib/client/useEvents";
 import { InstallHint } from "./InstallHint";
@@ -87,12 +88,12 @@ export function PatientHome() {
       )}
 
       <nav aria-label="Qué quiere hacer" className="flex flex-col gap-5">
-        <Tile href="/paciente/hablar" icon={<VoiceIcon />} title="Hablar" hint="Un mensaje de voz para Marisol" />
-        <Tile href="/paciente/foto" icon={<CameraIcon />} title="Foto" hint="Toque aquí para mandar una foto" />
-        <Tile href="/paciente/grabar" icon={<MicIcon />} title="Grabar mi cita" hint="Toque aquí para grabar la consulta" />
+        <Tile href="/paciente/hablar" icon={<Art slot="icon-hablar" alt="" width={88} fallback={VoiceIcon} />} title="Hablar" hint="Un mensaje de voz para Marisol" />
+        <Tile href="/paciente/foto" icon={<Art slot="icon-foto" alt="" width={88} fallback={CameraIcon} />} title="Foto" hint="Toque aquí para mandar una foto" />
+        <Tile href="/paciente/grabar" icon={<Art slot="icon-grabar-cita" alt="" width={88} fallback={MicIcon} />} title="Grabar mi cita" hint="Toque aquí para grabar la consulta" />
         <Tile
           href="/paciente/tarjeta"
-          icon={<CardIcon />}
+          icon={<Art slot="icon-mi-tarjeta" alt="" width={88} fallback={CardIcon} />}
           title="Mi tarjeta"
           hint="Toque aquí para ver su semana"
           highlight={isNew}

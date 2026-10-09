@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { Art } from "@/components/ui/Art";
 import { Badge } from "@/components/ui/Badge";
 import { BigButton } from "@/components/ui/BigButton";
 import { EmergencyBanner } from "@/components/ui/EmergencyBanner";
@@ -108,7 +109,7 @@ export function Digest() {
             digest.hero === "ok" ? "bg-ok-soft" : "bg-warn-soft"
           }`}
         >
-          <AvatarCarmen size={72} className="shrink-0 text-ink" />
+          <Art slot="avatar-carmen" alt="Doña Carmen" width={72} fallback={({ size }) => <AvatarCarmen size={size} className="shrink-0 text-ink" />} />
           <div className="min-w-0">
             <p className="text-c-title font-bold">
               {digest.hero === "ok"

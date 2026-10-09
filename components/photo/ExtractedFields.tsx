@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Art } from "@/components/ui/Art";
 import { Badge } from "@/components/ui/Badge";
 import { BigButton } from "@/components/ui/BigButton";
 import { formatDia, referidoExpiresOn, todayPR } from "@/lib/photo/dates";
@@ -122,7 +123,9 @@ export function ExtractedFields({
 
       {handwritten && (
         <div role="note" className="flex flex-col gap-2 rounded-2xl border-2 border-warn bg-surface p-4">
+          <Art slot="receta-letra" alt="Una receta con letra difícil de leer" width={160} height={120} />
           <p className={`font-bold text-warn ${patient ? "text-3xl" : "text-xl"}`}>{HANDWRITTEN_BADGE}</p>
+          <Art slot="etiqueta-farmacia" alt="Bolsa de la farmacia con su etiqueta" width={160} height={120} />
           <p>{LABEL_RESCAN_TEXT}</p>
         </div>
       )}

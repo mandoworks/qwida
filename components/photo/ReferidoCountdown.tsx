@@ -1,3 +1,4 @@
+import { Art } from "@/components/ui/Art";
 import { daysBetween, formatDia, todayPR } from "@/lib/photo/dates";
 import type { PhotoSize } from "./MedSchedule";
 
@@ -25,6 +26,7 @@ export function ReferidoCountdown({
   const left = days < 0 ? "Ya venció" : days === 0 ? "Vence hoy" : days === 1 ? "Queda 1 día" : `Quedan ${days} días`;
   return (
     <div className={`flex flex-col gap-1 rounded-2xl border-2 bg-surface p-4 ${tone(days)} ${patient ? "text-patient" : "text-caregiver"}`}>
+      <Art slot="referido" alt="Un referido con un calendario" width={patient ? 160 : 120} height={patient ? 120 : 90} />
       {specialty && <p className="text-ink">Referido a {specialty}</p>}
       <p className={patient ? "text-3xl font-bold" : "text-xl font-bold"}>
         {days < 0 ? "Venció" : "Vence"} el {formatDia(expiresOn)}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Art } from "@/components/ui/Art";
 import { Badge } from "@/components/ui/Badge";
 import { BigButton } from "@/components/ui/BigButton";
 import { EmergencyBanner } from "@/components/ui/EmergencyBanner";
@@ -196,6 +197,7 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
       {phase.name === "ready" && (
         <>
           <h2 className="text-3xl font-bold">Grabar la visita</h2>
+          <Art slot="microfono" alt="" width={120} className="self-center" />
           {recordable ? (
             <BigButton onClick={start} icon="●">
               Empezar a grabar

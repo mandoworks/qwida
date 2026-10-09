@@ -26,7 +26,7 @@ export function MedsView() {
         </p>
       )}
       {loaded && <MedSchedule items={items} size="patient" />}
-      <FenceNotice className="text-p-body" />
+      <FenceNotice className="text-p-body" art />
     </div>
   );
 }
