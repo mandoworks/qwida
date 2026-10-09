@@ -19,7 +19,7 @@ const PAGES = {
     </div>`,
   "rx-label.jpg": `
     <div style="font-family:Menlo,monospace;font-size:24px;border:3px solid #000;padding:20px;width:720px">
-      <p style="font-size:30px;font-weight:bold">FARMACIA EL PUEBLO (FICTICIA)</p>
+      <p style="font-size:30px;font-weight:bold">FARMACIA COCOTERO (FICTICIA)</p>
       <p>RX# 000123 &nbsp;&nbsp; 10/09/2026</p>
       <p>CARMEN RIVERA</p>
       <p style="font-weight:bold">LOSARTAN POTASSIUM 50 MG</p>
@@ -31,7 +31,7 @@ const PAGES = {
   "referido.jpg": `
     <div style="font-family:Georgia,serif;font-size:24px;border:2px solid #000;padding:24px;width:720px">
       <p style="font-size:30px;font-weight:bold">REFERIDO</p>
-      <p>PLAN VITAL MCO</p>
+      <p>PLAN DE SALUD ISLA (FICTICIO)</p>
       <p>Paciente: Carmen Rivera</p>
       <p>Especialidad: CARDIOLOGIA</p>
       <p>Fecha: 09/oct/2026</p>
