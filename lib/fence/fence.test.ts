@@ -64,6 +64,8 @@ const medChange: string[] = [
   "Me la tomé dos veces",
   "Se me fue la mano con las pastillas",
   "Ayer no me la di y hoy tampoco",
+  // Co-co eval PE-005: reflexive dar in the elder register, perfect tense.
+  "No me la he dado",
   "Mija, ya no quiero tomar la de los nervios",
   "Voy a dejar la pastillita de la presión",
 ];
