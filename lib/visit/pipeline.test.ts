@@ -1,7 +1,31 @@
-import { describe, expect, it } from "vitest";
+import { generateText } from "ai";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { FENCE_COPY } from "@/lib/fence";
 import { MockStore } from "@/lib/store/mock";
 import { FIXTURE_EXTRACTION } from "./fixture";
-import { enforceUncertainty, processVisit } from "./pipeline";
+import { EMPTY_EXTRACTION, enforceUncertainty, processVisit } from "./pipeline";
+
+vi.mock("ai", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("ai")>()),
+  generateText: vi.fn(async () => ({ output: FIXTURE_EXTRACTION })),
+  transcribe: vi.fn(async () => ({ text: "no debe llamarse" })),
+}));
+
+/** Runs a test with the AI key set or removed, then restores the environment. */
+function withKey(value: string | undefined) {
+  const saved = { key: process.env.AI_GATEWAY_API_KEY, oidc: process.env.VERCEL_OIDC_TOKEN };
+  beforeEach(() => {
+    delete process.env.VERCEL_OIDC_TOKEN;
+    if (value === undefined) delete process.env.AI_GATEWAY_API_KEY;
+    else process.env.AI_GATEWAY_API_KEY = value;
+    vi.mocked(generateText).mockClear();
+  });
+  afterEach(() => {
+    if (saved.key === undefined) delete process.env.AI_GATEWAY_API_KEY;
+    else process.env.AI_GATEWAY_API_KEY = saved.key;
+    if (saved.oidc !== undefined) process.env.VERCEL_OIDC_TOKEN = saved.oidc;
+  });
+}
 
 describe("enforceUncertainty", () => {
   it("forces confirmation when a prescription field is missing", () => {
@@ -55,5 +79,55 @@ describe("processVisit without a key", () => {
       if (saved.key !== undefined) process.env.AI_GATEWAY_API_KEY = saved.key;
       if (saved.oidc !== undefined) process.env.VERCEL_OIDC_TOKEN = saved.oidc;
     }
+  });
+});
+
+describe("processVisit on an emergency", () => {
+  const transcript = "Doctor, me caí y no me puedo parar, y tengo un dolor fuerte en el pecho.";
+
+  describe("with a key", () => {
+    withKey("test-key");
+
+    it("never calls the extraction model and saves only the fence event", async () => {
+      const store = new MockStore();
+      const r = await processVisit(store, { householdId: "h", transcript });
+      expect(generateText).not.toHaveBeenCalled();
+      expect(r.fence.emergency).toBe(true);
+      expect(r.fence.copy[0]).toBe(FENCE_COPY.emergency);
+      expect(r.extraction).toEqual(EMPTY_EXTRACTION);
+      expect(r.events).toHaveLength(1);
+      expect(r.events[0]).toMatchObject({ kind: "fence", source: "system", status: "POR_CONFIRMAR" });
+      expect(r.events[0].payload).toMatchObject({ context: "visit", emergency: true, transcript });
+      expect(await store.list("h")).toHaveLength(1);
+    });
+
+    it("still extracts a calm visit, after the Fence", async () => {
+      const store = new MockStore();
+      const r = await processVisit(store, { householdId: "h", transcript: "Vuelva en tres meses." });
+      expect(generateText).toHaveBeenCalledTimes(1);
+      expect(r.fence.triggered).toBe(false);
+      expect(r.events.every((e) => e.status === "BORRADOR")).toBe(true);
+    });
+
+    it("extracts a med change visit but routes the fence event as POR_CONFIRMAR", async () => {
+      const store = new MockStore();
+      const r = await processVisit(store, { householdId: "h", transcript: "¿Puedo dejar el losartán?" });
+      expect(generateText).toHaveBeenCalledTimes(1);
+      expect(r.fence.emergency).toBe(false);
+      const fence = r.events.find((e) => e.kind === "fence");
+      expect(fence).toMatchObject({ source: "system", status: "POR_CONFIRMAR" });
+    });
+  });
+
+  describe("without a key", () => {
+    withKey(undefined);
+
+    it("fences a typed transcript instead of the fixture", async () => {
+      const store = new MockStore();
+      const r = await processVisit(store, { householdId: "h", transcript });
+      expect(r.simulated).toBe(true);
+      expect(r.events.map((e) => e.kind)).toEqual(["fence"]);
+      expect(r.extraction).toEqual(EMPTY_EXTRACTION);
+    });
   });
 });

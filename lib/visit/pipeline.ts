@@ -1,5 +1,6 @@
 import { gateway, generateText, Output, transcribe } from "ai";
 import { checkFence, type FenceResult } from "@/lib/fence";
+import { fenceEvent } from "@/lib/fence/event";
 import type { EventStore, NewEvent, QuidaEvent } from "@/lib/store/types";
 import { FIXTURE_EXTRACTION, FIXTURE_TRANSCRIPT } from "./fixture";
 import { VisitExtraction, type VisitResponse } from "./schema";
@@ -80,22 +81,39 @@ export function enforceUncertainty(x: VisitExtraction): VisitExtraction {
 
 type VisitInput = { householdId: string; audio?: Uint8Array; transcript?: string };
 
+/** What an emergency visit returns: nothing was extracted, on purpose. */
+export const EMPTY_EXTRACTION: VisitExtraction = {
+  prescriptions: [],
+  referidos: [],
+  next_appointment: null,
+  questions_back: [],
+};
+
 /**
  * Full visit pipeline: transcribe, Fence, extract, save as BORRADOR.
- * Without an AI key it runs on the SIMULADO fixture so the UI still works offline.
+ * Without an AI key it runs on the SIMULADO fixture so the UI still works offline;
+ * a typed transcript is still fenced as typed.
  */
 export async function processVisit(store: EventStore, input: VisitInput): Promise<VisitResponse> {
   const simulated = !hasAiKey();
   const today = new Date().toISOString().slice(0, 10);
 
   let transcript: string;
-  if (simulated) transcript = FIXTURE_TRANSCRIPT;
+  if (simulated) transcript = input.transcript ?? FIXTURE_TRANSCRIPT;
   else if (input.transcript) transcript = input.transcript;
   else if (input.audio) transcript = await transcribeVisit(input.audio);
   else throw new Error("audio or transcript required");
 
-  // The Fence runs before any model sees the text.
+  // Speech to text has to run first on audio: the Fence needs words to check.
+  // From here on the Fence runs before any other model sees the text.
   const fence = checkFence(transcript);
+
+  if (fence.emergency) {
+    // No extraction call on an emergency. Only the fence event is saved, so a
+    // person sees it, and the response carries the fixed emergency copy.
+    const event = await store.create(fenceEvent(input.householdId, fence, { context: "visit", simulated, transcript }));
+    return { simulated, transcript, fence, extraction: EMPTY_EXTRACTION, events: [event] };
+  }
 
   const extraction = simulated ? FIXTURE_EXTRACTION : await extractVisit(transcript, today);
 
@@ -139,14 +157,7 @@ async function saveVisit(
   ];
   if (v.fence.triggered) {
     // Routes the tripwire to the caregiver. A person must look at it.
-    children.push({
-      householdId,
-      kind: "fence",
-      source: "system",
-      status: "POR_CONFIRMAR",
-      confidence: null,
-      payload: { ...tag, context: "visit", visitId: visit.id, emergency: v.fence.emergency, matches: v.fence.matches, copy: v.fence.copy },
-    });
+    children.push(fenceEvent(householdId, v.fence, { context: "visit", simulated: v.simulated, visitId: visit.id }));
   }
 
   const created = [visit];
