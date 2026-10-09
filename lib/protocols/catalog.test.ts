@@ -7,12 +7,12 @@ describe("Protocol catalog", () => {
     expect(list.length).toBe(3);
   });
 
-  it("finds Humacao verified endoscopy protocol", () => {
+  it("labels the Humacao endoscopy example as SIMULADO", () => {
     const p = getProtocolById("humacao-endoscopia");
     expect(p).toBeDefined();
-    expect(p?.facility).toBe("Instituto Gastroenterológico de Humacao");
-    expect(p?.is_simulated).toBe(false);
-    expect(p?.source_url).toContain("institutogastropr.com");
+    expect(p?.facility).toBe("Centro de gastroenterología (ejemplo)");
+    expect(p?.is_simulated).toBe(true);
+    expect(p?.source_url).toBeNull();
   });
 
   it("marks Menonita MRI as simulated illustrative protocol", () => {
