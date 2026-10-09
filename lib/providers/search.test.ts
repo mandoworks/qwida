@@ -177,4 +177,19 @@ describe("activeFilters", () => {
   it("does not invent accents for a term that is not a listed option", () => {
     expect(activeFilters({ specialty: "dermatologia" })).toBe("Especialidad: Dermatologia.");
   });
+
+  it("includes name filter when present", () => {
+    expect(activeFilters({ name: "Rivera" })).toBe("Nombre: Rivera.");
+    expect(activeFilters({ specialty: "cardiologia", municipio: "Ponce", name: "López" })).toBe(
+      "Especialidad: Cardiología. Municipio: Ponce. Nombre: López.",
+    );
+  });
+});
+
+describe("name search", () => {
+  it("filters by provider name without accent or case sensitivity", () => {
+    const results = searchProviders(providers, { name: "lopez" });
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.every((p) => p.name.toLowerCase().includes("lopez") || p.name.toLowerCase().includes("lópez"))).toBe(true);
+  });
 });

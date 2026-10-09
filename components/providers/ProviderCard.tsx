@@ -48,6 +48,12 @@ export function ProviderCard({ provider, consultedOn, expiry, sent, busy, onUseR
         )}
       </p>
 
+      {provider.address && (
+        <p className="text-base text-ink-soft">
+          <span className="font-bold text-ink">Dirección:</span> {provider.address}
+        </p>
+      )}
+
       <ul className="flex flex-col gap-2 text-base">
         <li className="w-fit rounded-full border-2 border-ink-soft px-4 py-2">
           <span className="font-bold">¿Acepta pacientes nuevos?</span> No hay datos públicos

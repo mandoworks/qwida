@@ -45,12 +45,15 @@ export default function ProveedoresPage() {
           De dónde vienen estos datos
         </h2>
         <ul className="list-disc pl-6 text-base text-ink-soft">
+          <li>
+            Búsqueda en vivo y directorio por municipio provistos por la API de MedSeek PR (medseekpr.com), con cobertura en los 78 municipios de Puerto Rico.
+          </li>
           {catalog.notes.map((note) => (
             <li key={note}>{note}</li>
           ))}
         </ul>
         <p className="text-base text-ink-soft">
-          {catalog.attribution}.{" "}
+          {catalog.attribution}. Integración directa con MedSeek PR para datos de localización y NPI.{" "}
           <a href={VERIFY_URL} target="_blank" rel="noreferrer noopener" className="font-bold underline">
             Verifique cualquier licencia usted misma
           </a>{" "}

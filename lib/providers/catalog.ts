@@ -26,6 +26,8 @@ export const ProviderRecord = z.object({
   phone: z.string().min(1).nullable(),
   source_url: z.string().min(1),
   fetched_at: z.string().min(1),
+  address: z.string().nullable().optional(),
+  npi: z.string().nullable().optional(),
 });
 export type Provider = z.infer<typeof ProviderRecord>;
 

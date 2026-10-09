@@ -31,6 +31,8 @@ export type ProviderQuery = {
   specialty?: string | null;
   /** Exact municipio of work. Empty or null means every municipio. */
   municipio?: string | null;
+  /** Name substring, accent insensitive. Empty or null matches all. */
+  name?: string | null;
 };
 
 export function matchesSpecialty(provider: Provider, specialty: string): boolean {
@@ -41,13 +43,20 @@ export function matchesMunicipio(provider: Provider, municipio: string): boolean
   return normalize(provider.municipio) === normalize(municipio);
 }
 
+export function matchesName(provider: Provider, name: string): boolean {
+  return normalize(provider.name).includes(normalize(name));
+}
+
 /** Pure filter. No sorting, no side effects: the order the file ships in is the order shown. */
 export function searchProviders(providers: readonly Provider[], query: ProviderQuery = {}): Provider[] {
   const specialty = query.specialty?.trim() ?? "";
   const municipio = query.municipio?.trim() ?? "";
+  const name = query.name?.trim() ?? "";
   return providers.filter(
     (p) =>
-      (!specialty || matchesSpecialty(p, specialty)) && (!municipio || matchesMunicipio(p, municipio)),
+      (!specialty || matchesSpecialty(p, specialty)) &&
+      (!municipio || matchesMunicipio(p, municipio)) &&
+      (!name || matchesName(p, name)),
   );
 }
 
@@ -97,8 +106,10 @@ function specialtyLabel(value: string): string | undefined {
 export function activeFilters(query: ProviderQuery): string {
   const specialty = query.specialty?.trim() ?? "";
   const municipio = query.municipio?.trim() ?? "";
+  const name = query.name?.trim() ?? "";
   const parts: string[] = [];
   if (specialty) parts.push(`Especialidad: ${specialtyLabel(specialty) ?? readable(specialty)}`);
   if (municipio) parts.push(`Municipio: ${readable(municipio)}`);
+  if (name) parts.push(`Nombre: ${name}`);
   return parts.length ? `${parts.join(". ")}.` : "";
 }
