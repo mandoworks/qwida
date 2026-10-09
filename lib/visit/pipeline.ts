@@ -91,18 +91,27 @@ export const EMPTY_EXTRACTION: VisitExtraction = {
 
 /**
  * Full visit pipeline: transcribe, Fence, extract, save as BORRADOR.
- * Without an AI key it runs on the SIMULADO fixture so the UI still works offline;
- * a typed transcript is still fenced as typed.
+ * Without an AI key, or when the gateway refuses (403 billing, timeout, any
+ * error), it falls back to the SIMULADO fixture so "Grabar mi cita" never
+ * breaks; a typed transcript is still fenced as typed.
  */
 export async function processVisit(store: EventStore, input: VisitInput): Promise<VisitResponse> {
-  const simulated = !hasAiKey();
+  let simulated = !hasAiKey();
   const today = new Date().toISOString().slice(0, 10);
 
+  if (!input.audio && !input.transcript) throw new Error("audio or transcript required");
   let transcript: string;
-  if (simulated) transcript = input.transcript ?? FIXTURE_TRANSCRIPT;
-  else if (input.transcript) transcript = input.transcript;
-  else if (input.audio) transcript = await transcribeVisit(input.audio);
-  else throw new Error("audio or transcript required");
+  if (input.transcript) transcript = input.transcript;
+  else if (simulated) transcript = FIXTURE_TRANSCRIPT;
+  else {
+    try {
+      transcript = await transcribeVisit(input.audio!);
+    } catch (err) {
+      console.error("visit transcription failed, using SIMULADO fixture", err);
+      simulated = true;
+      transcript = FIXTURE_TRANSCRIPT;
+    }
+  }
 
   // Speech to text has to run first on audio: the Fence needs words to check.
   // From here on the Fence runs before any other model sees the text.
@@ -115,7 +124,16 @@ export async function processVisit(store: EventStore, input: VisitInput): Promis
     return { simulated, transcript, fence, extraction: EMPTY_EXTRACTION, events: [event] };
   }
 
-  const extraction = simulated ? FIXTURE_EXTRACTION : await extractVisit(transcript, today);
+  let extraction = FIXTURE_EXTRACTION;
+  if (!simulated) {
+    try {
+      extraction = await extractVisit(transcript, today);
+    } catch (err) {
+      // The real transcript and its Fence result stay; only the extraction is SIMULADO.
+      console.error("visit extraction failed, using SIMULADO fixture", err);
+      simulated = true;
+    }
+  }
 
   const events = await saveVisit(store, input.householdId, { transcript, fence, extraction, simulated });
   return { simulated, transcript, fence, extraction, events };

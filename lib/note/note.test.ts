@@ -77,11 +77,32 @@ describe("processNote with a key", () => {
   });
 
   it("falls back to the SIMULADO fixture when transcription fails", async () => {
-    vi.mocked(transcribe).mockRejectedValueOnce(new Error("gateway billing"));
+    vi.mocked(transcribe).mockRejectedValueOnce(
+      Object.assign(new Error("customer_verification_required"), { statusCode: 403 }),
+    );
     const r = await processNote(new MockStore(), { householdId: "h", audio, filename: "nota-fence.mp3" });
     expect(r.simulated).toBe(true);
     expect(r.transcript).toBe(NOTE_FIXTURES["nota-fence"]);
     expect(r.fence.medChange).toBe(true);
+  });
+});
+
+describe("POST /api/note when the gateway refuses", () => {
+  it("answers 200 with the SIMULADO fixture, not 502", async () => {
+    process.env.AI_GATEWAY_API_KEY = "test-key";
+    process.env.QUIDA_STORE = "mock";
+    vi.mocked(transcribe).mockRejectedValueOnce(
+      Object.assign(new Error("customer_verification_required"), { statusCode: 403 }),
+    );
+    const { POST } = await import("@/app/api/note/route");
+    const form = new FormData();
+    form.set("audio", new File([audio], "nota-fence.mp3", { type: "audio/mpeg" }));
+    const res = await POST(new Request("http://test/api/note", { method: "POST", body: form }));
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.simulated).toBe(true);
+    expect(body.transcript).toBe(NOTE_FIXTURES["nota-fence"]);
+    expect(body.fence.triggered).toBe(true);
   });
 });
 

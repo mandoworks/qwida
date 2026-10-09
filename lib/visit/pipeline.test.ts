@@ -1,8 +1,8 @@
-import { generateText } from "ai";
+import { generateText, transcribe } from "ai";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { FENCE_COPY } from "@/lib/fence";
 import { MockStore } from "@/lib/store/mock";
-import { FIXTURE_EXTRACTION } from "./fixture";
+import { FIXTURE_EXTRACTION, FIXTURE_TRANSCRIPT } from "./fixture";
 import { EMPTY_EXTRACTION, enforceUncertainty, processVisit } from "./pipeline";
 
 vi.mock("ai", async (importOriginal) => ({
@@ -129,5 +129,53 @@ describe("processVisit on an emergency", () => {
       expect(r.events.map((e) => e.kind)).toEqual(["fence"]);
       expect(r.extraction).toEqual(EMPTY_EXTRACTION);
     });
+  });
+});
+
+/** What the gateway throws with a key but no card on file. */
+const refused = () => Object.assign(new Error("customer_verification_required"), { statusCode: 403 });
+
+describe("processVisit when the gateway refuses", () => {
+  withKey("test-key");
+
+  it("falls back to the SIMULADO fixture when transcription fails, instead of throwing", async () => {
+    vi.mocked(transcribe).mockRejectedValueOnce(refused());
+    const store = new MockStore();
+    const r = await processVisit(store, { householdId: "h", audio: new Uint8Array([1, 2, 3]) });
+    expect(r.simulated).toBe(true);
+    expect(r.transcript).toBe(FIXTURE_TRANSCRIPT);
+    expect(r.extraction).toEqual(FIXTURE_EXTRACTION);
+    expect(generateText).not.toHaveBeenCalled();
+    expect(r.events.map((e) => e.kind)).toEqual(["visit", "referido", "appointment"]);
+    expect(r.events.every((e) => e.status === "BORRADOR" && e.payload.simulated === true)).toBe(true);
+  });
+
+  it("keeps the real transcript and Fence when only extraction fails", async () => {
+    vi.mocked(generateText).mockRejectedValueOnce(refused());
+    const transcript = "¿Puedo dejar el losartán? Vuelva en tres meses.";
+    const r = await processVisit(new MockStore(), { householdId: "h", transcript });
+    expect(r.simulated).toBe(true);
+    expect(r.transcript).toBe(transcript);
+    expect(r.fence.medChange).toBe(true);
+    expect(r.extraction).toEqual(FIXTURE_EXTRACTION);
+    expect(r.events.map((e) => e.kind)).toContain("fence");
+    expect(r.events.every((e) => e.payload.simulated === true)).toBe(true);
+  });
+});
+
+describe("POST /api/visit when the gateway refuses", () => {
+  withKey("test-key");
+
+  it("answers 200 with the SIMULADO fixture, not 502", async () => {
+    vi.mocked(transcribe).mockRejectedValueOnce(refused());
+    process.env.QUIDA_STORE = "mock";
+    const { POST } = await import("@/app/api/visit/route");
+    const form = new FormData();
+    form.set("audio", new File([new Uint8Array([1, 2, 3])], "visita-1.mp3", { type: "audio/mpeg" }));
+    const res = await POST(new Request("http://test/api/visit", { method: "POST", body: form }));
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.simulated).toBe(true);
+    expect(body.extraction).toEqual(FIXTURE_EXTRACTION);
   });
 });
