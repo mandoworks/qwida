@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useEvents } from "@/lib/client/useEvents";
 import { todayPR } from "@/lib/photo/dates";
+import { useClock } from "@/components/caregiver/clock";
 import { providers, type Provider } from "@/lib/providers/catalog";
 import { formatConsulted, readable } from "@/lib/providers/format";
 import { activeReferido, expiryLine, nudgeEvent } from "@/lib/providers/referido";
@@ -29,7 +30,9 @@ export function ProviderSearch() {
   const results = useMemo(() => searchProviders(providers, { specialty, municipio }), [specialty, municipio]);
   const towns = useMemo(() => municipios(providers), []);
   const referral = useMemo(() => activeReferido(events), [events]);
-  const expiry = referral ? expiryLine(referral.expiresOn, todayPR()) : null;
+  // No clock read while prerendering: the expiry line appears once mounted.
+  const now = useClock();
+  const expiry = referral && now !== null ? expiryLine(referral.expiresOn, todayPR(new Date(now))) : null;
 
   async function send(provider: Provider) {
     if (!referral) return;
