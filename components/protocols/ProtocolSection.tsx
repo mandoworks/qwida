@@ -35,7 +35,7 @@ export function ProtocolSection() {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Ejemplo: endoscopía, resonancia, Humacao, Menonita..."
+          placeholder="Ejemplo: endoscopía, resonancia, cardiología..."
           className="rounded-xl border-2 border-line bg-surface p-3 text-lg focus:border-ink focus:outline-hidden"
         />
       </div>

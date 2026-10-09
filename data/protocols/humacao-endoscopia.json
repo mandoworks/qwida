@@ -5,7 +5,7 @@
   "facility": "Centro de gastroenterología (ejemplo)",
   "municipio": "Humacao",
   "summary": "Instrucciones de preparación obligatoria para procedimientos endoscópicos con sedación.",
-  "warning_notice": "¡No pierda el viaje! Debe suspender anticoagulantes o aspirina con 7 días de anticipación y venir con acompañante adulto que conduzca.",
+  "warning_notice": "¡No pierda el viaje! Pregúntele a su médico, antes del procedimiento, qué medicinas debe tomar o no tomar, y venga con un adulto que la pueda llevar de vuelta a la casa.",
   "source_url": null,
   "fetched_at": "2026-10-09T00:00:00Z",
   "is_simulated": true,
@@ -14,7 +14,7 @@
     {
       "category": "medicamentos",
       "title": "Suspensión de medicamentos",
-      "description": "Suspender aspirina, antiinflamatorios y anticoagulantes 7 días antes, previa consulta y autorización de su médico.",
+      "description": "Pregúntele a su médico qué medicinas tomar o no tomar antes del procedimiento. Quida no cambia medicamentos.",
       "critical": true
     },
     {

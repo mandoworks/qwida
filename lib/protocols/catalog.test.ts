@@ -60,12 +60,9 @@ describe("what the page may claim about each card", () => {
     expect(published[0].badge_label).not.toContain("SIMULADO");
   });
 
-  it("carries the medicine caution, because at least one simulated card tells her to hold a medicine", () => {
-    const simulated = getAllProtocols().filter((p) => p.simulated_notice);
-    expect(simulated.length).toBeGreaterThan(0);
-    expect(simulated.some((p) => p.requirements.some((r) => /suspender|anticoagulante|aspirina/i.test(r.description)))).toBe(
-      true,
-    );
+  it("never tells her to stop or hold a medicine, and carries the medicine caution", () => {
+    const text = JSON.stringify(getAllProtocols());
+    expect(text).not.toMatch(/suspend|anticoagulante|aspirina|warfarina/i);
     expect(MEDICATION_CAUTION).toMatch(/médico/);
     expect(MEDICATION_CAUTION).toMatch(/no cambie|ninguna medicina/i);
   });
