@@ -47,7 +47,7 @@ function Tile({
     <Link
       href={href}
       aria-label={ariaLabel}
-      className={`flex min-h-[11rem] w-full flex-row items-center gap-6 rounded-3xl border-4 p-6 shadow-tile transition-transform active:scale-[0.98] ${TILE_THEMES[theme]} ${
+      className={`yari-tile flex min-h-[11rem] w-full flex-row items-center gap-6 rounded-3xl border-4 p-6 shadow-tile transition-transform active:scale-[0.98] ${TILE_THEMES[theme]} ${
         highlight ? "ring-4 ring-warn ring-offset-2 ring-offset-bg" : ""
       }`}
     >
@@ -81,7 +81,7 @@ export function PatientHome() {
         <Link href="/" className="-mb-2 self-end py-2 text-p-meta text-ink-mute underline underline-offset-4">
           Cambiar de rol
         </Link>
-        <h1 className="text-p-hero font-bold">{greeting}, Doña Carmen.</h1>
+        <h1 className="yari-headline text-p-hero font-bold">{greeting}, Doña Carmen.</h1>
         <p className="text-p-body text-ink-soft">Toque un botón. Nada más.</p>
       </header>
 

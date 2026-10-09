@@ -5,7 +5,7 @@ import { BigButton } from "@/components/ui/BigButton";
 export function ScreenShell({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-p-title font-bold">{title}</h1>
+      <h1 className="yari-headline text-p-title font-bold">{title}</h1>
       {children}
       <BigButton href="/paciente" variant="secondary" className="mt-2">
         Volver al inicio
