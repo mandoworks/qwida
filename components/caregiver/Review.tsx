@@ -13,7 +13,9 @@ import { lowConfidence, pendingItems } from "@/lib/weekcard/digest";
 import { relativeTime } from "@/lib/weekcard/format";
 import type { HeardPrescription } from "@/lib/visit/schema";
 import type { StringKey } from "@/lib/weekcard/strings";
+import { useClock } from "./clock";
 import { useLang } from "./lang-context";
+import { Pending } from "./Pending";
 
 const PHOTO_KINDS = new Set(["rx_handwritten", "rx_label"]);
 
@@ -46,7 +48,8 @@ export function Review() {
   const [fields, setFields] = useState<Record<string, string>>({});
   const [prescriptions, setPrescriptions] = useState<HeardPrescription[]>([]);
   const [done, setDone] = useState<string | null>(null);
-  const now = new Date();
+  const clock = useClock();
+  const now = clock === null ? null : new Date(clock);
 
   const ids = new Set(pendingItems(events).map((p) => p.id));
   const queue = events.filter((e) => ids.has(e.id)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
@@ -133,6 +136,14 @@ export function Review() {
     }
   }
 
+  if (!now) {
+    return (
+      <Pending label={t("review.loading")}>
+        <div className="h-40 rounded-card border-2 border-line bg-surface" />
+      </Pending>
+    );
+  }
+
   if (queue.length === 0) {
     return (
       <div className="flex flex-col gap-4">
@@ -166,9 +177,7 @@ export function Review() {
               <span className="flex flex-wrap items-center gap-2">
                 <Badge kind={e.status} />
                 {lowConfidence(e) && <span className="font-bold text-warn">{t("review.lowConfidence")}</span>}
-                <span className="ml-auto text-ink-soft">
-                  {t(relativeTime(e.createdAt, now).key, { n: relativeTime(e.createdAt, now).n })}
-                </span>
+                <span className="ml-auto text-ink-soft">{now ? ago(e.createdAt, now, t) : null}</span>
               </span>
             </button>
           ))}
@@ -231,6 +240,11 @@ export function Review() {
       </div>
     </div>
   );
+}
+
+function ago(iso: string, now: Date, t: (key: StringKey, values?: Record<string, string | number>) => string): string {
+  const { key, n } = relativeTime(iso, now);
+  return t(key, { n });
 }
 
 function itemLabel(e: QuidaEvent, t: (key: StringKey) => string): string {

@@ -5,7 +5,9 @@ import { useEvents } from "@/lib/client/useEvents";
 import { todayPR } from "@/lib/photo/dates";
 import { buildNudges, whatsappUrl, type NudgeKind } from "@/lib/weekcard/nudges";
 import type { StringKey } from "@/lib/weekcard/strings";
+import { useClock } from "./clock";
 import { useLang } from "./lang-context";
+import { Pending } from "./Pending";
 
 const KIND_LABEL: Record<NudgeKind, StringKey> = {
   label_rescan: "nudges.label_rescan",
@@ -22,7 +24,8 @@ export function Nudges() {
   const { events } = useEvents();
   const { t } = useLang();
   const [copied, setCopied] = useState<string | null>(null);
-  const nudges = buildNudges(events, todayPR());
+  const clock = useClock();
+  const nudges = clock === null ? [] : buildNudges(events, todayPR(new Date(clock)));
 
   async function copy(id: string, message: string) {
     try {
@@ -32,6 +35,14 @@ export function Nudges() {
     } catch {
       setCopied(null);
     }
+  }
+
+  if (clock === null) {
+    return (
+      <Pending label={t("nudges.loading")}>
+        <div className="h-40 rounded-card border-2 border-line bg-surface" />
+      </Pending>
+    );
   }
 
   return (

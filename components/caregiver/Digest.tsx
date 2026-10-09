@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { BigButton } from "@/components/ui/BigButton";
 import { EmergencyBanner } from "@/components/ui/EmergencyBanner";
@@ -13,7 +13,9 @@ import { buildDigest, type ChangeKind, type DigestAction, type NextKind } from "
 import { dayLabel } from "@/lib/weekcard/dates";
 import { longDate, relativeTime, todayLong } from "@/lib/weekcard/format";
 import type { StringKey } from "@/lib/weekcard/strings";
+import { useClock } from "./clock";
 import { useLang } from "./lang-context";
+import { Pending } from "./Pending";
 
 const SEEN_KEY = "quida.cuidador.seenAt";
 const CHANGE_KEY: Record<ChangeKind, StringKey> = {
@@ -48,10 +50,13 @@ export function Digest() {
   const { t, lang } = useLang();
   const [savedSeenAt, setSeenAt] = useLocalValue(SEEN_KEY);
   const seenAt = savedSeenAt ?? "";
-  const [now, setNow] = useState(() => new Date());
 
-  const today = todayPR(now);
-  const digest = useMemo(() => buildDigest(events, { seenAt: seenAt || null, today }), [events, seenAt, today]);
+  // The clock is null until mounted, so nothing date bound renders in the prerender.
+  const clock = useClock();
+  const now = clock === null ? null : new Date(clock);
+  const today = clock === null ? null : now ? todayPR(now) : null;
+  // buildDigest is cheap enough to run on every poll: no memo, no stale cache.
+  const digest = today === null ? null : buildDigest(events, { seenAt: seenAt || null, today });
 
   // Everything polled while this screen is open has now been seen.
   const newest = events.reduce<string | null>((max, e) => (!max || e.updatedAt > max ? e.updatedAt : max), null);
@@ -59,10 +64,13 @@ export function Digest() {
     if (newest && newest !== seenAt) setSeenAt(newest);
   }, [newest, seenAt, setSeenAt]);
 
-  useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 60_000);
-    return () => clearInterval(timer);
-  }, []);
+  if (!digest || !now || !today) {
+    return (
+      <Pending label={t("digest.loading")}>
+        <div className="h-40 rounded-card border-2 border-line bg-surface" />
+      </Pending>
+    );
+  }
 
   const pendingCount = digest.pending.length;
 

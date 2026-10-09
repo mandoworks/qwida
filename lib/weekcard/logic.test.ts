@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { HOUSEHOLD_ID } from "@/lib/seed";
 import type { QuidaEvent } from "@/lib/store/types";
-import { buildDigest, changesSince, lowConfidence, pendingItems, upcoming } from "./digest";
+import { buildDigest, changesSince, lastSignal, lowConfidence, pendingItems, refills, upcoming, watchlist } from "./digest";
 import { buildIcs, escapeIcs, foldLine } from "./ics";
 import { buildNudges, whatsappUrl } from "./nudges";
-import { filterRows, timelineRows } from "./timeline";
+import { filterRows, groupByDay, timelineRows, sourceKey } from "./timeline";
 import { format, STRINGS, t, type StringKey } from "./strings";
 
 const TODAY = "2026-10-09";
@@ -116,7 +116,7 @@ describe("buildDigest", () => {
       event({ kind: "weekcard", status: "CONFIRMADO", updatedAt: "2026-10-09T08:00:00.000Z", payload: { items: [] } }),
     ];
     expect(buildDigest(withCard, { seenAt: null, today: TODAY }).action).toEqual({
-      href: "/cuidador/tiempo",
+      href: "/cuidador/linea-de-tiempo",
       key: "timeline",
     });
   });
@@ -132,6 +132,64 @@ describe("buildDigest", () => {
     const digest = buildDigest([appointment, med, referido, fence], { seenAt: null, today: TODAY });
     expect(digest.next).toHaveLength(3);
     expect(digest.pending).toHaveLength(1);
+  });
+});
+
+describe("refills", () => {
+  it("keeps the confirmed medicines inside the reminder window, soonest first", () => {
+    const soon = event({ kind: "med_schedule", status: "CONFIRMADO", payload: { drug: "amlodipino", refill: { runs_out_on: "2026-10-12" } } });
+    const later = event({ kind: "med_schedule", status: "CONFIRMADO", payload: { drug: "metformina", refill: { runs_out_on: "2026-10-20" } } });
+    const far = event({ kind: "med_schedule", status: "CONFIRMADO", payload: { drug: "omeprazol", refill: { runs_out_on: "2026-12-01" } } });
+    expect(refills([later, far, soon], TODAY)).toEqual([
+      { id: soon.id, drug: "amlodipino", days: 3, runs_out_on: "2026-10-12" },
+      { id: later.id, drug: "metformina", days: 11, runs_out_on: "2026-10-20" },
+    ]);
+  });
+
+  it("ignores a BORRADOR schedule", () => {
+    const draft = event({ kind: "med_schedule", payload: { drug: "x", refill: { runs_out_on: "2026-10-10" } } });
+    expect(refills([draft], TODAY)).toEqual([]);
+  });
+});
+
+describe("watchlist", () => {
+  it("only referrals inside 30 days, expired ones included", () => {
+    const soon = event({ kind: "referido", status: "CONFIRMADO", payload: { specialty: "cardiología", expires_on: "2026-10-15" } });
+    const gone = event({ kind: "referido", status: "CONFIRMADO", payload: { specialty: "neurología", expires_on: "2026-09-01" } });
+    const far = event({ kind: "referido", status: "CONFIRMADO", payload: { specialty: "ojos", expires_on: "2027-01-01" } });
+    expect(watchlist([soon, far, gone], TODAY).map((r) => [r.specialty, r.days])).toEqual([
+      ["neurología", -38],
+      ["cardiología", 6],
+    ]);
+  });
+});
+
+describe("lastSignal", () => {
+  it("reports the newest real signal and where it came from", () => {
+    const voice = event({ kind: "voice_note", createdAt: "2026-10-09T15:00:00.000Z", source: "voice" });
+    const photo = event({ kind: "rx_label", createdAt: "2026-10-09T09:00:00.000Z", source: "photo" });
+    const nudge = event({ kind: "nudge", createdAt: "2026-10-09T23:00:00.000Z" });
+    const card = event({ kind: "weekcard", status: "CONFIRMADO", createdAt: "2026-10-09T23:30:00.000Z" });
+    expect(lastSignal([photo, voice, nudge, card])).toEqual({ at: voice.createdAt, source: "voice" });
+    expect(lastSignal([photo, nudge, card])).toEqual({ at: photo.createdAt, source: "photo" });
+    expect(sourceKey(photo)).toBe("photo");
+    expect(sourceKey(event({ kind: "visit", source: "voice" }))).toBe("visit");
+    expect(lastSignal([])).toBeNull();
+  });
+});
+
+describe("groupByDay", () => {
+  it("groups newest day first and flags today and yesterday", () => {
+    const rows = timelineRows([
+      event({ kind: "voice_note", createdAt: "2026-10-08T15:00:00.000Z" }),
+      event({ kind: "visit", createdAt: "2026-10-09T15:00:00.000Z" }),
+      event({ kind: "rx_label", createdAt: "2026-10-09T09:00:00.000Z" }),
+    ]);
+    const groups = groupByDay(rows, "2026-10-09");
+    expect(groups.map((g) => [g.date, g.today, g.yesterday, g.rows.length])).toEqual([
+      ["2026-10-09", true, false, 2],
+      ["2026-10-08", false, true, 1],
+    ]);
   });
 });
 

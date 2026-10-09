@@ -1,4 +1,5 @@
 import { normalize } from "@/lib/fence";
+import { daysBetween } from "@/lib/photo/dates";
 import type { EventStatus, QuidaEvent } from "@/lib/store/types";
 
 export type TimelineGroup = "cita" | "receta" | "referido" | "nota" | "alerta";
@@ -94,6 +95,46 @@ function titleFor(e: QuidaEvent, facts: TimelineRow["facts"]): string {
       if (e.kind === "weekcard") return "Tarjeta de la semana";
       return "Recordatorio";
   }
+}
+
+/** Where the row came from, for the small source line under it (DESIGN 4.12). */
+export function sourceKey(e: QuidaEvent): "photo" | "voice" | "visit" | "caregiver" | "system" {
+  if (e.kind === "voice_note") return "voice";
+  if (e.kind === "visit") return "visit";
+  if (e.kind === "rx_label" || e.kind === "rx_handwritten") return "photo";
+  if (e.source === "system") return "system";
+  return "caregiver";
+}
+
+export type DayGroup = {
+  /** YYYY-MM-DD of the day, in Puerto Rico time. */
+  date: string;
+  today: boolean;
+  yesterday: boolean;
+  rows: TimelineRow[];
+};
+
+/**
+ * Rows grouped by day, newest day first, for the sticky day headers in 4.12.
+ * The label stays in the component so it can come from the dictionary.
+ */
+export function groupByDay(rows: TimelineRow[], today: string): DayGroup[] {
+  const groups = new Map<string, TimelineRow[]>();
+  for (const row of rows) {
+    const date = isoDatePR(row.at);
+    groups.set(date, [...(groups.get(date) ?? []), row]);
+  }
+  return [...groups.entries()]
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .map(([date, dayRows]) => {
+      const diff = daysBetween(date, today);
+      return { date, today: diff === 0, yesterday: diff === 1, rows: dayRows };
+    });
+}
+
+/** YYYY-MM-DD in Puerto Rico, so day headers match the patient's calendar. */
+function isoDatePR(iso: string): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Puerto_Rico" }).format(new Date(iso));
 }
 
 /** Every event, newest first, with the text the specialty filter searches in. */
