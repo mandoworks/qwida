@@ -1,4 +1,4 @@
-import { NewEvent, type EventStatus, type EventStore, type QuidaEvent } from "./types";
+import { EventStatus, NewEvent, type EventPatch, type EventStore, type QuidaEvent } from "./types";
 
 /**
  * In-memory store for local dev and offline demos. State lives in the server
@@ -36,12 +36,17 @@ export class MockStore implements EventStore {
     return structuredClone(event);
   }
 
-  async updateStatus(id: string, status: EventStatus): Promise<QuidaEvent | null> {
+  async update(id: string, patch: EventPatch): Promise<QuidaEvent | null> {
     const event = this.events.find((e) => e.id === id);
     if (!event) return null;
-    event.status = status;
+    if (patch.status) event.status = EventStatus.parse(patch.status);
+    if (patch.payload) event.payload = { ...event.payload, ...structuredClone(patch.payload) };
     event.updatedAt = this.now();
     return structuredClone(event);
+  }
+
+  async updateStatus(id: string, status: EventStatus): Promise<QuidaEvent | null> {
+    return this.update(id, { status });
   }
 
   async reset(seed: NewEvent[]): Promise<void> {

@@ -52,6 +52,8 @@ export const NewEvent = QuidaEvent.pick({
 });
 export type NewEvent = z.input<typeof NewEvent>;
 
+export type EventPatch = { status?: EventStatus; payload?: Record<string, unknown> };
+
 /**
  * Shared state contract. Every method is async so a Postgres or Redis
  * implementation can drop in without touching callers.
@@ -63,7 +65,9 @@ export interface EventStore {
    */
   list(householdId: string, since?: string): Promise<QuidaEvent[]>;
   create(input: NewEvent): Promise<QuidaEvent>;
-  /** Returns null when the id does not exist. */
+  /** Sets status and shallow merges payload; bumps updatedAt. Returns null when the id does not exist. */
+  update(id: string, patch: EventPatch): Promise<QuidaEvent | null>;
+  /** Thin wrapper over update. Returns null when the id does not exist. */
   updateStatus(id: string, status: EventStatus): Promise<QuidaEvent | null>;
   /** Wipes everything and loads the given events (the synthetic seed). */
   reset(seed: NewEvent[]): Promise<void>;
