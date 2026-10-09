@@ -300,7 +300,8 @@ function VisitResult({ result, onAgain }: { result: VisitResponse; onAgain: () =
       <p className="text-xl">Esto es un borrador. Su familia lo revisa y lo confirma.</p>
       {fence.triggered && <FenceNotice className="text-xl" />}
 
-      {empty && <p>No encontramos recetas, referidos ni citas en la grabación.</p>}
+      {/* On an emergency nothing is extracted on purpose; this line would read as if we listened and found nothing. */}
+      {empty && !fence.emergency && <p>No encontramos recetas, referidos ni citas en la grabación.</p>}
 
       {x.prescriptions.length > 0 && (
         <div>
