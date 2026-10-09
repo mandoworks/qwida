@@ -5,7 +5,7 @@ import { cleanCard, type StrippedCard } from "./safety";
 export type ApproveResult = StrippedCard & { event: QuidaEvent };
 
 /**
- * The caregiver tapped "Aprobar y enviar a Mamá". This is the only path that
+ * The family member tapped "Aprobar y enviar a Mamá". This is the only path that
  * writes a CONFIRMADO `weekcard`, so nothing reaches the patient side without a
  * human tap. The Fence still runs here: advice about medicines is dropped and
  * reported back instead of being sent.
@@ -26,7 +26,7 @@ export async function approveCard(
     householdId: input.householdId ?? HOUSEHOLD_ID,
     kind: "weekcard",
     status: "CONFIRMADO",
-    source: "caregiver",
+    source: "familia",
     confidence: 1,
     payload,
   });

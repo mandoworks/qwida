@@ -11,7 +11,7 @@ export function normalize(value: string): string {
 }
 
 /**
- * Certification terms the caregiver can filter on, with the label she reads.
+ * Certification terms the family member can filter on, with the label she reads.
  * ORCPS sends a comma separated free text list (no taxonomy), so a term is
  * matched as a substring of the raw string.
  */

@@ -33,16 +33,16 @@ const STYLES: Record<BadgeKind, { label: string; className: string; title: strin
 /**
  * Status vocabulary shared by both sides. Accepts store statuses directly.
  * `size="patient"` renders at the 20px elderly floor per the typography spec;
- * the default compact badge keeps the caregiver rendering unchanged.
+ * the default compact badge keeps the family member rendering unchanged.
  */
 export function Badge({
   kind,
   className = "",
-  size = "caregiver",
+  size = "familia",
 }: {
   kind: BadgeKind;
   className?: string;
-  size?: "patient" | "caregiver";
+  size?: "patient" | "familia";
 }) {
   const s = STYLES[kind];
   const sizeCls =

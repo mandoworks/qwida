@@ -27,7 +27,7 @@ export default function ProveedoresPage() {
         Datos públicos reales, consultados el {consulted}. Quida no recomienda médicos.
       </p>
 
-      <div className="mt-6 text-caregiver">
+      <div className="mt-6 text-familia">
         <ProviderSearch />
       </div>
 

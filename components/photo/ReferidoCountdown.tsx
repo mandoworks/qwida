@@ -25,7 +25,7 @@ export function ReferidoCountdown({
   const patient = size === "patient";
   const left = days < 0 ? "Ya venció" : days === 0 ? "Vence hoy" : days === 1 ? "Queda 1 día" : `Quedan ${days} días`;
   return (
-    <div className={`flex flex-col gap-1 rounded-2xl border-2 bg-surface p-4 ${tone(days)} ${patient ? "text-patient" : "text-caregiver"}`}>
+    <div className={`flex flex-col gap-1 rounded-2xl border-2 bg-surface p-4 ${tone(days)} ${patient ? "text-patient" : "text-familia"}`}>
       <Art slot="referido" alt="Un referido con un calendario" width={patient ? 160 : 120} height={patient ? 120 : 90} />
       {specialty && <p className="text-ink">Referido a {specialty}</p>}
       <p className={patient ? "text-3xl font-bold" : "text-xl font-bold"}>

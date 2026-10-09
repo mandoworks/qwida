@@ -4,7 +4,7 @@ export type RelativeKey = "time.now" | "time.min" | "time.hour" | "time.day";
 
 /**
  * "hace 5 min" without building the sentence here: the key goes to the
- * dictionary so the caregiver side reads in Spanish or English.
+ * dictionary so the family member side reads in Spanish or English.
  */
 export function relativeTime(iso: string, now: Date): { key: RelativeKey; n: number } {
   const minutes = Math.round((now.getTime() - Date.parse(iso)) / 60_000);

@@ -1,4 +1,4 @@
-import { Nudges } from "@/components/caregiver/Nudges";
+import { Nudges } from "@/components/familia/Nudges";
 
 export default function FamiliaRecordatoriosPage() {
   return <Nudges />;

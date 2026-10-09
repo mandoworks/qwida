@@ -2,7 +2,7 @@ import type { QuidaEvent } from "@/lib/store/types";
 
 /**
  * The state of "Aprobar y enviar a Mamá". Kept apart from the generic `busy`
- * flag so the caregiver never sees "Enviando…" over a failed request, and so a
+ * flag so the family member never sees "Enviando…" over a failed request, and so a
  * retry is always available.
  */
 export type SendState = "idle" | "sending" | "sent" | "failed";
@@ -47,7 +47,7 @@ export function canSend(input: {
 }
 
 /**
- * Folds an event the caregiver just created into the polled list so the screen
+ * Folds an event the family member just created into the polled list so the screen
  * is right on the next frame instead of up to two seconds later. Same shape the
  * poll produces: newest `updatedAt` wins, sorted by `createdAt`.
  */

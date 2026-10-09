@@ -1,5 +1,5 @@
 import { daysBetween, isIsoDate } from "@/lib/photo/dates";
-import type { QuidaEvent } from "@/lib/store/types";
+import { LEGACY_EVENT_SOURCE, type QuidaEvent } from "@/lib/store/types";
 import { isoDate } from "./dates";
 
 /** A referral gets a digest line inside this window, or when it already expired. */
@@ -13,7 +13,7 @@ export type DigestAction = { href: string; key: "fence" | "review" | "weekcard" 
 export type Pending = { id: string; kind: string };
 
 export type DigestHero = "ok" | "warn" | "fence";
-export type SignalSource = "photo" | "voice" | "visit" | "caregiver" | "system";
+export type SignalSource = "photo" | "voice" | "visit" | "familia" | "system";
 
 export type Digest = {
   /** Events whose last change is newer than `seenAt`. Empty the first visit. */
@@ -48,7 +48,7 @@ const CHANGE_KIND: Record<string, ChangeKind> = {
 
 const str = (v: unknown): string | null => (typeof v === "string" && v.trim() ? v.trim() : null);
 
-/** What changed since the caregiver last looked. */
+/** What changed since the family member last looked. */
 export function changesSince(events: QuidaEvent[], seenAt: string | null): Change[] {
   const seen = seenAt ? Date.parse(seenAt) : NaN;
   return events
@@ -107,7 +107,7 @@ export function upcoming(events: QuidaEvent[], today: string): NextThing[] {
 
 /**
  * Everything a person still has to look at: no AI output becomes CONFIRMADO by
- * itself. A BORRADOR `weekcard` is excluded on purpose: it is the caregiver's
+ * itself. A BORRADOR `weekcard` is excluded on purpose: it is the family member's
  * own autosave from the editor, and confirming it here would push a card to Mamá
  * without going through Aprobar and Enviar.
  */
@@ -185,7 +185,9 @@ export function lastSignal(events: QuidaEvent[]): { at: string; source: SignalSo
         ? "photo"
         : newest.kind === "fence"
           ? "system"
-          : newest.source;
+          : newest.source === LEGACY_EVENT_SOURCE
+            ? "familia"
+            : newest.source;
   return { at: newest.createdAt, source };
 }
 

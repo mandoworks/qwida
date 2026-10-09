@@ -91,6 +91,6 @@ export const ConfirmBody = z.object({
   eventId: z.string().min(1),
   householdId: z.string().min(1).optional(),
   values: z.record(z.string(), z.union([z.string(), z.number(), z.null()])).default({}),
-  confirmedBy: z.enum(["patient", "caregiver"]).default("caregiver"),
+  confirmedBy: z.enum(["patient", "familia"]).default("familia"),
 });
 export type ConfirmBody = z.input<typeof ConfirmBody>;

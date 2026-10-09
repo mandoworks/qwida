@@ -19,7 +19,7 @@ function event(partial: Partial<QuidaEvent> & { kind: QuidaEvent["kind"] }): Qui
     kind: partial.kind,
     status: partial.status ?? "BORRADOR",
     payload: partial.payload ?? {},
-    source: partial.source ?? "caregiver",
+    source: partial.source ?? "familia",
     confidence: partial.confidence ?? null,
     createdAt,
     updatedAt: partial.updatedAt ?? createdAt,

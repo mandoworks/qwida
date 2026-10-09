@@ -2,19 +2,19 @@ import { z } from "zod";
 import type { EventKind, EventSource, EventStatus } from "@/lib/store/types";
 
 /** Who tapped. Only a person can move an event to CONFIRMADO. */
-export const ConfirmedBy = z.enum(["patient", "caregiver"]);
+export const ConfirmedBy = z.enum(["patient", "familia"]);
 export type ConfirmedBy = z.infer<typeof ConfirmedBy>;
 
 /**
  * Kinds that POST /api/events may create already CONFIRMADO, each the result
- * of a human tap: the caregiver approving the week card, a med schedule from
- * the photo confirm route (it carries `fromEventId`), and the caregiver's
+ * of a human tap: the family member approving the week card, a med schedule from
+ * the photo confirm route (it carries `fromEventId`), and the family member's
  * one tap "llamar para cita" nudge on /proveedores.
  */
 const CREATE_CONFIRMED: Partial<Record<EventKind, (payload: Record<string, unknown>, by: ConfirmedBy) => boolean>> = {
-  weekcard: (_, by) => by === "caregiver",
+  weekcard: (_, by) => by === "familia",
   med_schedule: (payload) => typeof payload.fromEventId === "string" && payload.fromEventId !== "",
-  nudge: (_, by) => by === "caregiver",
+  nudge: (_, by) => by === "familia",
 };
 
 export type GateResult = { ok: true; payload: Record<string, unknown> } | { ok: false; error: string };
@@ -31,7 +31,7 @@ function stamp(payload: Record<string, unknown>, by: ConfirmedBy, now: Date) {
   return { ...payload, confirmedBy: by, confirmedAt: now.toISOString() };
 }
 
-const NEEDS_PERSON = 'CONFIRMADO necesita confirmedBy: "patient" o "caregiver".';
+const NEEDS_PERSON = 'CONFIRMADO necesita confirmedBy: "patient" o "familia".';
 
 /** Gate for POST /api/events. Model output can never arrive as CONFIRMADO. */
 export function gateCreate(

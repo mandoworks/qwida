@@ -9,7 +9,7 @@ export const HOUSEHOLD_ID = "demo-carmen";
 export const persona = {
   synthetic: true,
   patient: { name: "Carmen Rivera", display: "Doña Carmen", age: 78, town: "Adjuntas" },
-  caregiver: { name: "Marisol Rivera", relation: "hija", city: "Orlando" },
+  familia: { name: "Marisol Rivera", relation: "hija", city: "Orlando" },
   plan: { name: "Plan Vital", type: "MCO", fictional: true },
 } as const;
 
@@ -27,7 +27,7 @@ export function seedEvents(): NewEvent[] {
       householdId: HOUSEHOLD_ID,
       kind: "med_schedule",
       status: "CONFIRMADO",
-      source: "caregiver",
+      source: "familia",
       confidence: 1,
       payload: {
         synthetic: true,
@@ -41,7 +41,7 @@ export function seedEvents(): NewEvent[] {
       householdId: HOUSEHOLD_ID,
       kind: "med_schedule",
       status: "CONFIRMADO",
-      source: "caregiver",
+      source: "familia",
       confidence: 1,
       payload: {
         synthetic: true,
@@ -55,7 +55,7 @@ export function seedEvents(): NewEvent[] {
       householdId: HOUSEHOLD_ID,
       kind: "appointment",
       status: "CONFIRMADO",
-      source: "caregiver",
+      source: "familia",
       confidence: 1,
       payload: {
         synthetic: true,

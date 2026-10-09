@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 
 /**
- * One clock for the whole caregiver side, shared by every screen that shows a
+ * One clock for the whole family member side, shared by every screen that shows a
  * relative time or today's date.
  *
  * Next.js prerenders with `cacheComponents`, so `new Date()` during render is

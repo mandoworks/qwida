@@ -1,4 +1,4 @@
-import { Review } from "@/components/caregiver/Review";
+import { Review } from "@/components/familia/Review";
 
 export default function FamiliaRevisarPage() {
   return <Review />;

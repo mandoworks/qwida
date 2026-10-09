@@ -25,7 +25,7 @@ const pillSlug = (drug: string) =>
     .toLowerCase()
     .split(/[^a-z0-9]+/)[0];
 
-export type PhotoSize = "patient" | "caregiver";
+export type PhotoSize = "patient" | "familia";
 
 /**
  * Daily schedule in four slots with a pill per medicine. Shows only what it is
@@ -34,7 +34,7 @@ export type PhotoSize = "patient" | "caregiver";
 export function MedSchedule({ items, size = "patient" }: { items: ScheduleItem[]; size?: PhotoSize }) {
   const patient = size === "patient";
   return (
-    <section aria-label="Horario de medicinas" className={patient ? "text-patient" : "text-caregiver"}>
+    <section aria-label="Horario de medicinas" className={patient ? "text-patient" : "text-familia"}>
       <ol className={patient ? "flex flex-col gap-4" : "grid gap-3 sm:grid-cols-2"}>
         {SLOTS.map((slot) => {
           const here = items.filter((i) => i.slots.includes(slot));

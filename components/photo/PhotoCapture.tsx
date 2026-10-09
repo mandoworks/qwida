@@ -100,7 +100,7 @@ export function PhotoCapture({
   const btn = patient ? "" : "min-h-0 py-3 text-xl";
 
   return (
-    <section aria-label="Mandar una foto" className={`flex flex-col gap-5 ${patient ? "text-patient" : "text-caregiver"}`}>
+    <section aria-label="Mandar una foto" className={`flex flex-col gap-5 ${patient ? "text-patient" : "text-familia"}`}>
       {phase.name === "idle" && (
         <>
           <label className={`flex cursor-pointer items-center justify-center rounded-2xl border-2 border-accent bg-accent px-6 text-center font-bold text-accent-ink ${patient ? "min-h-btn-patient text-patient" : "py-3 text-xl"}`}>

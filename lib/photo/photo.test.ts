@@ -124,7 +124,7 @@ describe("photo pipeline without a key (SIMULADO)", () => {
   const image = new Uint8Array([1, 2, 3]);
   const input = (hint: string | null) => ({ householdId: "h", image, mediaType: "image/jpeg", hint });
   const confirm = (store: MockStore, eventId: string, values = {}) =>
-    confirmPhoto(store, { eventId, householdId: "h", values, confirmedBy: "caregiver" }, "2026-10-09");
+    confirmPhoto(store, { eventId, householdId: "h", values, confirmedBy: "familia" }, "2026-10-09");
 
   it("handwriting: POR_CONFIRMAR, rescan reminder, and no schedule even on confirm", async () => {
     const store = new MockStore();

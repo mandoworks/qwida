@@ -174,7 +174,7 @@ async function saveVisit(
       : []),
   ];
   if (v.fence.triggered) {
-    // Routes the tripwire to the caregiver. A person must look at it.
+    // Routes the tripwire to the family member. A person must look at it.
     children.push(fenceEvent(householdId, v.fence, { context: "visit", simulated: v.simulated, visitId: visit.id }));
   }
 

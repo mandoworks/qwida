@@ -96,5 +96,5 @@ const parsed = ProviderCatalog.parse({
 export const catalog: ProviderCatalog = parsed;
 export const providers: Provider[] = parsed.records;
 
-/** Where a caregiver checks a license number herself. Public ORCPS verification page. */
+/** Where a family member checks a license number herself. Public ORCPS verification page. */
 export const VERIFY_URL = "https://orcps.salud.pr.gov/mbps/verificacion";

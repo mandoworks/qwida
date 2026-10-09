@@ -21,13 +21,13 @@ const DETAIL_LABEL: Record<Detail, StringKey> = {
   full: "settings.detail.full",
 };
 
-/** Digest detail (SIMULADO), caregiver language, contrast, .ics export, sharing. */
+/** Digest detail (SIMULADO), family member language, contrast, .ics export, sharing. */
 export function Settings() {
   const { events } = useEvents();
   const { t, lang, setLang } = useLang();
-  const [savedDetail, setSavedDetail] = useLocalValue("quida.cuidador.detail");
+  const [savedDetail, setSavedDetail] = useLocalValue("quida.familia.detail");
   const detail: Detail = DETAIL.includes(savedDetail as Detail) ? (savedDetail as Detail) : "points";
-  const [savedContrast, setSavedContrast] = useLocalValue("quida.cuidador.contrast");
+  const [savedContrast, setSavedContrast] = useLocalValue("quida.familia.contrast");
   const highContrast = savedContrast === "high";
   const [downloaded, setDownloaded] = useState<number | null>(null);
 

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useEvents } from "@/lib/client/useEvents";
 import { todayPR } from "@/lib/photo/dates";
-import { useClock } from "@/components/caregiver/clock";
+import { useClock } from "@/components/familia/clock";
 import { providers, type Provider } from "@/lib/providers/catalog";
 import { formatConsulted, readable } from "@/lib/providers/format";
 import { activeReferido, expiryLine, nudgeEvent } from "@/lib/providers/referido";
@@ -158,7 +158,7 @@ export function ProviderSearch() {
       const res = await fetch("/api/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...nudgeEvent(provider, referral.expiresOn), confirmedBy: "caregiver" }),
+        body: JSON.stringify({ ...nudgeEvent(provider, referral.expiresOn), confirmedBy: "familia" }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSent((prev) => ({ ...prev, [provider.license_number]: true }));

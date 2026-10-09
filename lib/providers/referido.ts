@@ -16,7 +16,7 @@ export type ActiveReferido = { expiresOn: string; specialty: string | null; even
 
 /**
  * The most recently issued CONFIRMADO referral. A draft referral has no
- * expiry yet, so it does not count: nothing reaches the caregiver side without
+ * expiry yet, so it does not count: nothing reaches the family member side without
  * a person confirming it.
  */
 export function activeReferido(events: readonly QuidaEvent[]): ActiveReferido | null {
@@ -49,7 +49,7 @@ export function expiryLine(expiresOn: string, today: string): string {
 }
 
 /**
- * The body of the `nudge` event a caregiver creates with one tap. The wording
+ * The body of the `nudge` event a family member creates with one tap. The wording
  * only asks for a call about a cita. It never says to take, skip, stop or
  * change a medication.
  */
@@ -58,9 +58,9 @@ export function nudgeEvent(provider: Provider, expiresOn: string): NewEvent {
   return {
     householdId: HOUSEHOLD_ID,
     kind: "nudge",
-    // The caregiver tapped. This is not model output, so it is not a draft.
+    // The family member tapped. This is not model output, so it is not a draft.
     status: "CONFIRMADO",
-    source: "caregiver",
+    source: "familia",
     confidence: 1,
     payload: {
       synthetic: false,

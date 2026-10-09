@@ -35,13 +35,13 @@ const THEME_LABEL: Record<(typeof CARD_THEMES)[number]["id"], StringKey> = {
 };
 
 const AUTOSAVE_MS = 3000;
-const DRAFT_KEY = "quida.cuidador.draftId";
+const DRAFT_KEY = "quida.familia.draftId";
 const MAX_QUESTION = 120;
 
 const blankItem = (): CardItem => ({ day: "", text: "", icon: CARD_ICONS[0] });
 
 /**
- * AI drafts the week from the confirmed events, the caregiver edits every line,
+ * AI drafts the week from the confirmed events, the family member edits every line,
  * taps Aprobar and then Enviar a Mamá (4.10, 5.7). Only that last tap writes the
  * CONFIRMADO `weekcard` the patient side reads.
  */
@@ -107,7 +107,7 @@ export function WeekCardEditor() {
         const created = await fetch("/api/events", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ householdId: HOUSEHOLD_ID, kind: "weekcard", source: "caregiver", payload }),
+          body: JSON.stringify({ householdId: HOUSEHOLD_ID, kind: "weekcard", source: "familia", payload }),
         });
         const data = await created.json();
         if (created.ok && data?.event?.id) {
@@ -503,7 +503,7 @@ export function WeekCardEditor() {
   );
 }
 
-/** Swaps one item with its neighbour so the caregiver can reorder the week. */
+/** Swaps one item with its neighbour so the family member can reorder the week. */
 function move(items: CardItem[], index: number, step: number): CardItem[] {
   const next = [...items];
   const to = index + step;

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { CaregiverShell } from "@/components/caregiver/Shell";
+import { FamiliaShell } from "@/components/familia/Shell";
 
 export default function FamiliaLayout({ children }: { children: ReactNode }) {
-  return <CaregiverShell>{children}</CaregiverShell>;
+  return <FamiliaShell>{children}</FamiliaShell>;
 }

@@ -1,6 +1,6 @@
 import { addDays, daysBetween, isIsoDate } from "./dates";
 
-/** Remind the caregiver this many days before the pills run out. */
+/** Remind the family member this many days before the pills run out. */
 export const REFILL_REMIND_DAYS = 7;
 
 export type RefillCountdown = {
@@ -8,7 +8,7 @@ export type RefillCountdown = {
   days_supply: number;
   /** First day without pills, YYYY-MM-DD. */
   runs_out_on: string;
-  /** Day to remind the caregiver, YYYY-MM-DD. */
+  /** Day to remind the family member, YYYY-MM-DD. */
   remind_on: string;
   /** Days of pills left as of `today`, never negative. */
   days_left: number;

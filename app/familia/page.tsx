@@ -1,4 +1,4 @@
-import { Digest } from "@/components/caregiver/Digest";
+import { Digest } from "@/components/familia/Digest";
 
 export default function FamiliaHomePage() {
   return <Digest />;

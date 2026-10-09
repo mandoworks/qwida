@@ -1,5 +1,5 @@
 /**
- * Every string the caregiver side renders, in one place, so the ES/EN toggle is
+ * Every string the family member side renders, in one place, so the ES/EN toggle is
  * one switch. Copy that reaches Doña Carmen (the week card, the WhatsApp
  * nudges, the Fence) stays in Spanish and is not translated here.
  */
@@ -188,7 +188,7 @@ export const STRINGS = {
     "timeline.source.photo": "foto",
     "timeline.source.voice": "nota de voz",
     "timeline.source.visit": "visita grabada",
-    "timeline.source.caregiver": "Marisol",
+    "timeline.source.familia": "Marisol",
     "timeline.source.system": "Quida",
 
     "card.approve": "Aprobar",
@@ -419,7 +419,7 @@ export const STRINGS = {
     "timeline.source.photo": "photo",
     "timeline.source.voice": "voice note",
     "timeline.source.visit": "recorded visit",
-    "timeline.source.caregiver": "Marisol",
+    "timeline.source.familia": "Marisol",
     "timeline.source.system": "Quida",
 
     "card.approve": "Approve",

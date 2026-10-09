@@ -46,7 +46,7 @@ const asText = (v: TrustedField["value"]) => (v === null ? "" : String(v));
 export function ExtractedFields({
   event,
   householdId,
-  size = "caregiver",
+  size = "familia",
   onConfirmed,
   onDefer,
 }: {
@@ -54,7 +54,7 @@ export function ExtractedFields({
   householdId?: string;
   size?: PhotoSize;
   onConfirmed?: (r: ConfirmResponse) => void;
-  /** Patient side: "Mi hija lo revisa". Leaves the event POR_CONFIRMAR for the caregiver. */
+  /** Patient side: "Mi hija lo revisa". Leaves the event POR_CONFIRMAR for the family member. */
   onDefer?: () => void;
 }) {
   const p = event.payload;
@@ -115,10 +115,10 @@ export function ExtractedFields({
   const expiresPreview = event.kind === "referido" && issue ? referidoExpiresOn(issue) : null;
 
   return (
-    <section aria-label="Datos leídos de la foto" className={`flex flex-col gap-5 ${patient ? "text-patient" : "text-caregiver"}`}>
+    <section aria-label="Datos leídos de la foto" className={`flex flex-col gap-5 ${patient ? "text-patient" : "text-familia"}`}>
       <div className="flex flex-wrap items-center gap-2">
-        <Badge kind={confirmed ? "CONFIRMADO" : event.status} size={patient ? "patient" : "caregiver"} />
-        {p.simulated === true && <Badge kind="SIMULADO" size={patient ? "patient" : "caregiver"} />}
+        <Badge kind={confirmed ? "CONFIRMADO" : event.status} size={patient ? "patient" : "familia"} />
+        {p.simulated === true && <Badge kind="SIMULADO" size={patient ? "patient" : "familia"} />}
       </div>
 
       {handwritten && (
