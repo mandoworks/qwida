@@ -1,9 +1,0 @@
-▲ Next.js 16.4.0
-- Local:         http://localhost:3100
-- Network:       http://154.53.46.48:3100
-✓ Ready in 343ms
-⚠ Warning: Next.js ignored package-lock.json in /tmp because it is outside the current Git repository (/tmp/quida-mobile).
- To use this directory, set `outputFileTracingRoot` in your Next.js config.
-
-✓ Running next.config.ts took 66ms
-[quida] event store: mock
