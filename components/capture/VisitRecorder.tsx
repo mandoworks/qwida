@@ -135,6 +135,17 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
     if (file) upload(file, file.name);
   }
 
+  /** Plays the role-played synthetic visit through the real pipeline (actors, fictional doctor). */
+  async function sendDemoClip() {
+    try {
+      const res = await fetch("/demo/visita-1.mp3");
+      if (!res.ok) throw new Error();
+      upload(await res.blob(), "visita-1.mp3");
+    } catch {
+      setPhase({ name: "error", message: "No encontramos la grabación de demostración." });
+    }
+  }
+
   function restart() {
     setLevel(0);
     setSeconds(0);
@@ -193,6 +204,13 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
             <p>Este teléfono no puede grabar aquí. Suba un archivo de audio.</p>
           )}
           {uploadInput}
+          <button
+            type="button"
+            onClick={sendDemoClip}
+            className="text-left text-xl text-ink-soft underline underline-offset-4"
+          >
+            Usar la grabación de demostración (actores, datos sintéticos)
+          </button>
         </>
       )}
 
