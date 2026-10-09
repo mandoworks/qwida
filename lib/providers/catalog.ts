@@ -28,6 +28,9 @@ export const ProviderRecord = z.object({
   fetched_at: z.string().min(1),
   address: z.string().nullable().optional(),
   npi: z.string().nullable().optional(),
+  accepts_new_patients: z.boolean().nullable().optional(),
+  accepts_plan_vital: z.boolean().nullable().optional(),
+  telemedicina: z.boolean().nullable().optional(),
 });
 export type Provider = z.infer<typeof ProviderRecord>;
 

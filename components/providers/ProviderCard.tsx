@@ -56,11 +56,26 @@ export function ProviderCard({ provider, consultedOn, expiry, sent, busy, onUseR
 
       <ul className="flex flex-col gap-2 text-base">
         <li className="w-fit rounded-full border-2 border-ink-soft px-4 py-2">
-          <span className="font-bold">¿Acepta pacientes nuevos?</span> No hay datos públicos
+          <span className="font-bold">¿Acepta pacientes nuevos?</span>{" "}
+          {provider.accepts_new_patients === true
+            ? "Sí"
+            : provider.accepts_new_patients === false
+              ? "No"
+              : "No hay datos públicos"}
         </li>
         <li className="w-fit rounded-full border-2 border-ink-soft px-4 py-2">
-          <span className="font-bold">¿Acepta su plan?</span> Llame para confirmar
+          <span className="font-bold">¿Acepta su plan?</span>{" "}
+          {provider.accepts_plan_vital === true
+            ? "Acepta Plan Vital"
+            : provider.accepts_plan_vital === false
+              ? "No acepta Plan Vital"
+              : "Llame para confirmar"}
         </li>
+        {provider.telemedicina && (
+          <li className="w-fit rounded-full border-2 border-ok px-4 py-2 font-bold text-ok">
+            Ofrece telemedicina
+          </li>
+        )}
       </ul>
 
       <p>

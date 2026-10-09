@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { catalog, providers as localProviders } from "@/lib/providers/catalog";
-import { fetchMedSeekPueblos, fetchMedSeekSpecialties, searchMedSeek } from "@/lib/providers/medseek";
+import { fetchMedSeekPueblos, fetchMedSeekSpecialties, fetchMedSeekProfile, searchMedSeek } from "@/lib/providers/medseek";
 import { searchProviders } from "@/lib/providers/search";
 
 export const maxDuration = 10;
@@ -14,6 +14,7 @@ export const maxDuration = 10;
  *   apellidos: Last name query
  *   source: "medseek" | "local" | "auto" (default: "auto")
  *   meta: "options" -> returns available pueblos and specialties
+ *   profile: "1" -> returns verified profile details for a doctor
  */
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -43,6 +44,20 @@ export async function GET(request: Request) {
         specialties: [],
       });
     }
+  }
+
+  const profile = url.searchParams.get("profile");
+  if (profile) {
+    const nombre = url.searchParams.get("nombre") || "";
+    const apellidos = url.searchParams.get("apellidos") || "";
+    if (!nombre && !apellidos) {
+      return NextResponse.json({ ok: false, error: "Missing nombre or apellidos" }, { status: 400 });
+    }
+    const prof = await fetchMedSeekProfile(nombre, apellidos);
+    if (!prof) {
+      return NextResponse.json({ ok: false, error: "Profile not found" }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true, source: "medseekpr.com", profile: prof });
   }
 
   const specialty = url.searchParams.get("specialty") || url.searchParams.get("especialidad") || "";

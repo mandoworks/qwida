@@ -140,3 +140,55 @@ export async function fetchMedSeekSpecialties(timeoutMs = 4000): Promise<string[
     clearTimeout(timer);
   }
 }
+
+export type MedSeekProfileResult = {
+  success: boolean;
+  is_verified?: boolean;
+  accepting_new_patients?: boolean | null;
+  accepts_plan_vital?: boolean | null;
+  accepts_medicare?: boolean | null;
+  telemedicina?: boolean | null;
+  horarios?: string | null;
+  full_address?: string | null;
+  idiomas?: string[];
+};
+
+/**
+ * Fetch detailed provider availability, plan acceptance, and hours from medseekpr.com.
+ */
+export async function fetchMedSeekProfile(
+  nombre: string,
+  apellidos: string,
+  timeoutMs = 4000
+): Promise<MedSeekProfileResult | null> {
+  const url = new URL(`${MEDSEEK_BASE_URL}/provider-profile`);
+  url.searchParams.set("nombre", nombre);
+  url.searchParams.set("apellidos", apellidos);
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const res = await fetch(url.toString(), { signal: controller.signal });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data || !data.success) return null;
+
+    return {
+      success: true,
+      is_verified: data.is_verified ?? false,
+      accepting_new_patients: data.availability?.accepting_new_patients ?? null,
+      accepts_plan_vital: data.availability?.accepts_plan_vital ?? null,
+      accepts_medicare: data.availability?.accepts_medicare ?? null,
+      telemedicina: data.availability?.telemedicina ?? null,
+      horarios: data.location?.horarios ?? null,
+      full_address: data.location?.full_address ?? null,
+      idiomas: Array.isArray(data.idiomas) ? data.idiomas : [],
+    };
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
