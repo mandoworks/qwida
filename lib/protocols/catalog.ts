@@ -29,6 +29,14 @@ export const ProtocolCardSchema = z.object({
 export type ProtocolRequirement = z.infer<typeof ProtocolRequirementSchema>;
 export type ProtocolCardData = z.infer<typeof ProtocolCardSchema>;
 
+/**
+ * Fixed line under every simulated card. Those requirements mention holding or
+ * stopping a medicine, and Quida never tells a patient to start, stop, skip,
+ * raise or lower one on its own: only her own doctor says so.
+ */
+export const MEDICATION_CAUTION =
+  "No empiece, no suspenda y no cambie ninguna medicina sin hablar antes con su médico.";
+
 export const PROTOCOL_CATALOG: ProtocolCardData[] = [
   ProtocolCardSchema.parse(humacaoData),
   ProtocolCardSchema.parse(menonitaData),
@@ -50,4 +58,13 @@ export function searchProtocols(query: string): ProtocolCardData[] {
     const haystack = `${p.title} ${p.procedure} ${p.facility} ${p.municipio} ${p.summary}`.toLowerCase();
     return haystack.includes(q);
   });
+}
+
+/**
+ * How many cards are an illustrative example rather than a published facility
+ * rule. The count is read from the data, never typed in, so a card that is
+ * relabelled SIMULADO cannot leave the page claiming otherwise.
+ */
+export function simulatedCount(protocols: readonly ProtocolCardData[] = PROTOCOL_CATALOG): number {
+  return protocols.filter((p) => p.is_simulated).length;
 }

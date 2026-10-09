@@ -1,4 +1,5 @@
 import type { Provider } from "./catalog";
+import { readable } from "./format";
 
 /** Lowercase, without accents, trimmed. "CARDIOLOGIA" and "Cardiología" compare equal. */
 export function normalize(value: string): string {
@@ -51,4 +52,52 @@ export function searchProviders(providers: readonly Provider[], query: ProviderQ
 /** Municipios present in the data, so the filter never offers a town with nothing in it. */
 export function municipios(providers: readonly Provider[]): string[] {
   return [...new Set(providers.map((p) => p.municipio))].sort((a, b) => a.localeCompare(b));
+}
+
+/** A row of a filter select. `count` is how many records she would be left with. */
+export type FilterOption = { value: string; label: string; count: number };
+
+/** The "no filter" row. Empty string, because that is what a native select can hold. */
+export const NO_FILTER = "";
+
+/**
+ * Specialty rows with the count each one leaves, given the other filter.
+ * The count is what makes a filter that cannot narrow honest: this catalog is
+ * one specialty in one municipality, so "Cardiología" and "Ponce" both show
+ * the full count instead of silently doing nothing.
+ */
+export function specialtyOptions(providers: readonly Provider[], query: ProviderQuery = {}): FilterOption[] {
+  const rows = (specialty: string) => ({
+    value: specialty,
+    label: specialty ? (specialtyLabel(specialty) ?? readable(specialty)) : "Todas",
+    count: searchProviders(providers, { ...query, specialty }).length,
+  });
+  return [rows(NO_FILTER), ...SPECIALTIES.map((s) => rows(s.value))];
+}
+
+/** Municipio rows with the count each one leaves, given the other filter. */
+export function municipioOptions(providers: readonly Provider[], query: ProviderQuery = {}): FilterOption[] {
+  const rows = (municipio: string) => ({
+    value: municipio,
+    label: municipio ? readable(municipio) : "Todos",
+    count: searchProviders(providers, { ...query, municipio }).length,
+  });
+  return [rows(NO_FILTER), ...municipios(providers).map(rows)];
+}
+
+function specialtyLabel(value: string): string | undefined {
+  return SPECIALTIES.find((s) => s.value === value.trim().toLowerCase())?.label;
+}
+
+/**
+ * "Especialidad: Cardiología intervencional. Municipio: Ponce." Empty when no
+ * filter is set, so the page only speaks about the filters when there are some.
+ */
+export function activeFilters(query: ProviderQuery): string {
+  const specialty = query.specialty?.trim() ?? "";
+  const municipio = query.municipio?.trim() ?? "";
+  const parts: string[] = [];
+  if (specialty) parts.push(`Especialidad: ${specialtyLabel(specialty) ?? readable(specialty)}`);
+  if (municipio) parts.push(`Municipio: ${readable(municipio)}`);
+  return parts.length ? `${parts.join(". ")}.` : "";
 }

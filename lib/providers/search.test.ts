@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { providers } from "./catalog";
-import { SPECIALTIES, matchesSpecialty, municipios, normalize, searchProviders } from "./search";
+import {
+  SPECIALTIES,
+  activeFilters,
+  matchesSpecialty,
+  municipios,
+  municipioOptions,
+  normalize,
+  searchProviders,
+  specialtyOptions,
+} from "./search";
 
 const licenses = (list: { license_number: string }[]) => list.map((p) => p.license_number);
 
@@ -70,5 +79,84 @@ describe("shipped data", () => {
 
   it("offers only municipios that are in the data", () => {
     expect(municipios(providers)).toEqual(["PONCE"]);
+  });
+});
+
+/**
+ * Marley QA (production 6c89d18): "the filters do not re filter the list".
+ * The wiring was never broken, the snapshot is one specialty in one
+ * municipio, so the two obvious choices left 15 of 15 and looked dead.
+ * These counts are what now makes that visible on the page.
+ */
+describe("specialtyOptions", () => {
+  const countFor = (value: string) => specialtyOptions(providers).find((o) => o.value === value)?.count;
+
+  it("keeps the no filter row first, labeled Todas", () => {
+    const first = specialtyOptions(providers)[0];
+    expect(first).toEqual({ value: "", label: "Todas", count: providers.length });
+  });
+
+  it("counts every row the way searchProviders filters", () => {
+    for (const option of specialtyOptions(providers)) {
+      expect(option.count).toBe(searchProviders(providers, { specialty: option.value }).length);
+    }
+  });
+
+  it("reports honestly that Cardiología cannot narrow this catalog", () => {
+    expect(countFor("cardiologia")).toBe(providers.length);
+    expect(countFor("cardiologia intervencional")).toBe(3);
+    expect(countFor("cardiologia pediatrica")).toBe(1);
+    expect(countFor("medicina interna")).toBe(14);
+  });
+
+  it("keeps its counts inside a chosen municipio", () => {
+    const options = specialtyOptions(providers, { municipio: "Ponce" });
+    for (const option of options) {
+      expect(option.count).toBe(searchProviders(providers, { specialty: option.value, municipio: "Ponce" }).length);
+    }
+    expect(options.find((o) => o.value === "cardiologia intervencional")?.count).toBe(3);
+  });
+
+  it("drops to zero for a town with nothing in it", () => {
+    expect(specialtyOptions(providers, { municipio: "Adjuntas" }).every((o) => o.count === 0)).toBe(true);
+  });
+});
+
+describe("municipioOptions", () => {
+  it("offers Todos plus every municipio in the data, in Spanish", () => {
+    expect(municipioOptions(providers)).toEqual([
+      { value: "", label: "Todos", count: providers.length },
+      { value: "PONCE", label: "Ponce", count: providers.length },
+    ]);
+  });
+
+  it("narrows its counts with the specialty already applied", () => {
+    expect(municipioOptions(providers, { specialty: "cardiologia pediatrica" }).map((o) => o.count)).toEqual([1, 1]);
+    expect(municipioOptions(providers, { specialty: "cardiologia intervencional" }).map((o) => o.count)).toEqual([3, 3]);
+  });
+});
+
+describe("activeFilters", () => {
+  it("says nothing when nothing is being filtered", () => {
+    expect(activeFilters({})).toBe("");
+    expect(activeFilters({ specialty: "", municipio: null })).toBe("");
+    expect(activeFilters({ specialty: "   ", municipio: " " })).toBe("");
+  });
+
+  it("names what she picked, in the label she read in the select", () => {
+    expect(activeFilters({ specialty: "cardiologia intervencional" })).toBe(
+      "Especialidad: Cardiología intervencional.",
+    );
+    expect(activeFilters({ municipio: "Ponce" })).toBe("Municipio: Ponce.");
+  });
+
+  it("reads both filters together", () => {
+    expect(activeFilters({ specialty: "pediatria", municipio: "PONCE" })).toBe(
+      "Especialidad: Pediatría. Municipio: Ponce.",
+    );
+  });
+
+  it("does not invent accents for a term that is not a listed option", () => {
+    expect(activeFilters({ specialty: "dermatologia" })).toBe("Especialidad: Dermatologia.");
   });
 });

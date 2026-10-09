@@ -1,10 +1,16 @@
 import { Badge } from "@/components/ui/Badge";
-import type { ProtocolCardData } from "@/lib/protocols/catalog";
+import { formatConsulted } from "@/lib/providers/format";
+import { MEDICATION_CAUTION, type ProtocolCardData } from "@/lib/protocols/catalog";
 
 type ProtocolCardProps = {
   protocol: ProtocolCardData;
 };
 
+/**
+ * One visit protocol. The SIMULADO badge and the simulated notice come from the
+ * data, never from this file: an illustrative example is never dressed up as
+ * the published rule of a real facility.
+ */
 export function ProtocolCard({ protocol }: ProtocolCardProps) {
   return (
     <article className="flex flex-col gap-4 rounded-2xl border-2 border-line bg-surface p-5 text-lg">
@@ -25,7 +31,16 @@ export function ProtocolCard({ protocol }: ProtocolCardProps) {
         <p className="font-semibold text-ink-soft">
           {protocol.facility} ({protocol.municipio})
         </p>
+        {protocol.is_simulated && <p className="text-sm font-bold text-warn">{protocol.badge_label}</p>}
       </header>
+
+      {protocol.simulated_notice && (
+        <div className="rounded-xl border-2 border-warn p-4 text-base">
+          <p className="font-bold text-warn">Ejemplo ilustrativo, no es la norma de una instalación real</p>
+          <p className="mt-1 text-ink font-medium leading-relaxed">{protocol.simulated_notice}</p>
+          <p className="mt-2 text-ink-soft">{MEDICATION_CAUTION}</p>
+        </div>
+      )}
 
       {/* Hero warning banner: No pierda el viaje */}
       <div className="rounded-xl border-2 border-warn bg-warn/10 p-4 text-base">
@@ -71,12 +86,12 @@ export function ProtocolCard({ protocol }: ProtocolCardProps) {
             >
               Documento público oficial
             </a>{" "}
-            (consultado el 9 de octubre de 2026).
+            (consultado el {formatConsulted(protocol.fetched_at)}).
           </p>
         ) : (
-          <p className="text-warn font-semibold">
-            {protocol.simulated_notice || "Protocolo de demostración con datos simulados."}
-          </p>
+          !protocol.simulated_notice && (
+            <p className="text-warn font-semibold">Protocolo de demostración con datos simulados.</p>
+          )
         )}
       </footer>
     </article>

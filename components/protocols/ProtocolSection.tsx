@@ -2,21 +2,27 @@
 
 import { useState } from "react";
 import { ProtocolCard } from "@/components/protocols/ProtocolCard";
-import { getAllProtocols, searchProtocols } from "@/lib/protocols/catalog";
+import { getAllProtocols, searchProtocols, simulatedCount } from "@/lib/protocols/catalog";
 
 export function ProtocolSection() {
   const [query, setQuery] = useState("");
-  const protocols = query ? searchProtocols(query) : getAllProtocols();
+  const all = getAllProtocols();
+  const protocols = query ? searchProtocols(query) : all;
+  const simulated = simulatedCount(all);
 
   return (
     <section aria-labelledby="protocolos-heading" className="flex flex-col gap-6">
       <header className="flex flex-col gap-2">
-        <h2 id="protocolos-heading" className="text-3xl font-bold">
-          Protocolos de visita («No pierda el viaje»)
-        </h2>
+        <h3 id="protocolos-heading" className="text-2xl font-bold">
+          Protocolos de visita
+        </h3>
         <p className="text-lg text-ink-soft leading-relaxed">
           Muchos pacientes llegan a su cita o estudio médico y pierden el viaje por no
           cumplir requisitos previos. Revise estas guías antes de salir de casa.
+        </p>
+        <p className="rounded-2xl border-2 border-warn bg-surface p-4 text-lg">
+          En esta lista, <span className="font-bold">{simulated} de {all.length}</span> son ejemplos
+          simulados. No son la norma de una instalación real. Cada tarjeta lo dice por su cuenta.
         </p>
       </header>
 

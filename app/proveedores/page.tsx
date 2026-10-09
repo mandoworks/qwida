@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ProtocolSection } from "@/components/protocols/ProtocolSection";
 import { ProviderSearch } from "@/components/providers/ProviderSearch";
 import { VERIFY_URL, catalog } from "@/lib/providers/catalog";
 import { formatConsulted } from "@/lib/providers/format";
@@ -32,7 +33,14 @@ export default function ProveedoresPage() {
 
       <p className="mt-6 text-base text-ink-soft">{ASES_RULE}</p>
 
-      <section aria-labelledby="de-donde-vienen" className="mt-6 flex flex-col gap-2 border-t-2 border-line pt-4">
+      <section aria-labelledby="antes-de-su-cita" className="mt-8 flex flex-col gap-4 border-t-2 border-line pt-6">
+        <h2 id="antes-de-su-cita" className="text-2xl font-bold md:text-3xl">
+          Antes de su cita: no pierda el viaje
+        </h2>
+        <ProtocolSection />
+      </section>
+
+      <section aria-labelledby="de-donde-vienen" className="mt-8 flex flex-col gap-2 border-t-2 border-line pt-4">
         <h2 id="de-donde-vienen" className="text-lg font-bold">
           De dónde vienen estos datos
         </h2>
