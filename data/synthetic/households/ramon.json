@@ -1,0 +1,84 @@
+{
+  "synthetic": true,
+  "householdId": "demo-ramon",
+  "tier": "top5",
+  "voiceId": "patient-m-04",
+  "persona": {
+    "patient": {
+      "name": "Ramón Díaz",
+      "display": "Don Ramón",
+      "age": 87,
+      "town": "Mayagüez"
+    },
+    "caregiver": {
+      "name": "Lourdes Díaz",
+      "relation": "hija",
+      "city": "Mayagüez"
+    },
+    "plan": {
+      "name": "Plan Vital",
+      "type": "MCO",
+      "fictional": true
+    }
+  },
+  "story": "Says he took his blood pressure pills; his daughter finds them in the pill box. Both versions stay on the timeline, the family correction never overwrites his note.",
+  "events": [
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "losartán",
+        "dose": "50 mg",
+        "frequency": "una vez al día, en la mañana",
+        "slots": [
+          "mañana"
+        ]
+      }
+    },
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "atorvastatina",
+        "dose": "20 mg",
+        "frequency": "una vez al día, en la noche",
+        "slots": [
+          "noche"
+        ]
+      }
+    },
+    {
+      "kind": "voice_note",
+      "status": "BORRADOR",
+      "source": "voice",
+      "confidence": 0.6,
+      "payload": {
+        "synthetic": true,
+        "simulated": true,
+        "durationSec": null,
+        "text": "¡Claro que sí! Bueno... creo que sí. Me las tomé. Seguro que sí.",
+        "recorded_at": {
+          "$days": 0
+        }
+      }
+    },
+    {
+      "kind": "nudge",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "text": "Papi no se las tomó. Las encontré en el pastillero. Ya se las di.",
+        "author": "Lourdes (hija)",
+        "corrects": "voice_note del día"
+      }
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "synthetic": true,
+  "householdId": "demo-maria",
+  "tier": "top5",
+  "voiceId": "patient-f-02",
+  "persona": {
+    "patient": {
+      "name": "María Torres",
+      "display": "Doña María",
+      "age": 83,
+      "town": "Ponce"
+    },
+    "caregiver": {
+      "name": "Javier Torres",
+      "relation": "sobrino",
+      "city": "Ponce"
+    },
+    "secondary": {
+      "name": "Roberto Torres",
+      "relation": "hijo",
+      "city": "Orlando"
+    },
+    "plan": {
+      "name": "Plan Vital",
+      "type": "MCO",
+      "fictional": true
+    }
+  },
+  "story": "Downplays symptoms. Mentions being tired three mornings in seven days; the digest shows the pattern to the family, Quida never interprets it.",
+  "events": [
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "carvedilol",
+        "dose": "6.25 mg",
+        "frequency": "dos veces al día",
+        "slots": [
+          "mañana",
+          "noche"
+        ]
+      }
+    },
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "furosemida",
+        "dose": "20 mg",
+        "frequency": "una vez al día, en la mañana",
+        "slots": [
+          "mañana"
+        ]
+      }
+    },
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "lisinopril",
+        "dose": "10 mg",
+        "frequency": "una vez al día",
+        "slots": [
+          "mañana"
+        ]
+      }
+    },
+    {
+      "kind": "voice_note",
+      "status": "BORRADOR",
+      "source": "voice",
+      "confidence": 0.9,
+      "payload": {
+        "synthetic": true,
+        "simulated": true,
+        "durationSec": null,
+        "text": "Hoy amanecí un poco cansada, pero estoy bien, no se preocupen.",
+        "recorded_at": {
+          "$days": -6
+        }
+      }
+    },
+    {
+      "kind": "voice_note",
+      "status": "BORRADOR",
+      "source": "voice",
+      "confidence": 0.9,
+      "payload": {
+        "synthetic": true,
+        "simulated": true,
+        "durationSec": null,
+        "text": "Más o menos dormí. Me levanté dos veces al baño. Un poquito cansada, nada más.",
+        "recorded_at": {
+          "$days": -4
+        }
+      }
+    },
+    {
+      "kind": "voice_note",
+      "status": "BORRADOR",
+      "source": "voice",
+      "confidence": 0.9,
+      "payload": {
+        "synthetic": true,
+        "simulated": true,
+        "durationSec": null,
+        "text": "Otra vez amanecí cansadita. Pero no es nada, de verdad.",
+        "recorded_at": {
+          "$days": -1
+        }
+      }
+    },
+    {
+      "kind": "appointment",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "specialty": "geriatría",
+        "doctor": "Dra. Valeria Montes (ficticia)",
+        "place": "Consultorio Geriátrico de Ponce (ficticio)",
+        "date": {
+          "$days": 6
+        },
+        "plan": "Plan Vital"
+      }
+    }
+  ]
+}

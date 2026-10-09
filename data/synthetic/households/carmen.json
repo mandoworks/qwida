@@ -1,0 +1,110 @@
+{
+  "synthetic": true,
+  "householdId": "demo-carmen",
+  "tier": "golden",
+  "voiceId": "patient-f-01",
+  "persona": {
+    "patient": {
+      "name": "Carmen Rivera",
+      "display": "Doña Carmen",
+      "age": 78,
+      "town": "Adjuntas"
+    },
+    "caregiver": {
+      "name": "Marisol Rivera",
+      "relation": "hija",
+      "city": "Orlando"
+    },
+    "plan": {
+      "name": "Plan Vital",
+      "type": "MCO",
+      "fictional": true
+    },
+    "doctors": [
+      {
+        "name": "Dr. Ramón Feliciano (ficticio)",
+        "role": "médico primario",
+        "town": "Adjuntas"
+      },
+      {
+        "name": "Dra. Isabel Ferrer (ficticia)",
+        "role": "cardióloga",
+        "town": "Ponce",
+        "voiceId": "doctor-f-03"
+      }
+    ]
+  },
+  "story": "Before the visit: metformina and amlodipino confirmed, cardiology referido and appointment with Dra. Ferrer in Ponce. The live demo adds the visit (public/demo/visita-1.mp3: losartán 50 mg, omeprazol with no dose, referido) and the handwritten losartán photo.",
+  "events": [
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "metformina",
+        "dose": "500 mg",
+        "frequency": "dos veces al día, con comida",
+        "slots": [
+          "mañana",
+          "noche"
+        ],
+        "refill": {
+          "runs_out_on": {
+            "$date": 5
+          }
+        }
+      }
+    },
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "amlodipino",
+        "dose": "5 mg",
+        "frequency": "una vez al día",
+        "slots": [
+          "mañana"
+        ]
+      }
+    },
+    {
+      "kind": "appointment",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "specialty": "cardiología",
+        "doctor": "Dra. Isabel Ferrer (ficticia)",
+        "place": "Centro Cardiovascular del Sur, Ponce (ficticio)",
+        "date": {
+          "$days": 9
+        },
+        "plan": "Plan Vital"
+      }
+    },
+    {
+      "kind": "referido",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "specialty": "cardiología",
+        "doctor": "Dra. Isabel Ferrer (ficticia)",
+        "issued_on": {
+          "$date": -45
+        },
+        "expires_on": {
+          "$date": 45
+        },
+        "plan": "Plan Vital"
+      }
+    }
+  ]
+}

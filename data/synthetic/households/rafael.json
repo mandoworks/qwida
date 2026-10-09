@@ -1,0 +1,62 @@
+{
+  "synthetic": true,
+  "householdId": "demo-rafael",
+  "tier": "top5",
+  "voiceId": "patient-m-08",
+  "persona": {
+    "patient": {
+      "name": "Rafael Ortiz",
+      "display": "Don Rafael",
+      "age": 89,
+      "town": "Humacao"
+    },
+    "caregiver": {
+      "name": "Gladys Ortiz",
+      "relation": "esposa",
+      "city": "Humacao"
+    },
+    "plan": {
+      "name": "Plan Vital",
+      "type": "MCO",
+      "fictional": true
+    }
+  },
+  "story": "Refill countdown. Label filled 27 days ago, 30 tablets, one a day: three days left, reminder already due.",
+  "events": [
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "metoprolol",
+        "dose": "25 mg",
+        "frequency": "una vez al día",
+        "slots": [
+          "mañana"
+        ],
+        "pharmacy": "Farmacia El Faro, Humacao (ficticia)",
+        "quantity": 30,
+        "fill_date": {
+          "$date": -27
+        },
+        "rx_number": "RX-SINT-40871"
+      }
+    },
+    {
+      "kind": "nudge",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "text": "Don Rafael: le quedan pastillas para unos 3 días. Llamar a Farmacia El Faro (ficticia) para el refill.",
+        "to": [
+          "paciente",
+          "esposa"
+        ]
+      }
+    }
+  ]
+}

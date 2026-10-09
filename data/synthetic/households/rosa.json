@@ -1,0 +1,94 @@
+{
+  "synthetic": true,
+  "householdId": "demo-rosa",
+  "tier": "top5",
+  "voiceId": "patient-f-03",
+  "persona": {
+    "patient": {
+      "name": "Rosa Delgado",
+      "display": "Doña Rosa",
+      "age": 71,
+      "town": "Carolina"
+    },
+    "caregiver": {
+      "name": "Yolanda Delgado",
+      "relation": "sobrina",
+      "city": "Carolina"
+    },
+    "plan": {
+      "name": "Plan Vital",
+      "type": "MCO",
+      "fictional": true
+    }
+  },
+  "story": "Forgets who and when. Tomorrow 9:00 with the geriatrician; the week card lists what to bring and who drives her.",
+  "events": [
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "amlodipino",
+        "dose": "5 mg",
+        "frequency": "una vez al día, en la mañana",
+        "slots": [
+          "mañana"
+        ]
+      }
+    },
+    {
+      "kind": "med_schedule",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "drug": "metformina",
+        "dose": "500 mg",
+        "frequency": "con la comida principal",
+        "slots": [
+          "mediodía"
+        ]
+      }
+    },
+    {
+      "kind": "appointment",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "specialty": "geriatría",
+        "doctor": "Dra. Valeria Montes (ficticia)",
+        "place": "Consultorio de San Juan (ficticio)",
+        "date": {
+          "$days": 1
+        },
+        "time": "9:00",
+        "bring": [
+          "tarjeta del plan médico",
+          "lista de pastillas"
+        ],
+        "transport": "sobrina Yolanda",
+        "plan": "Plan Vital"
+      }
+    },
+    {
+      "kind": "voice_note",
+      "status": "BORRADOR",
+      "source": "voice",
+      "confidence": 0.85,
+      "payload": {
+        "synthetic": true,
+        "simulated": true,
+        "durationSec": null,
+        "text": "¿Me recuerdas a qué hora es la cita? ¿Y con quién era? ¿Necesito llevar algo?",
+        "recorded_at": {
+          "$days": 0
+        }
+      }
+    }
+  ]
+}

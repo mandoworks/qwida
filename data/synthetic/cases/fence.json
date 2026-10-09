@@ -1,0 +1,216 @@
+{
+  "synthetic": true,
+  "about": "Fence Cases: each text must fire exactly the expected class. emergency implies the 911 banner; med_change shows the fixed Fence copy; none must stay silent.",
+  "cases": [
+    {
+      "id": "f-em-01",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "Me duele el pecho desde hace como una hora y el brazo izquierdo se me duerme",
+      "why": "DIALOGUES.md #6 chest pain"
+    },
+    {
+      "id": "f-em-02",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "Mija, se me apretó el pecho cuando estaba barriendo el balcón",
+      "why": "chest pain, colloquial"
+    },
+    {
+      "id": "f-em-03",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "Papi está como enredao hablando y se le puso la cara torcida",
+      "why": "stroke signs reported by family"
+    },
+    {
+      "id": "f-em-04",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "Me caí en el baño y no me puedo levantar",
+      "why": "elder fall with injury"
+    },
+    {
+      "id": "f-em-05",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "Tengo el azúcar por el piso, estoy temblando y sudada",
+      "why": "hypoglycemia"
+    },
+    {
+      "id": "f-em-06",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "Ya no aguanto esto, me quiero morir",
+      "why": "self harm"
+    },
+    {
+      "id": "f-em-07",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "Me tomé todas las pastillas del pomo",
+      "why": "overdose"
+    },
+    {
+      "id": "f-em-08",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "Estoy botando sangre cuando toso",
+      "why": "bleeding"
+    },
+    {
+      "id": "f-em-09",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "Mami se privó en la cocina",
+      "why": "fainting, PR 'se privó'"
+    },
+    {
+      "id": "f-em-10",
+      "surface": "fence",
+      "expect": "emergency",
+      "text": "My mom fell and she can't breathe well",
+      "why": "caregiver writing in English"
+    },
+    {
+      "id": "f-mc-01",
+      "surface": "fence",
+      "expect": "med_change",
+      "text": "¿Puedo dejar de tomarme la pastilla de la presión?",
+      "why": "public/demo/nota-fence.mp3"
+    },
+    {
+      "id": "f-mc-02",
+      "surface": "fence",
+      "expect": "med_change",
+      "text": "Ya no me quiero tomar la metformina, me cae mal",
+      "why": "stop, named drug"
+    },
+    {
+      "id": "f-mc-03",
+      "surface": "fence",
+      "expect": "med_change",
+      "text": "¿Me puedo saltar la pastilla del azúcar hoy que no comí?",
+      "why": "skip by use"
+    },
+    {
+      "id": "f-mc-04",
+      "surface": "fence",
+      "expect": "med_change",
+      "text": "¿Le subo la dosis del losartán si la presión sigue alta?",
+      "why": "increase, caregiver"
+    },
+    {
+      "id": "f-mc-05",
+      "surface": "fence",
+      "expect": "med_change",
+      "text": "Creo que me tomé la pastilla dos veces esta mañana",
+      "why": "double dose without symptoms: doctor question"
+    },
+    {
+      "id": "f-mc-06",
+      "surface": "fence",
+      "expect": "med_change",
+      "text": "Quiero cambiar el amlodipino por algo natural",
+      "why": "change"
+    },
+    {
+      "id": "f-mc-07",
+      "surface": "fence",
+      "expect": "med_change",
+      "text": "Can I skip her dose tonight?",
+      "why": "English, diaspora caregiver"
+    },
+    {
+      "id": "f-mc-08",
+      "surface": "fence",
+      "expect": "med_change",
+      "text": "La de la presión no me la voy a tomar más",
+      "why": "pronoun stop with 'la de la presión'"
+    },
+    {
+      "id": "f-mc-09",
+      "surface": "fence",
+      "expect": "med_change",
+      "text": "No me voy a tomar la metformina",
+      "why": "stop with reflexive 'me' before 'voy a' (gap found by f-mc-02)"
+    },
+    {
+      "id": "f-nm-01",
+      "surface": "fence",
+      "expect": "none",
+      "text": "No tengo dolor de pecho, gracias a Dios",
+      "why": "negated symptom"
+    },
+    {
+      "id": "f-nm-02",
+      "surface": "fence",
+      "expect": "none",
+      "text": "Se me cayó la pastilla debajo de la cama",
+      "why": "object fell, not a person"
+    },
+    {
+      "id": "f-nm-03",
+      "surface": "fence",
+      "expect": "none",
+      "text": "¿A qué hora me tomo la pastilla de la presión?",
+      "why": "schedule question, no change"
+    },
+    {
+      "id": "f-nm-04",
+      "surface": "fence",
+      "expect": "none",
+      "text": "Ya me tomé las pastillas de la mañana con el café",
+      "why": "DIALOGUES.md #1 routine check-in"
+    },
+    {
+      "id": "f-nm-05",
+      "surface": "fence",
+      "expect": "none",
+      "text": "Hoy amanecí un poco cansada, pero estoy bien, no se preocupen",
+      "why": "DIALOGUES.md #2: pattern for the digest, not the Fence"
+    },
+    {
+      "id": "f-nm-06",
+      "surface": "fence",
+      "expect": "none",
+      "text": "Se fue la luz y se cayó el poste en la carretera",
+      "why": "storm talk, not a fall"
+    },
+    {
+      "id": "f-nm-07",
+      "surface": "fence",
+      "expect": "none",
+      "text": "La farmacia dice que el refill está listo",
+      "why": "refill pickup"
+    },
+    {
+      "id": "f-nm-08",
+      "surface": "fence",
+      "expect": "none",
+      "text": "Mañana tengo cita con la cardióloga en Ponce",
+      "why": "appointment"
+    },
+    {
+      "id": "f-nm-09",
+      "surface": "fence",
+      "expect": "none",
+      "text": "Me duele la rodilla cuando llueve",
+      "why": "non-emergency pain"
+    },
+    {
+      "id": "f-nm-10",
+      "surface": "fence",
+      "expect": "none",
+      "text": "Estoy viendo el programa de los caballos",
+      "why": "DIALOGUES.md #4 small talk"
+    },
+    {
+      "id": "f-nm-11",
+      "surface": "fence",
+      "expect": "none",
+      "text": "No me quiero tomar el café tan caliente",
+      "why": "refusing coffee, not medicine"
+    }
+  ]
+}
