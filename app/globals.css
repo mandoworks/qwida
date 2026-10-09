@@ -108,8 +108,8 @@ body {
 
   /* touch (2.8) */
   --tap-patient-sm: 4rem;
-  --tap-caregiver: 2.75rem;
-  --tap-caregiver-lg: 3rem;
+  --tap-familia: 2.75rem;
+  --tap-familia-lg: 3rem;
 }
 
 /* high contrast overrides: shadows off, borders on */
@@ -205,8 +205,8 @@ body {
   --shadow-tile: var(--sh-tile);
   --shadow-pop: var(--sh-pop);
 
-  --spacing-tap-c: var(--tap-caregiver);
-  --spacing-tap-c-lg: var(--tap-caregiver-lg);
+  --spacing-tap-c: var(--tap-familia);
+  --spacing-tap-c-lg: var(--tap-familia-lg);
   --spacing-tap-p-sm: var(--tap-patient-sm);
 }
 
