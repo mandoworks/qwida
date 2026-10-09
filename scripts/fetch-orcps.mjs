@@ -49,7 +49,7 @@ const NPPES_MAX_SKIP = 2000;
 /** The brief: at most this many records per specialty per municipality. */
 const CAP_PER_SPECIALTY_MUNICIPIO = 40;
 
-const MUNICIPIOS = ["PONCE", "ADJUNTAS", "UTUADO", "MANATI", "CAGUAS", "SAN JUAN"];
+const MUNICIPIOS = ["PONCE", "ADJUNTAS", "UTUADO", "MANATI", "CAGUAS"];
 
 const SPECIALTIES = [
   { value: "cardiologia", label: "Cardiología", term: "CARDIOLOGIA", nppes: "Cardiovascular Disease" },

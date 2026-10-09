@@ -69,8 +69,10 @@ describe("/proveedores", () => {
   it("keeps the filter controls and their per option counts", () => {
     expect(page).toContain('id="filtro-especialidad"');
     expect(page).toContain('id="filtro-municipio"');
-    expect(page).toContain("Cardiología (15)");
-    expect(page).toContain("Ponce (15)");
-    expect(page).toContain("Cardiología intervencional (3)");
+    expect(page).toContain("Cardiología (30)");
+    expect(page).toContain("Neurología (29)");
+    expect(page).toContain("Ponce (65)");
+    expect(page).toContain("Caguas (67)");
+    expect(page).toContain("Cardiología intervencional (8)");
   });
 });

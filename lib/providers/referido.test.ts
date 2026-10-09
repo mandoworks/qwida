@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { providers } from "./catalog";
+import { readable } from "./format";
 import { ASES_RULE, activeReferido, expiryLine, nudgeEvent } from "./referido";
 import type { QuidaEvent } from "@/lib/store/types";
 
@@ -58,8 +59,8 @@ describe("nudgeEvent", () => {
     expect(event.kind).toBe("nudge");
     expect(event.status).toBe("CONFIRMADO");
     expect(event.source).toBe("caregiver");
-    expect(event.payload.text).toBe("Llamar a Adrian Perez Cochran para cita antes del 7 de enero");
-    expect(event.payload.doctor_license).toBe("11205");
+    expect(event.payload.text).toBe(`Llamar a ${readable(provider.name)} para cita antes del 7 de enero`);
+    expect(event.payload.doctor_license).toBe(provider.license_number);
     expect(event.payload.expires_on).toBe("2027-01-07");
     expect(String(event.payload.ases_rule)).toBe(ASES_RULE);
   });

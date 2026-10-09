@@ -1,0 +1,220 @@
+{
+  "specialty": "endocrinologia",
+  "specialty_label": "Endocrinología",
+  "attribution": "Datos públicos de la Junta de Licenciamiento y Disciplina Médica (ORCPS) y CMS NPPES",
+  "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+  "fetched_at": "2026-10-09T18:35:38Z",
+  "record_count": 19,
+  "municipio_counts": {
+    "PONCE": 8,
+    "ADJUNTAS": 0,
+    "UTUADO": 0,
+    "MANATI": 4,
+    "CAGUAS": 7
+  },
+  "phone_count": 15,
+  "truncated": [],
+  "dropped": {
+    "restricted": 17,
+    "not_active": 0,
+    "duplicate_rows": 507
+  },
+  "notes": [
+    "Solo licencias activas. Se descartaron los registros con restricción y los que no estaban activos.",
+    "El teléfono viene de NPPES, que es el dato que reporta el profesional, y puede estar desactualizado.",
+    "ORCPS y NPPES no dicen si un profesional acepta pacientes nuevos ni qué planes acepta. Esos dos datos no existen en fuentes públicas y no se inventan.",
+    "Datos de profesionales reales. No se incluyen direcciones personales ni datos de pacientes."
+  ],
+  "records": [
+    {
+      "name": "ANGELO ROSADO PEREZ",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "CAGUAS",
+      "license_number": "11554",
+      "license_status": "ACTIVO",
+      "phone": "787-744-1833",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "IVAN A SERRANO SANTIAGO",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "CAGUAS",
+      "license_number": "22039",
+      "license_status": "ACTIVO",
+      "phone": "787-399-9121",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "IVAN E LABOY ORTIZ",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "CAGUAS",
+      "license_number": "18331",
+      "license_status": "ACTIVO",
+      "phone": "787-746-7066",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE R CRUZ DIAZ",
+      "specialty": "OBSTETRICIA Y GINECOLOGIA, ENDOCRINOLOGIA REPRODUCTIVA",
+      "municipio": "CAGUAS",
+      "license_number": "13080",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JUAN R OTERO MARTINEZ",
+      "specialty": "ENDOCRINOLOGIA, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "8189",
+      "license_status": "ACTIVO",
+      "phone": "787-746-7057",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "NICOLLE M CANALES RAMOS",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "CAGUAS",
+      "license_number": "22100",
+      "license_status": "ACTIVO",
+      "phone": "787-399-9121",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "VILMA M RABELL VILCHES",
+      "specialty": "ENDOCRINOLOGIA, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "4024",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "MIRNA MALDONADO VEGA",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "MANATI",
+      "license_number": "15393",
+      "license_status": "ACTIVO",
+      "phone": "787-299-1067",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "RAMON ORTIZ CARRASQUILLO",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGIA Y METABOLISMO",
+      "municipio": "MANATI",
+      "license_number": "4852",
+      "license_status": "ACTIVO",
+      "phone": "787-690-0096",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "RENIL M RODRIGUEZ MARTINEZ",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "MANATI",
+      "license_number": "22609",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "WILNELIA MEDINA TORRES",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "MANATI",
+      "license_number": "22700",
+      "license_status": "ACTIVO",
+      "phone": "787-621-4282",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ALEJANDRA N SANTIAGO VIVES",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "PONCE",
+      "license_number": "14047",
+      "license_status": "ACTIVO",
+      "phone": "787-677-1904",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CESAR H TRABANCO DE LA CRUZ",
+      "specialty": "ENDOCRINOLOGIA, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "7904",
+      "license_status": "ACTIVO",
+      "phone": "787-841-7168",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "FRANCISCO J NADAL COLON",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "PONCE",
+      "license_number": "12801",
+      "license_status": "ACTIVO",
+      "phone": "787-259-4463",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE A MONTALVO FIGUEROA",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "PONCE",
+      "license_number": "11897",
+      "license_status": "ACTIVO",
+      "phone": "787-844-5177",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE M GARCIA MATEO",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "PONCE",
+      "license_number": "13031",
+      "license_status": "ACTIVO",
+      "phone": "787-284-5299",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "LUIS R RUIZ RIVERA",
+      "specialty": "ENDOCRINOLOGIA, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "6090",
+      "license_status": "ACTIVO",
+      "phone": "787-848-4997",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "LYDIA IRIZARRY GONZALEZ",
+      "specialty": "PEDIATRIA, ENDOCRINOLOGÍA PEDIÁTRICA",
+      "municipio": "PONCE",
+      "license_number": "10282",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "NIXZALIZ RODRIGUEZ RIVERA",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "PONCE",
+      "license_number": "17383",
+      "license_status": "ACTIVO",
+      "phone": "787-284-7256",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    }
+  ]
+}

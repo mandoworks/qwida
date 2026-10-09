@@ -21,6 +21,8 @@ export const SPECIALTIES = [
   { value: "cardiologia pediatrica", label: "Cardiología pediátrica" },
   { value: "enfermedades cardiovasculares", label: "Enfermedades cardiovasculares" },
   { value: "medicina interna", label: "Medicina interna" },
+  { value: "neurologia", label: "Neurología" },
+  { value: "endocrinologia", label: "Endocrinología" },
   { value: "pediatria", label: "Pediatría" },
 ] as const;
 
@@ -62,8 +64,7 @@ export const NO_FILTER = "";
 
 /**
  * Specialty rows with the count each one leaves, given the other filter.
- * The count is what makes a filter that cannot narrow honest: this catalog is
- * one specialty in one municipality, so "Cardiología" and "Ponce" both show
+ * The count is what makes a filter that cannot narrow honest: it shows
  * the full count instead of silently doing nothing.
  */
 export function specialtyOptions(providers: readonly Provider[], query: ProviderQuery = {}): FilterOption[] {

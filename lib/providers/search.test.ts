@@ -29,13 +29,18 @@ describe("searchProviders", () => {
 
   it("filters by specialty without accents on either side", () => {
     const cardiology = searchProviders(providers, { specialty: "Cardiología" });
-    expect(cardiology).toHaveLength(providers.length);
+    expect(cardiology).toHaveLength(30);
     expect(cardiology.every((p) => matchesSpecialty(p, "cardiologia"))).toBe(true);
+    expect(searchProviders(providers, { specialty: "neurologia" })).toHaveLength(29);
+    expect(searchProviders(providers, { specialty: "endocrinologia" })).toHaveLength(19);
   });
 
   it("separates the interventional and pediatric certification strings", () => {
     const interventional = searchProviders(providers, { specialty: "cardiologia intervencional" });
-    expect(interventional.map((p) => p.name)).toEqual([
+    expect(interventional).toHaveLength(8);
+    expect(
+      searchProviders(providers, { specialty: "cardiologia intervencional", municipio: "Ponce" }).map((p) => p.name).sort(),
+    ).toEqual([
       "ALEJANDRO J LOPEZ MAS",
       "EDGARDO BERMUDEZ MORENO",
       "RAFAEL J RIVERA BERRIOS",
@@ -46,8 +51,10 @@ describe("searchProviders", () => {
   });
 
   it("filters by municipio of work, exact", () => {
-    expect(searchProviders(providers, { municipio: "ponce" })).toHaveLength(providers.length);
-    expect(searchProviders(providers, { municipio: "adjuntas" })).toHaveLength(0);
+    expect(searchProviders(providers, { municipio: "ponce" })).toHaveLength(65);
+    expect(searchProviders(providers, { municipio: "caguas" })).toHaveLength(67);
+    expect(searchProviders(providers, { municipio: "adjuntas" })).toHaveLength(3);
+    expect(searchProviders(providers, { municipio: "utuado" })).toHaveLength(4);
   });
 
   it("combines both filters and never mutates the input", () => {
@@ -78,15 +85,16 @@ describe("shipped data", () => {
   });
 
   it("offers only municipios that are in the data", () => {
-    expect(municipios(providers)).toEqual(["PONCE"]);
+    expect(municipios(providers)).toEqual(["ADJUNTAS", "CAGUAS", "MANATI", "PONCE", "UTUADO"]);
   });
 });
 
 /**
  * Marley QA (production 6c89d18): "the filters do not re filter the list".
- * The wiring was never broken, the snapshot is one specialty in one
+ * The wiring was never broken, the snapshot was one specialty in one
  * municipio, so the two obvious choices left 15 of 15 and looked dead.
- * These counts are what now makes that visible on the page.
+ * Wave 3 widened the snapshot to four specialties in five municipios,
+ * and these counts are what now makes that visible on the page.
  */
 describe("specialtyOptions", () => {
   const countFor = (value: string) => specialtyOptions(providers).find((o) => o.value === value)?.count;
@@ -102,11 +110,13 @@ describe("specialtyOptions", () => {
     }
   });
 
-  it("reports honestly that Cardiología cannot narrow this catalog", () => {
-    expect(countFor("cardiologia")).toBe(providers.length);
-    expect(countFor("cardiologia intervencional")).toBe(3);
+  it("reports honestly that each specialty narrows this catalog", () => {
+    expect(countFor("cardiologia")).toBe(30);
+    expect(countFor("cardiologia intervencional")).toBe(8);
     expect(countFor("cardiologia pediatrica")).toBe(1);
-    expect(countFor("medicina interna")).toBe(14);
+    expect(countFor("medicina interna")).toBe(159);
+    expect(countFor("neurologia")).toBe(29);
+    expect(countFor("endocrinologia")).toBe(19);
   });
 
   it("keeps its counts inside a chosen municipio", () => {
@@ -118,7 +128,7 @@ describe("specialtyOptions", () => {
   });
 
   it("drops to zero for a town with nothing in it", () => {
-    expect(specialtyOptions(providers, { municipio: "Adjuntas" }).every((o) => o.count === 0)).toBe(true);
+    expect(specialtyOptions(providers, { municipio: "San Juan" }).every((o) => o.count === 0)).toBe(true);
   });
 });
 
@@ -126,13 +136,21 @@ describe("municipioOptions", () => {
   it("offers Todos plus every municipio in the data, in Spanish", () => {
     expect(municipioOptions(providers)).toEqual([
       { value: "", label: "Todos", count: providers.length },
-      { value: "PONCE", label: "Ponce", count: providers.length },
+      { value: "ADJUNTAS", label: "Adjuntas", count: 3 },
+      { value: "CAGUAS", label: "Caguas", count: 67 },
+      { value: "MANATI", label: "Manati", count: 53 },
+      { value: "PONCE", label: "Ponce", count: 65 },
+      { value: "UTUADO", label: "Utuado", count: 4 },
     ]);
   });
 
   it("narrows its counts with the specialty already applied", () => {
-    expect(municipioOptions(providers, { specialty: "cardiologia pediatrica" }).map((o) => o.count)).toEqual([1, 1]);
-    expect(municipioOptions(providers, { specialty: "cardiologia intervencional" }).map((o) => o.count)).toEqual([3, 3]);
+    expect(municipioOptions(providers, { specialty: "cardiologia pediatrica" }).map((o) => o.count)).toEqual([
+      1, 0, 0, 0, 1, 0,
+    ]);
+    expect(municipioOptions(providers, { specialty: "neurologia" }).map((o) => o.count)).toEqual([
+      29, 0, 15, 5, 9, 0,
+    ]);
   });
 });
 

@@ -1,0 +1,1316 @@
+{
+  "specialty": "medicina interna",
+  "specialty_label": "Medicina interna",
+  "attribution": "Datos públicos de la Junta de Licenciamiento y Disciplina Médica (ORCPS) y CMS NPPES",
+  "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+  "fetched_at": "2026-10-09T18:35:38Z",
+  "record_count": 127,
+  "municipio_counts": {
+    "PONCE": 40,
+    "ADJUNTAS": 3,
+    "UTUADO": 4,
+    "MANATI": 40,
+    "CAGUAS": 40
+  },
+  "phone_count": 47,
+  "truncated": [
+    {
+      "municipio": "PONCE",
+      "found": 175,
+      "published": 40
+    },
+    {
+      "municipio": "MANATI",
+      "found": 76,
+      "published": 40
+    },
+    {
+      "municipio": "CAGUAS",
+      "found": 134,
+      "published": 40
+    }
+  ],
+  "dropped": {
+    "restricted": 17,
+    "not_active": 0,
+    "duplicate_rows": 507
+  },
+  "notes": [
+    "Solo licencias activas. Se descartaron los registros con restricción y los que no estaban activos.",
+    "El teléfono viene de NPPES, que es el dato que reporta el profesional, y puede estar desactualizado.",
+    "ORCPS y NPPES no dicen si un profesional acepta pacientes nuevos ni qué planes acepta. Esos dos datos no existen en fuentes públicas y no se inventan.",
+    "Datos de profesionales reales. No se incluyen direcciones personales ni datos de pacientes."
+  ],
+  "records": [
+    {
+      "name": "JORGE E RUIZ DIAZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "ADJUNTAS",
+      "license_number": "8316",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "LILLIANA M COLON COMAS",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "ADJUNTAS",
+      "license_number": "22247",
+      "license_status": "ACTIVO",
+      "phone": "787-844-2080",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "RIGOBERTO RAMOS GONZALEZ",
+      "specialty": "MEDICINA INTERNA, CARDIOLOGIA",
+      "municipio": "ADJUNTAS",
+      "license_number": "9656",
+      "license_status": "ACTIVO",
+      "phone": "787-829-5112",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ADRIANA CANDELARIO GONZALEZ",
+      "specialty": "MEDICINA INTERNA, ENFERMEDADES PULMONARES, CUIDADO CRITICO",
+      "municipio": "CAGUAS",
+      "license_number": "19605",
+      "license_status": "ACTIVO",
+      "phone": "787-703-1525",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AGNES L LOPEZ COLON",
+      "specialty": "GERIATRIA, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "14296",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AIXA DONES RODRIGUEZ",
+      "specialty": "MEDICINA INTERNA, ENFERMEDADES PULMONARES, CUIDADO CRITICO",
+      "municipio": "CAGUAS",
+      "license_number": "21401",
+      "license_status": "ACTIVO",
+      "phone": "787-653-3434",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AMARILIS PEREZ DE JESUS",
+      "specialty": "MEDICINA INTERNA, REUMATOLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "10231",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANA H MARTINEZ CAZORLA",
+      "specialty": "MEDICINA INTERNA, REUMATOLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "12276",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANGELO ROSADO PEREZ",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "CAGUAS",
+      "license_number": "11554",
+      "license_status": "ACTIVO",
+      "phone": "787-744-1833",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANSTRONG FIGUEROA RIVERA",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "15045",
+      "license_status": "ACTIVO",
+      "phone": "787-745-0340",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANTONIO R MORALES LOPEZ",
+      "specialty": "MEDICINA INTERNA, REUMATOLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "6113",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ARACELI RIVERA SERRANO",
+      "specialty": "MEDICINA INTERNA, MEDICINA NUCLEAR",
+      "municipio": "CAGUAS",
+      "license_number": "8227",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ARMANDO TORRES NIEVES",
+      "specialty": "MEDICINA INTERNA, ENFERMEDAD INFECCIOSA",
+      "municipio": "CAGUAS",
+      "license_number": "7113",
+      "license_status": "ACTIVO",
+      "phone": "787-761-2606",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ARNALDO A NIEVES ORTIZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "19697",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ARNULFO N SANTANA SANTANA",
+      "specialty": "MEDICINA INTERNA, ENFERMEDADES PULMONARES",
+      "municipio": "CAGUAS",
+      "license_number": "8355",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "BENJAMIN R GUARDIOLA RIVERA",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "16677",
+      "license_status": "ACTIVO",
+      "phone": "787-740-4295",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "BRYAN A SANTIAGO DIAZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "19432",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS E MENDEZ SERRANO",
+      "specialty": "HEMATOLOGIA, MEDICINA INTERNA, ONCOLOGIA MEDICA",
+      "municipio": "CAGUAS",
+      "license_number": "17775",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS E MORA QUESADA",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "6870",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS O RODRIGUEZ DEL VALLE",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "14680",
+      "license_status": "ACTIVO",
+      "phone": "787-406-3279",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARMELO MOLINA FEBUS",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "10504",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARMEN CORTES MORALES",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "8293",
+      "license_status": "ACTIVO",
+      "phone": "787-745-1702",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CHRISTIAN RODRIGUEZ RIVERA",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "13830",
+      "license_status": "ACTIVO",
+      "phone": "787-653-8802",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CYNDIA RODRIGUEZ NEGRON",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "19566",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DANIEL E RODRIGUEZ ROSSELLO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "22038",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DAVID A CARBALLEIRA CABRANES",
+      "specialty": "GERIATRIA, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "8472",
+      "license_status": "ACTIVO",
+      "phone": "787-743-5848",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EDGARDO F CARTAGENA AYALA",
+      "specialty": "MEDICINA INTERNA, NEUMOLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "9546",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EDGARDO J RODRIGUEZ MONGE",
+      "specialty": "MEDICINA INTERNA, HEMATOLOGIA ONCOLOGICA",
+      "municipio": "CAGUAS",
+      "license_number": "12477",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EDINSON CAMARGO ARIAS",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "13995",
+      "license_status": "ACTIVO",
+      "phone": "787-390-0281",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EILEEN COLON SANTOS",
+      "specialty": "ENFERMEDADES INFECCIOSAS, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "16767",
+      "license_status": "ACTIVO",
+      "phone": "787-754-0101",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ELSIE M DIAZ SCHROEDER",
+      "specialty": "MEDICINA INTERNA, ENFERMEDADES PULMONARES",
+      "municipio": "CAGUAS",
+      "license_number": "12260",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EMANUEL WARRINGTON COLON",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "17848",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EMILIO R GONZALEZ TORRES",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "8512",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ENRIQUE M RODRIGUEZ AVILA",
+      "specialty": "MEDICINA INTERNA, MEDICINA DE CUIDADO CRITICO",
+      "municipio": "CAGUAS",
+      "license_number": "19711",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ERASTO RODRIGUEZ ALBERTORIO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "10582",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ERIC M PEREZ CARRASQUILLO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "12200",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ERNESTO GARCIA SANTIAGO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "11239",
+      "license_status": "ACTIVO",
+      "phone": "787-961-4668",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EUGENIA GALINDO RAMOS",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "11573",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EVELYN M FONSECA RIVERA",
+      "specialty": "MEDICINA INTERNA, HEMATOLOGIA Y ONCOLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "9601",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "FABIO R RICCI GORBEA",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA, FALLO CARDIACO AVANZADO Y CARDIOLOGIA DE TRANSPLANTE",
+      "municipio": "CAGUAS",
+      "license_number": "17957",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "FERNANDO VELAZQUEZ ARROYO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "11085",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "FRANCES M FRANCESCHI NAZARIO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "10093",
+      "license_status": "ACTIVO",
+      "phone": "787-725-2447",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "FRANCISCO N ALVARADO MELENDEZ",
+      "specialty": "ENFERMEDADES INFECCIOSAS, MEDICINA INTERNA",
+      "municipio": "CAGUAS",
+      "license_number": "14625",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ABNER NIEVES TORRES",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA, CARDIOLOGIA INTERVENCIONAL",
+      "municipio": "MANATI",
+      "license_number": "21825",
+      "license_status": "ACTIVO",
+      "phone": "787-918-0066",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ADIANEZ SANTIAGO SANTIAGO",
+      "specialty": "MEDICINA INTERNA, REUMATOLOGIA",
+      "municipio": "MANATI",
+      "license_number": "21791",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AILEEN GUZMAN MORALES",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "13604",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AIXA E RODRIGUEZ VAZQUEZ",
+      "specialty": "HEMATOLOGIA, MEDICINA INTERNA, ONCOLOGIA",
+      "municipio": "MANATI",
+      "license_number": "10800",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ALEXANDER BORRERO ARVELO",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "MANATI",
+      "license_number": "19879",
+      "license_status": "ACTIVO",
+      "phone": "787-854-4120",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANGEL L PEREZ ADORNO",
+      "specialty": "MEDICINA INTERNA, NEUMOLOGIA",
+      "municipio": "MANATI",
+      "license_number": "10890",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AUGUSTO J AYALA CAMINERO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "18582",
+      "license_status": "ACTIVO",
+      "phone": "787-585-2411",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "BETTY CHINEA CRUZ",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "12868",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "BRENDA L LOUBRIEL RIVERA",
+      "specialty": "MEDICINA INTERNA, ENFERMEDADES PULMONARES, CUIDADO CRITICO",
+      "municipio": "MANATI",
+      "license_number": "14029",
+      "license_status": "ACTIVO",
+      "phone": "787-854-6464",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS G ORRACA LUGO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "10495",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS M CIDRE MIRANDA",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "7775",
+      "license_status": "ACTIVO",
+      "phone": "787-884-3139",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARMEN G PADILLA ORTIZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "7706",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CESAR F ORTEGA CAVA",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "18919",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CLAUDIA V QUILES CRUZ",
+      "specialty": "MEDICINA INTERNA, CUIDADO CRITICO, NEUMOLOGIA",
+      "municipio": "MANATI",
+      "license_number": "21775",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DANIA L SANTIAGO CARABALLO",
+      "specialty": "HEMATOLOGIA, MEDICINA INTERNA, ONCOLOGIA MEDICA",
+      "municipio": "MANATI",
+      "license_number": "17468",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DIEGO ROSSO FLORES",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "10744",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EDGAR A NEVAREZ SOSTRE",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "12124",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EDGAR HERNANDEZ MONTALVO",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "MANATI",
+      "license_number": "19610",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EDUARDO A PASCUAL FERRER",
+      "specialty": "MEDICINA INTERNA, MEDICINA NUCLEAR",
+      "municipio": "MANATI",
+      "license_number": "11913",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EDUARDO PARTIDA ROBLES",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "6738",
+      "license_status": "ACTIVO",
+      "phone": "787-854-0337",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EFRAIN CARRASQUILLO RODRIGUEZ",
+      "specialty": "MEDICINA INTERNA, REUMATOLOGIA",
+      "municipio": "MANATI",
+      "license_number": "13110",
+      "license_status": "ACTIVO",
+      "phone": "787-884-8686",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ELBA A ORDUÑA ACUM",
+      "specialty": "MEDICINA INTERNA, MEDICINA NUCLEAR",
+      "municipio": "MANATI",
+      "license_number": "7438",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ENRIQUE L RIOS ALAMEDA",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "MANATI",
+      "license_number": "13151",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "FRANCISCO J QUINTERO PEÑA",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "12166",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "GABRIELA M MONTES RIVERA",
+      "specialty": "MEDICINA INTERNA, REUMATOLOGIA",
+      "municipio": "MANATI",
+      "license_number": "18903",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "HENRY CATALA ZAYAS",
+      "specialty": "ENFERMEDADES INFECCIOSAS, MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "12742",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JAIME G APONTE RODRIGUEZ",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA, CUIDADO CRITICO",
+      "municipio": "MANATI",
+      "license_number": "17958",
+      "license_status": "ACTIVO",
+      "phone": "787-633-2671",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JANIABETH VEGA MALDONADO",
+      "specialty": "MEDICINA INTERNA, ENFERMEDAD INFECCIOSA",
+      "municipio": "MANATI",
+      "license_number": "19950",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JEFFREY MALDONADO PEÑA",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "MANATI",
+      "license_number": "19341",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JORGE X RODRIGUEZ MARTINEZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "11859",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE A HERNANDEZ ROMAN",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "23273",
+      "license_status": "ACTIVO",
+      "phone": "516-562-0100",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE A MONTES MERCADO",
+      "specialty": "MEDICINA INTERNA, CARDIOLOGIA",
+      "municipio": "MANATI",
+      "license_number": "7834",
+      "license_status": "ACTIVO",
+      "phone": "787-884-2888",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE BETANCOURT DORTA",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "MANATI",
+      "license_number": "18604",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE C LOPEZ PUEBLA",
+      "specialty": "HEMATOPATOLGIA, MEDICINA INTERNA, ONCOLOGIA",
+      "municipio": "MANATI",
+      "license_number": "21891",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE CORDERO CASILLAS",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "7271",
+      "license_status": "ACTIVO",
+      "phone": "787-854-5831",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE F DE LEON COLLAZO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "11889",
+      "license_status": "ACTIVO",
+      "phone": "787-854-4685",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSSETTE M AXTMAYER TOLOSA",
+      "specialty": "MEDICINA INTERNA, ENFERMEDAD INFECCIOSA",
+      "municipio": "MANATI",
+      "license_number": "19955",
+      "license_status": "ACTIVO",
+      "phone": "787-621-3322",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JUAN C RIVERA ARCE",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "19052",
+      "license_status": "ACTIVO",
+      "phone": "787-918-0066",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JUAN F PEREZ ROSADO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "12134",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JUAN M MARQUES LESPIER",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "MANATI",
+      "license_number": "18780",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ADRIAN PEREZ COCHRAN",
+      "specialty": "MEDICINA INTERNA, CARDIOLOGIA",
+      "municipio": "PONCE",
+      "license_number": "11205",
+      "license_status": "ACTIVO",
+      "phone": "787-812-0909",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AGUSTIN FERNANDEZ CABRERO",
+      "specialty": "MEDICINA INTERNA, NEUMOLOGIA",
+      "municipio": "PONCE",
+      "license_number": "6019",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AHMED MORALES JORGE",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "15829",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ALBERTO J ROLON VELEZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "19180",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ALEJANDRA N SANTIAGO VIVES",
+      "specialty": "MEDICINA INTERNA, ENDOCRINOLOGÍA, DIABETES Y METABOLISMO",
+      "municipio": "PONCE",
+      "license_number": "14047",
+      "license_status": "ACTIVO",
+      "phone": "787-677-1904",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ALEJANDRO J LOPEZ MAS",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA, CARDIOLOGIA INTERVENCIONAL",
+      "municipio": "PONCE",
+      "license_number": "17388",
+      "license_status": "ACTIVO",
+      "phone": "787-492-2000",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ALVARO REYMUNDE POSSO",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "7737",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANA A PADRO DIAZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "6488",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANA G BEAUCHAMP IRIZARRY",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "17948",
+      "license_status": "ACTIVO",
+      "phone": "787-306-2818",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANDRES D BERMUDEZ CABA",
+      "specialty": "MEDICINA INTERNA, ENFERMEDADES PULMONARES",
+      "municipio": "PONCE",
+      "license_number": "11787",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANGEL A RAMOS GIL",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "23223",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANGEL B RIVERA SANTOS",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "PONCE",
+      "license_number": "12002",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANGEL R LEBRON RODRIGUEZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "16198",
+      "license_status": "ACTIVO",
+      "phone": "787-236-8282",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANGIE M ROSADO DROZ",
+      "specialty": "MEDICINA INTERNA, CARDIOLOGIA",
+      "municipio": "PONCE",
+      "license_number": "9717",
+      "license_status": "ACTIVO",
+      "phone": "787-812-3792",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ANNA M DI MARCO SERRA",
+      "specialty": "HEMATOLOGIA, MEDICINA INTERNA, ONCOLOGIA MEDICA",
+      "municipio": "PONCE",
+      "license_number": "16950",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ARMANDO WISCOVITCH VELEZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "9858",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ARNALDO M NIEVES RAMIREZ",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "12225",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AURELIO GARCIA MEDINA",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "16565",
+      "license_status": "ACTIVO",
+      "phone": "787-247-2427",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "AWILDA GARCIA RODRIGUEZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "6054",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "BARBARA ROSADO CARRION",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA, TRANSPLANTE HEPATOLOGICO",
+      "municipio": "PONCE",
+      "license_number": "13321",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "BELMAR A IRIZARRY GARCÉS",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "18806",
+      "license_status": "ACTIVO",
+      "phone": "787-843-9393",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS A GAONA REYES",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "13489",
+      "license_status": "ACTIVO",
+      "phone": "787-284-0383",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS J CARRO PAGAN",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "6958",
+      "license_status": "ACTIVO",
+      "phone": "787-844-2710",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS R HERNANDEZ NIEVES",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "23088",
+      "license_status": "ACTIVO",
+      "phone": "787-658-0000",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS Y SANTIAGO GONZALEZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "15313",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARMARIE SANTIAGO ORTOLAZA",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "19776",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARMEN L SANTIAGO MUÑOZ",
+      "specialty": "GASTROENTEROLOGIA, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "8042",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CAROLYN OTERO RIVERA",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "12838",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CESAR H TRABANCO DE LA CRUZ",
+      "specialty": "ENDOCRINOLOGIA, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "7904",
+      "license_status": "ACTIVO",
+      "phone": "787-841-7168",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CESAR P CRUZ GARCIA",
+      "specialty": "MEDICINA INTERNA, CARDIOLOGIA",
+      "municipio": "PONCE",
+      "license_number": "8504",
+      "license_status": "ACTIVO",
+      "phone": "787-259-3373",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CHARLYNNE DE JESUS RAMOS",
+      "specialty": "MEDICINA INTERNA, ENFERMEDAD INFECCIOSA",
+      "municipio": "PONCE",
+      "license_number": "23161",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "COSME D SANTOS TORRES",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "PONCE",
+      "license_number": "12026",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DANIEL PEREZ BRISEBOIS",
+      "specialty": "MEDICINA INTERNA, NEFROLOGIA",
+      "municipio": "PONCE",
+      "license_number": "12062",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DARCY M DIAGO BLANCO",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "22304",
+      "license_status": "ACTIVO",
+      "phone": "202-741-3000",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DARIEL J IRIZARRY DE JESUS",
+      "specialty": "ENFERMEDADES INFECCIOSAS, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "22663",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DEV R BOODOOSINGH CASIANO",
+      "specialty": "MEDICINA INTERNA, ENFERMEDADES PULMONARES, CUIDADO CRITICO",
+      "municipio": "PONCE",
+      "license_number": "17668",
+      "license_status": "ACTIVO",
+      "phone": "787-290-5577",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DIANNE M MARQUEZ MINONDO",
+      "specialty": "ENFERMEDADES INFECCIOSAS, MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "17047",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DOMINGO CHARDON FELICIANO",
+      "specialty": "MEDICINA INTERNA, ENFERMEDADES PULMONARES",
+      "municipio": "PONCE",
+      "license_number": "9184",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EDGARDO BERMUDEZ MORENO",
+      "specialty": "ENFERMEDADES CARDIOVASCULARES, MEDICINA INTERNA, CARDIOLOGIA INTERVENCIONAL",
+      "municipio": "PONCE",
+      "license_number": "10593",
+      "license_status": "ACTIVO",
+      "phone": "787-813-0550",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "EDGARDO PIÑEIRO MERCADO",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "PONCE",
+      "license_number": "7243",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ALBERTO H TORRES HERNANDEZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "UTUADO",
+      "license_number": "20581",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CESAR R RIVERA REVERON",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "UTUADO",
+      "license_number": "11850",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "FLORES I CARABALLO PEREZ",
+      "specialty": "MEDICINA INTERNA",
+      "municipio": "UTUADO",
+      "license_number": "9153",
+      "license_status": "ACTIVO",
+      "phone": "787-894-5686",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JUAN A ALICEA ROLON",
+      "specialty": "MEDICINA INTERNA, CARDIOLOGIA",
+      "municipio": "UTUADO",
+      "license_number": "7928",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    }
+  ]
+}

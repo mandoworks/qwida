@@ -1,0 +1,320 @@
+{
+  "specialty": "neurologia",
+  "specialty_label": "Neurología",
+  "attribution": "Datos públicos de la Junta de Licenciamiento y Disciplina Médica (ORCPS) y CMS NPPES",
+  "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+  "fetched_at": "2026-10-09T18:35:38Z",
+  "record_count": 29,
+  "municipio_counts": {
+    "PONCE": 9,
+    "ADJUNTAS": 0,
+    "UTUADO": 0,
+    "MANATI": 5,
+    "CAGUAS": 15
+  },
+  "phone_count": 27,
+  "truncated": [],
+  "dropped": {
+    "restricted": 17,
+    "not_active": 0,
+    "duplicate_rows": 507
+  },
+  "notes": [
+    "Solo licencias activas. Se descartaron los registros con restricción y los que no estaban activos.",
+    "El teléfono viene de NPPES, que es el dato que reporta el profesional, y puede estar desactualizado.",
+    "ORCPS y NPPES no dicen si un profesional acepta pacientes nuevos ni qué planes acepta. Esos dos datos no existen en fuentes públicas y no se inventan.",
+    "Datos de profesionales reales. No se incluyen direcciones personales ni datos de pacientes."
+  ],
+  "records": [
+    {
+      "name": "ANGEL R MALDONADO SOTO",
+      "specialty": "NEUROLOGÍA VASCULAR, NEUROLOGIA CON CUALIFICACION ESPECIAL EN NEUROLOGIA DEL NIÑO",
+      "municipio": "CAGUAS",
+      "license_number": "22085",
+      "license_status": "ACTIVO",
+      "phone": "787-653-0550",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "BRISEIDA E FELICIANO ASTACIO",
+      "specialty": "NEUROLOGIA, NEUROFISIOLOGÍA",
+      "municipio": "CAGUAS",
+      "license_number": "9525",
+      "license_status": "ACTIVO",
+      "phone": "178-770-3392",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "DANIEL M REYES DE JESUS",
+      "specialty": "NEUROLOGIA, NEUROLOGÍA VASCULAR",
+      "municipio": "CAGUAS",
+      "license_number": "21361",
+      "license_status": "ACTIVO",
+      "phone": "787-653-0550",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOCELYN MONTALVO ORTIZ",
+      "specialty": "EPILEPSIA, NEUROLOGIA PEDIATRICA, PEDIATRIA",
+      "municipio": "CAGUAS",
+      "license_number": "17569",
+      "license_status": "ACTIVO",
+      "phone": "787-436-2288",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JOSE AVILA ORNELAS",
+      "specialty": "NEUROLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "19904",
+      "license_status": "ACTIVO",
+      "phone": "787-930-1705",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JULIO C RODRIGUEZ COLON",
+      "specialty": "NEUROLOGIA, NEUROLOGÍA VASCULAR",
+      "municipio": "CAGUAS",
+      "license_number": "18418",
+      "license_status": "ACTIVO",
+      "phone": "787-653-3434",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "KAREN CRUZ RODRIGUEZ",
+      "specialty": "EPILEPSIA, NEUROLOGIA PEDIATRICA, PEDIATRIA",
+      "municipio": "CAGUAS",
+      "license_number": "15124",
+      "license_status": "ACTIVO",
+      "phone": "787-746-3136",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "KARLA C CAY MARTINEZ",
+      "specialty": "NEUROLOGIA PEDIATRICA",
+      "municipio": "CAGUAS",
+      "license_number": "21745",
+      "license_status": "ACTIVO",
+      "phone": "787-653-0550",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "KATHERINE M PADILLA RODRIGUEZ",
+      "specialty": "EPILEPSIA, NEUROLOGIA, NEUROFISIOLOGIA CLINICA",
+      "municipio": "CAGUAS",
+      "license_number": "17907",
+      "license_status": "ACTIVO",
+      "phone": "787-653-5060",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "LIZBETH ROBLES IRIZARRY",
+      "specialty": "NEUROLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "18413",
+      "license_status": "ACTIVO",
+      "phone": "787-772-8300",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "LUIS J FORASTIERI MALDONADO",
+      "specialty": "NEUROLOGIA, NEUROFISIOLOGIA CLINICA",
+      "municipio": "CAGUAS",
+      "license_number": "13433",
+      "license_status": "ACTIVO",
+      "phone": "787-704-3435",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "NAGGAI Y GONZALEZ SEGARRA",
+      "specialty": "NEUROLOGIA, MEDICINA NEUROMUSCULAR",
+      "municipio": "CAGUAS",
+      "license_number": "18205",
+      "license_status": "ACTIVO",
+      "phone": "787-743-4547",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "PATRICIA DE JESUS UMPIERRE",
+      "specialty": "NEUROLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "17963",
+      "license_status": "ACTIVO",
+      "phone": "787-474-7678",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ULISES L NOBO",
+      "specialty": "NEUROLOGIA, NEUROLOGÍA VASCULAR",
+      "municipio": "CAGUAS",
+      "license_number": "16710",
+      "license_status": "ACTIVO",
+      "phone": "787-653-1714",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "YADIRA DACOSTA SANTAELLA",
+      "specialty": "NEUROLOGIA",
+      "municipio": "CAGUAS",
+      "license_number": "16119",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "GIAN C GIERBOLINI GONZALEZ",
+      "specialty": "NEUROLOGIA, NEUROFISIOLOGIA CLINICA",
+      "municipio": "MANATI",
+      "license_number": "16343",
+      "license_status": "ACTIVO",
+      "phone": "787-621-3737",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "LAURA S SURILLO DAHDAH",
+      "specialty": "NEUROLOGIA",
+      "municipio": "MANATI",
+      "license_number": "19134",
+      "license_status": "ACTIVO",
+      "phone": "787-621-3755",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "LEYDA G SANCHEZ ORTIZ",
+      "specialty": "EPILEPSIA, NEUROLOGIA PEDIATRICA, PEDIATRIA",
+      "municipio": "MANATI",
+      "license_number": "18054",
+      "license_status": "ACTIVO",
+      "phone": "787-365-6959",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "MARIA E DAVILA CARLOS",
+      "specialty": "NEUROLOGIA, NEUROLOGIA PEDIATRICA",
+      "municipio": "MANATI",
+      "license_number": "15400",
+      "license_status": "ACTIVO",
+      "phone": "787-758-7910",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "RUDDY A GUERRA CARDONA",
+      "specialty": "NEUROLOGIA, NEUROFISIOLOGÍA",
+      "municipio": "MANATI",
+      "license_number": "11308",
+      "license_status": "ACTIVO",
+      "phone": "787-884-5107",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CARLOS OTERO RODRIGUEZ",
+      "specialty": "NEUROLOGIA",
+      "municipio": "PONCE",
+      "license_number": "11433",
+      "license_status": "ACTIVO",
+      "phone": "787-259-3574",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "CHARLES H OLIVERA OLIVERA",
+      "specialty": "NEUROLOGIA",
+      "municipio": "PONCE",
+      "license_number": "12570",
+      "license_status": "ACTIVO",
+      "phone": null,
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JAVIER A OTERO VAZQUEZ",
+      "specialty": "EPILEPSIA, NEUROLOGIA",
+      "municipio": "PONCE",
+      "license_number": "21952",
+      "license_status": "ACTIVO",
+      "phone": "787-757-1800",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JENARO G SCARANO GARCIA",
+      "specialty": "NEUROLOGIA PEDIATRICA",
+      "municipio": "PONCE",
+      "license_number": "8241",
+      "license_status": "ACTIVO",
+      "phone": "787-840-9015",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "JESSICA ABREU GARCIA",
+      "specialty": "NEUROLOGIA",
+      "municipio": "PONCE",
+      "license_number": "21327",
+      "license_status": "ACTIVO",
+      "phone": "603-650-5000",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "LOURDES SANTIAGO IRIZARRY",
+      "specialty": "NEUROLOGIA PEDIATRICA, PEDIATRIA, NEUROFISIOLOGÍA",
+      "municipio": "PONCE",
+      "license_number": "9749",
+      "license_status": "ACTIVO",
+      "phone": "787-842-9696",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "MAYRA VERA RAMIREZ",
+      "specialty": "NEUROLOGIA",
+      "municipio": "PONCE",
+      "license_number": "10956",
+      "license_status": "ACTIVO",
+      "phone": "787-259-8240",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "ORLANDO A TORRES FERNANDEZ",
+      "specialty": "NEUROLOGIA PEDIATRICA, PEDIATRIA",
+      "municipio": "PONCE",
+      "license_number": "10705",
+      "license_status": "ACTIVO",
+      "phone": "787-843-3971",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    },
+    {
+      "name": "REYNALDO J CARRERAS QUIÑONES",
+      "specialty": "NEUROLOGIA",
+      "municipio": "PONCE",
+      "license_number": "15677",
+      "license_status": "ACTIVO",
+      "phone": "787-842-5252",
+      "source_url": "https://orcps.salud.pr.gov/mbps/verificacion",
+      "fetched_at": "2026-10-09T18:35:38Z"
+    }
+  ]
+}
