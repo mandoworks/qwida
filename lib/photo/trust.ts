@@ -11,11 +11,20 @@ export const HANDWRITTEN_BADGE = "Letra de médico: no confiable";
 export const LABEL_RESCAN_TEXT = "Cuando recoja la receta, escanee la etiqueta de la farmacia.";
 
 const DATE_FIELDS = new Set(["date", "issue_date"]);
+const TIME = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 
-/** Clamp confidence and drop malformed dates: the model's word is never taken as is. */
+/** True for a 24 hour time written as HH:MM. */
+export function isTime(s: unknown): s is string {
+  return typeof s === "string" && TIME.test(s);
+}
+
+/** Clamp confidence and drop malformed dates and times: the model's word is never taken as is. */
 export function sanitize(name: string, f: Field): Field {
   const confidence = Math.min(1, Math.max(0, Number.isFinite(f.confidence) ? f.confidence : 0));
   if (DATE_FIELDS.has(name) && f.value !== null && !isIsoDate(f.value)) {
+    return { ...f, value: null, confidence: 0 };
+  }
+  if (name === "time" && f.value !== null && !isTime(f.value)) {
     return { ...f, value: null, confidence: 0 };
   }
   if (f.value === null || f.value === "") return { ...f, value: null, confidence: 0 };
@@ -106,6 +115,15 @@ export function applyTrust(x: PhotoExtraction, visit?: HeardPrescription[]): Tru
         badge: null,
         status: "POR_CONFIRMAR",
         fields: x.referido ? trustFields(x.referido, false) : null,
+        canSchedule: false,
+      };
+    case "appointment_slip":
+      // Cards are often filled in by hand at the front desk: only confident fields pre-fill.
+      return {
+        trusted: true,
+        badge: null,
+        status: "POR_CONFIRMAR",
+        fields: x.appointment ? trustFields(x.appointment, false) : null,
         canSchedule: false,
       };
     default:

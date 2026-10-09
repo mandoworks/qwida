@@ -17,6 +17,7 @@ Reglas:
 - Copia solo lo que está escrito. Nunca inventes, completes ni corrijas nombres, dosis, cantidades o fechas.
 - Si un dato no se puede leer con claridad, value en null, confidence bajo y source_text '[ilegible]'. Añade una nota en unreadable_lines.
 - La letra a mano casi nunca merece confidence alto.
+- En una hoja de cita, llena appointment. La fecha solo si se ven día, mes y año; la hora en formato de 24 horas (HH:MM).
 - Fechas como YYYY-MM-DD. En Puerto Rico las recetas suelen escribir día/mes/año; las etiquetas de farmacia, mes/día/año.
 - No des consejos médicos ni recomendaciones. Solo lee.`;
 
@@ -40,7 +41,7 @@ export async function extractPhoto(image: Uint8Array, mediaType: string, hint: s
 
 /** Every value and every piece of text read, for the Fence. */
 function readText(x: PhotoExtraction): string {
-  const fields = [...Object.values(x.prescription ?? {}), ...Object.values(x.referido ?? {})];
+  const fields = [...Object.values(x.prescription ?? {}), ...Object.values(x.referido ?? {}), ...Object.values(x.appointment ?? {})];
   return [...fields.flatMap((f) => [String(f.value ?? ""), f.source_text]), ...x.unreadable_lines].join("\n");
 }
 
@@ -99,10 +100,11 @@ export async function processPhoto(store: EventStore, input: PhotoInput): Promis
   const image = `data:${shown.mediaType};base64,${Buffer.from(shown.bytes).toString("base64")}`;
   const toSave: NewEvent[] = [];
 
-  if (trust.fields && (extraction.class === "rx_handwritten" || extraction.class === "rx_label" || extraction.class === "referido")) {
+  if (trust.fields && extraction.class !== "other") {
     toSave.push({
       householdId: input.householdId,
-      kind: extraction.class,
+      // An appointment card is saved as an `appointment`, the kind every cita reader already knows.
+      kind: extraction.class === "appointment_slip" ? "appointment" : extraction.class,
       source: "photo",
       status: trust.status,
       confidence: meanConfidence(Object.values(trust.fields)),
@@ -156,7 +158,7 @@ export async function processPhoto(store: EventStore, input: PhotoInput): Promis
     expires_on,
     unreadable_lines: extraction.unreadable_lines,
     fence,
-    message: trust.fields ? null : "No encontramos una receta ni un referido en esta foto. Intente con otra foto.",
+    message: trust.fields ? null : "No encontramos una receta, un referido ni una cita en esta foto. Intente con otra foto.",
     events,
   };
 }

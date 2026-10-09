@@ -183,7 +183,7 @@ export function Review() {
                 </>
               )}
 
-              {PHOTO_KINDS.has(event.kind) || (event.kind === "referido" && event.payload.fields) ? (
+              {PHOTO_KINDS.has(event.kind) || event.payload.fields ? (
                 <ExtractedFields event={event} householdId={event.householdId} size="caregiver" onConfirmed={() => setDone(event.id)} />
               ) : (
                 <ItemReview
@@ -206,7 +206,8 @@ export function Review() {
               )}
               {done === event.id && <p className="font-bold text-ok">{t("review.confirmed")}</p>}
 
-              {!PHOTO_KINDS.has(event.kind) && event.status !== "CONFIRMADO" && (
+              {/* A photo (label, referido or cita card) confirms through its own Confirmar, with the date checks. */}
+              {!PHOTO_KINDS.has(event.kind) && !event.payload.fields && event.status !== "CONFIRMADO" && (
                 <div className="flex flex-wrap gap-2">
                   <BigButton onClick={() => (editing ? confirmCorrected(event) : confirmPlain(event))} disabled={busy} className="min-h-tap-c-lg text-c-body">
                     {busy ? t("review.confirming") : editing ? t("review.saveCorrect") : t("review.confirm")}

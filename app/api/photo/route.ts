@@ -12,7 +12,7 @@ const IMAGE_TYPES = /^image\/(jpeg|png|webp|heic|heif|gif)$/;
  * POST /api/photo, multipart form:
  *   image        photo of a prescription, pharmacy label, referido or slip
  *   householdId  optional, defaults to the demo household
- *   hint         optional: rx_handwritten, rx_label or referido. Picks the SIMULADO fixture.
+ *   hint         optional: rx_handwritten, rx_label, referido or appointment_slip. Picks the SIMULADO fixture.
  *   preview      optional smaller copy of the photo, saved with the event for the other phone
  * Returns PhotoResponse. Events are saved as POR_CONFIRMAR; no schedule is created here.
  */

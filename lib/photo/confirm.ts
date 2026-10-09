@@ -1,8 +1,8 @@
 import type { EventStore, QuidaEvent } from "@/lib/store/types";
-import { referidoExpiresOn, todayPR } from "./dates";
+import { isIsoDate, referidoExpiresOn, todayPR } from "./dates";
 import { refillCountdown, unitsPerDose } from "./refill";
 import type { ConfirmBody, TrustedFields } from "./schema";
-import { deriveSlots } from "./trust";
+import { deriveSlots, isTime } from "./trust";
 
 type Values = Record<string, string | number | null>;
 
@@ -24,11 +24,15 @@ const num = (v: unknown) => {
   return typeof n === "number" && Number.isFinite(n) ? n : null;
 };
 
+/** Puerto Rico is on AST all year, no daylight saving. */
+const PR_OFFSET = "-04:00";
+
 /**
  * Runs only after a person taps Confirmar. A printed label becomes a new
  * CONFIRMADO med_schedule (with `fromEventId`) and the label is marked CONFIRMADO;
- * a referido is confirmed in place with its 90 day expiry. A handwritten
- * prescription is refused: it never becomes a schedule.
+ * a referido is confirmed in place with its 90 day expiry; an appointment card
+ * is confirmed in place with its date and time. A handwritten prescription is
+ * refused: it never becomes a schedule.
  */
 export async function confirmPhoto(
   store: EventStore,
@@ -41,7 +45,9 @@ export async function confirmPhoto(
   if (event.kind === "rx_handwritten") {
     return { ok: false, status: 409, error: "Letra de médico: no confiable. Escanee la etiqueta de la farmacia." };
   }
-  if (event.kind !== "rx_label" && event.kind !== "referido") {
+  // An appointment heard in a visit has no photo fields; it is confirmed in Revisar.
+  const photoAppointment = event.kind === "appointment" && event.payload.fields;
+  if (event.kind !== "rx_label" && event.kind !== "referido" && !photoAppointment) {
     return { ok: false, status: 400, error: "Esta foto no se puede confirmar." };
   }
 
@@ -96,6 +102,29 @@ export async function confirmPhoto(
       payload: { confirmedBy: body.confirmedBy, edited, scheduleId: created.id },
     });
     return { ok: true, confirmed: confirmed ?? event, created };
+  }
+
+  if (event.kind === "appointment") {
+    const day = str(v.date);
+    if (!isIsoDate(day)) return { ok: false, status: 422, error: "Falta la fecha de la cita (año, mes y día)." };
+    const time = str(v.time);
+    if (time && !isTime(time)) return { ok: false, status: 422, error: "Escriba la hora como 10:30 o 14:30." };
+    // `date` is what the digest, the calendar and the patient read; with a time it carries the PR offset.
+    const confirmed = await store.update(event.id, {
+      status: "CONFIRMADO",
+      payload: {
+        confirmedBy: body.confirmedBy,
+        edited,
+        date: time ? `${day}T${time}:00${PR_OFFSET}` : day,
+        time,
+        specialty: str(v.specialty),
+        doctor: str(v.doctor),
+        place: str(v.place),
+        phone: str(v.phone),
+      },
+    });
+    if (!confirmed) return { ok: false, status: 404, error: "No encontramos esa foto." };
+    return { ok: true, confirmed, created: null };
   }
 
   const issue = str(v.issue_date);
