@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/* Design tokens from qwida-warroom ui/AGENTS.md. Adjust here once drawings arrive. */
+:root {
+  --bg: #fbf7f0;
+  --surface: #ffffff;
+  --ink: #1b1a17;
+  --ink-soft: #4a4740;
+  --line: #d9d2c5;
+  --accent: #0f6e5c;
+  --accent-ink: #ffffff;
+  --warn: #b54708;
+  --ok: #1f7a3a;
+  --danger: #b42318;
+  --sim: #5b4b8a;
+
+  --text-patient: 1.5rem; /* 24px minimum on the patient side */
+  --text-caregiver: 1rem; /* 16px minimum on the caregiver side */
+  --button-patient: 4.5rem; /* 72px tall minimum */
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-warn: var(--warn);
+  --color-ok: var(--ok);
+  --color-danger: var(--danger);
+  --color-sim: var(--sim);
+
+  --text-patient: var(--text-patient);
+  --text-caregiver: var(--text-caregiver);
+  --spacing-btn-patient: var(--button-patient);
+
+  --font-sans: var(--font-atkinson), system-ui, sans-serif;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-atkinson), system-ui, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
