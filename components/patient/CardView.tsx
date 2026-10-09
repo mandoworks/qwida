@@ -10,6 +10,7 @@ import { SpeakerIcon } from "./Icons";
 import { cardKey, inkOn, latestWeekcard, speechText } from "./logic";
 import { useLocalValue } from "./useLocalValue";
 import { useEvents } from "@/lib/client/useEvents";
+import { VisitPrep } from "./VisitPrep";
 
 const PREFERRED_LANGS = ["es-pr", "es-us", "es-mx"];
 
@@ -158,6 +159,10 @@ export function CardView() {
       {removed && <FenceNotice className="text-p-body" art />}
 
       <p className="text-p-body text-ink-soft">Esta tarjeta la aprobó Marisol.</p>
+
+      <div className="mt-2 border-t-4 border-ink pt-6">
+        <VisitPrep />
+      </div>
     </article>
   );
 }
