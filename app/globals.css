@@ -229,3 +229,37 @@ body {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
+
+/* --- patient home tile colors (mockup color coding): dark ink on soft tiles, one color per action --- */
+:root {
+  --tile-hablar: #f6b267;
+  --tile-hablar-ink: #6b2f00;
+  --tile-foto: #d8b6f6;
+  --tile-foto-ink: #3b1580;
+  --tile-grabar: #b9e7b1;
+  --tile-grabar-ink: #0f5223;
+  --tile-tarjeta: #bedaf7;
+  --tile-tarjeta-ink: #0f3f9e;
+}
+
+[data-contrast="high"] {
+  --tile-hablar: #ffd9a3;
+  --tile-hablar-ink: #000000;
+  --tile-foto: #e6d3ff;
+  --tile-foto-ink: #000000;
+  --tile-grabar: #c8f0c0;
+  --tile-grabar-ink: #000000;
+  --tile-tarjeta: #d1e4ff;
+  --tile-tarjeta-ink: #000000;
+}
+
+@theme inline {
+  --color-tile-hablar: var(--tile-hablar);
+  --color-tile-hablar-ink: var(--tile-hablar-ink);
+  --color-tile-foto: var(--tile-foto);
+  --color-tile-foto-ink: var(--tile-foto-ink);
+  --color-tile-grabar: var(--tile-grabar);
+  --color-tile-grabar-ink: var(--tile-grabar-ink);
+  --color-tile-tarjeta: var(--tile-tarjeta);
+  --color-tile-tarjeta-ink: var(--tile-tarjeta-ink);
+}

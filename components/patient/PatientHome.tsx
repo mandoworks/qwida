@@ -20,32 +20,41 @@ function useGreeting() {
   );
 }
 
+/** Color coding from the patient home mockup: one color per action, dark ink on a soft tile. */
+const TILE_THEMES = {
+  hablar: "bg-tile-hablar text-tile-hablar-ink border-tile-hablar-ink",
+  foto: "bg-tile-foto text-tile-foto-ink border-tile-foto-ink",
+  grabar: "bg-tile-grabar text-tile-grabar-ink border-tile-grabar-ink",
+  tarjeta: "bg-tile-tarjeta text-tile-tarjeta-ink border-tile-tarjeta-ink",
+} as const;
+
 function Tile({
   href,
   icon,
   title,
-  hint,
+  ariaLabel,
+  theme,
   highlight = false,
 }: {
   href: string;
   icon: ReactNode;
   title: string;
-  hint: string;
+  ariaLabel: string;
+  theme: keyof typeof TILE_THEMES;
   highlight?: boolean;
 }) {
   return (
     <Link
       href={href}
-      className={`flex min-h-[168px] w-full flex-col items-start gap-3 rounded-3xl border-2 p-5 text-left shadow-tile transition-transform active:scale-[0.98] ${
-        highlight ? "border-accent bg-accent text-accent-ink ring-4 ring-warn" : "border-ink bg-surface text-ink"
+      aria-label={ariaLabel}
+      className={`flex min-h-[11rem] w-full flex-row items-center gap-6 rounded-3xl border-4 p-6 shadow-tile transition-transform active:scale-[0.98] ${TILE_THEMES[theme]} ${
+        highlight ? "ring-4 ring-warn ring-offset-2 ring-offset-bg" : ""
       }`}
     >
-      {icon}
-      <span className="text-p-tile font-bold">{title}</span>
-      <span className={`text-p-label ${highlight ? "" : "text-ink-soft"}`}>{hint}</span>
-      <span aria-hidden="true" className="ml-auto self-end text-3xl leading-none">
-        ›
+      <span className="shrink-0" aria-hidden="true">
+        {icon}
       </span>
+      <span className="flex-1 text-center text-p-title font-bold leading-tight">{title}</span>
     </Link>
   );
 }
@@ -88,14 +97,33 @@ export function PatientHome() {
       )}
 
       <nav aria-label="Qué quiere hacer" className="flex flex-col gap-5">
-        <Tile href="/paciente/hablar" icon={<Art slot="icon-hablar" alt="" width={88} fallback={VoiceIcon} />} title="Hablar" hint="Un mensaje de voz para Marisol" />
-        <Tile href="/paciente/foto" icon={<Art slot="icon-foto" alt="" width={88} fallback={CameraIcon} />} title="Foto" hint="Toque aquí para mandar una foto" />
-        <Tile href="/paciente/grabar" icon={<Art slot="icon-grabar-cita" alt="" width={88} fallback={MicIcon} />} title="Grabar mi cita" hint="Toque aquí para grabar la consulta" />
+        <Tile
+          href="/paciente/hablar"
+          theme="hablar"
+          icon={<Art slot="icon-hablar" alt="" width={120} fallback={VoiceIcon} />}
+          title="Hablar"
+          ariaLabel="Hablar: mandar un mensaje de voz"
+        />
+        <Tile
+          href="/paciente/foto"
+          theme="foto"
+          icon={<Art slot="icon-foto" alt="" width={120} fallback={CameraIcon} />}
+          title="Foto"
+          ariaLabel="Foto: mandar una foto"
+        />
+        <Tile
+          href="/paciente/grabar"
+          theme="grabar"
+          icon={<Art slot="icon-grabar-cita" alt="" width={120} fallback={MicIcon} />}
+          title="Grabar mi Cita"
+          ariaLabel="Grabar mi cita: grabar la consulta"
+        />
         <Tile
           href="/paciente/tarjeta"
-          icon={<Art slot="icon-mi-tarjeta" alt="" width={88} fallback={CardIcon} />}
-          title="Mi tarjeta"
-          hint="Toque aquí para ver su semana"
+          theme="tarjeta"
+          icon={<Art slot="icon-mi-tarjeta" alt="" width={120} fallback={CardIcon} />}
+          title="Mi Tarjeta"
+          ariaLabel="Mi tarjeta: ver la tarjeta de la semana"
           highlight={isNew}
         />
       </nav>
