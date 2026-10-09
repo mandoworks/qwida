@@ -2,7 +2,8 @@
 
 Counterparty: MedSeekPR founder. Consumer: Qwida `/proveedores` (caregiver side, Spanish UI, Puerto Rico).
 Goal: replace the frozen ORCPS+NPPES snapshot with live MedSeekPR data.
-Status: draft for review, 2026-10-09. Nothing here invents records. Null means "no public data", rendered honestly.
+Status: confirmed against staging 2026-10-09 (two read-only probes, 2 + 122 records).
+Nothing here invents records. Null means "no public data", rendered honestly.
 
 ## 1. What Qwida renders today (must keep working)
 
@@ -35,99 +36,80 @@ Manatí, Adjuntas, Utuado). San Juan excluded: ORCPS returns HTTP 500 for it.
 
 ## 2. Endpoints required
 
-Base URL, versioning, and auth (API key header) to be confirmed by MedSeekPR.
-All responses JSON, UTF-8, ISO 8601 dates. Spanish labels where shown to caregivers.
+Base URL staging: `https://staging.medseekpr.com` (demo login until 2026-10-13).
+Production: `https://medseekpr.com`. No API key; staging sits behind shared demo
+basic auth. Rate limit 60 req/min. All responses JSON, UTF-8. Spanish labels where
+shown to caregivers.
 
-### 2.1 `GET /providers` (required, phase 1)
+### 2.1 `GET /api/search` (confirmed live, phase 1)
 
-Search with server-side filtering and pagination.
+Server-side filtering. Returns a **bare JSON list, no envelope, no total**; the
+client counts and paginates. Verified params: `pueblo`, `especialidad`, `limit`
+(limit to 1000, per the founder). Filter by categoría and pueblo for best results.
 
-Query params:
+Verified 2026-10-09:
+
+```json
+[
+  {
+    "nombre": "GERARDO",
+    "inicial": null,
+    "apellidos": "ALAYON ANTA",
+    "especialidad": "CARDIOLOGIA",
+    "npi": "1508855644",
+    "direccion_trabajo": "2520 AVE OBISPADO",
+    "pueblo": "PONCE",
+    "estado": "PR",
+    "codigo_postal": "00716-3841",
+    "telefono": "787-844-3153",
+    "data_source": "nppes_pr",
+    "source_id": null,
+    "has_scheduling": 0,
+    "sort_order": 5
+  }
+]
+```
+
+Measured: `pueblo=PONCE&especialidad=MEDICINA INTERNA&limit=1000` returns 122 rows,
+all with phone, all `data_source=nppes_pr`, all `has_scheduling=0`. Do not rely on
+`has_scheduling` until confirmed.
+
+Query params (verified):
 
 | Param | Type | Required | Notes |
 |---|---|---|---|
-| `specialty` | string | no | normalized code, see 3.1. Repeatable or comma list. |
-| `municipio` | string | no | exact match, case and accent insensitive. |
-| `q` | string | no | free text over name. |
-| `license_status` | string | no | default `ACTIVO`. Only ACTIVO is displayed. |
-| `accepts_new_patients` | boolean | no | filter; null means unknown, must be returnable. |
-| `plan` | string | no | Plan Vital MCO filter, see 3.3. |
-| `page` | int, 1-based | no | default 1. |
-| `page_size` | int | no | default 50, max 200. |
-| `sort` | string | no | default `municipio,name,license_number`. |
+| `especialidad` | string | no | free-text category, e.g. `CARDIOLOGIA`, `MEDICINA INTERNA`. |
+| `pueblo` | string | no | exact municipio, e.g. `PONCE`, `SAN JUAN`. |
+| `limit` | int | no | up to 1000. No offset param observed; pull the full town list in one call. |
 
-Response:
+### 2.2 Detail pages: `/p/{npi}` (confirmed by founder, phase 1)
 
-```json
-{
-  "data": [ { "id": "medseek-0001", "...": "see 2.2 record" } ],
-  "page": 1,
-  "page_size": 50,
-  "total": 192,
-  "fetched_at": "2026-10-09T18:35:38Z"
-}
-```
+No detail JSON endpoint observed. The per-professional page is the NPI deep link:
+staging `https://staging.medseekpr.com/p/{npi}`, production `https://medseekpr.com/p/{npi}`.
+Qwida cards link out to it (verified profile, map, office details). The `npi` field
+in every search record is the stable cross-system id: it also joins to NPPES and,
+via the license field there, to the ORCPS snapshot.
 
-`total` must be trustworthy (ORCPS `totalRecords` reads 0 at most page sizes; do not repeat that).
-Short page ends pagination. Stable ordering across pages.
+Field rules for the Qwida client, given the confirmed schema:
 
-### 2.2 `GET /providers/{id}` (required, phase 1)
+- The search record carries **no license number, no license status, no availability,
+  and no plan data**. The ORCPS frozen snapshot stays the license-truth source
+  (ACTIVO only, restricted excluded) until MedSeekPR ships status. Join on name plus
+  NPI-to-NPPES license.
+- `accepts_new_patients` and `plans_accepted` do not exist in the record. Render
+  "No hay datos públicos" / "Llame para confirmar". Insurer data is limited per the
+  founder: omit plan filters in the demo, show "Confirmar plan médico por teléfono".
+- `telefono` / `direccion_trabajo`: practice location only. No personal numbers,
+  no patient data, ever.
+- Attribution is fixed, on every card and in the footer:
+  "Datos provistos por MedSeek · medseekpr.com".
 
-Full record. `id` is stable forever (today we dedupe on license number, which breaks
-when source strings change; a permanent id fixes the nudge event's doctor reference).
+### 2.3 Facets: client-side from `/api/search` (no facet endpoint observed)
 
-```json
-{
-  "id": "medseek-0001",
-  "name": "ADRIAN PEREZ COCHRAN",
-  "specialties": ["medicina-interna", "cardiologia"],
-  "specialties_raw": "MEDICINA INTERNA, CARDIOLOGIA",
-  "municipio": "PONCE",
-  "practice_address": "Calle Ejemplo 123, Ponce, PR 00716",
-  "phone": "787-812-0909",
-  "phone_updated_at": "2026-09-01",
-  "license_number": "11205",
-  "license_status": "ACTIVO",
-  "license_expires": "2027-12-31",
-  "has_restriction": false,
-  "verified_at": "2026-10-09T18:35:38Z",
-  "verify_url": "https://orcps.salud.pr.gov/mbps/verificacion",
-  "accepts_new_patients": null,
-  "availability_updated_at": null,
-  "plans_accepted": ["Triple-S", "MMM"],
-  "plans_updated_at": "2026-10-01",
-  "languages": ["es"],
-  "hours": "Lun-Vie 8:00-17:00",
-  "source": "ORCPS + MedSeekPR",
-  "attribution": "string supplied by MedSeekPR, rendered verbatim",
-  "updated_at": "2026-10-09T18:35:38Z"
-}
-```
-
-Field rules:
-
-- `specialties`: normalized codes from the agreed taxonomy (3.1). Never free text alone.
-- `license_status`: only `ACTIVO` displayed. Restricted professionals are excluded from
-  results, never flagged on a public card (fairness rule from the W9 lane).
-- `accepts_new_patients` / `plans_accepted`: null/empty when unknown. Qwida renders
-  "No hay datos públicos" / "Llame para confirmar". No fabricated availability chips.
-- `phone`: practice location only. No personal numbers, no patient data, ever.
-- `verify_url`: per-record deep link preferred; global ORCPS page accepted.
-- `attribution`: exact string to print under "De dónde vienen estos datos".
-
-### 2.3 `GET /specialties` and `GET /municipios` (required, phase 1, or one `GET /facets`)
-
-Filter options with counts. Our selects render `Label (count)` where count is the rows
-the option would leave under the other filter already applied.
-
-```json
-{ "specialties": [{ "value": "cardiologia", "label": "Cardiología", "count": 30 }] }
-{ "municipios": [{ "value": "PONCE", "label": "Ponce", "count": 65 }] }
-```
-
-Accept query params mirroring `/providers` (the other filter) so counts stay correct.
-Alternatively: omit this endpoint and guarantee `/providers` is fast enough for Qwida
-to compute counts client-side from a full fetch (192 rows today, fine; revisit past ~2k).
+No specialties/municipios endpoint observed. Not needed: `limit=1000` pulls a full
+town list in one call (122 rows for Medicina Interna in Ponce), so Qwida computes
+the `Label (count)` filter options locally with the existing `specialtyOptions` /
+`municipioOptions` helpers. Revisit if any town list passes ~2k rows.
 
 ### 2.4 Change feed or webhook (phase 2)
 
@@ -138,12 +120,14 @@ confirm the acceptable refresh cadence and rate limit.
 
 ## 3. Taxonomies to agree
 
-### 3.1 Specialty codes
+### 3.1 Specialty values (client-side normalization)
 
-Minimum: `cardiologia`, `cardiologia-intervencional`, `cardiologia-pediatrica`,
-`enfermedades-cardiovasculares`, `medicina-interna`, `neurologia`, `endocrinologia`,
-`pediatria`, each with a Spanish `label`. Sub-specialty strings must remain matchable
-(interventional and pediatric cardiology are separate filter options today).
+The API takes free-text `especialidad` (`CARDIOLOGIA`, `MEDICINA INTERNA`) and
+echoes it back per record. There is no code taxonomy, so Qwida keeps its own
+`SPECIALTIES` map and substring matching (`lib/providers/search.ts`). Minimum
+set to verify live: cardiología, cardiología intervencional, cardiología
+pediátrica, enfermedades cardiovasculares, medicina interna, neurología,
+endocrinología, pediatría.
 
 ### 3.2 Municipios
 
@@ -160,11 +144,11 @@ network-membership only.
 
 | Item | Ask |
 |---|---|
-| Auth | API key in header, separate staging key. No user login for read endpoints. |
-| Environments | Production base URL + staging with fixture data for CI. |
-| Rate limits | Published limits; current ORCPS gentleman's rate is 1 req/s. Confirm sustained and burst. |
+| Auth | No API key. Staging behind shared demo basic auth, expires 2026-10-13. Confirm production auth before the demo window closes. |
+| Environments | Staging `https://staging.medseekpr.com` plus production `https://medseekpr.com`. Staging fixture stability unknown; keep the frozen ORCPS JSON as the offline fallback. |
+| Rate limits | 60 req/min, confirmed. Current ORCPS gentleman's rate was 1 req/s; the new budget allows live search plus a nightly refresh. |
 | Pagination | `total` trustworthy, stable sort, short page terminates. Max page_size >= 200. |
-| Latency/SLA | p95 target for `/providers` at page_size 50; uptime commitment; status page or contact. |
+| Latency/SLA | p95 target for `/api/search` at limit 1000; uptime commitment; status page or contact. |
 | Freshness | `verified_at`/`updated_at` semantics, refresh cadence of license status, max staleness guarantee. |
 | Terms | Written permission to display records in a public hackathon demo and beyond; attribution wording; redistribution limits; confirmation that only professional fields are exposed. |
 | Privacy | No home addresses, no personal phones, no patient data in any field. Right to exclude a restricted professional entirely. |
@@ -173,20 +157,22 @@ network-membership only.
 
 ## 5. Acceptance checklist (demo day)
 
-1. `/providers?specialty=cardiologia&municipio=PONCE` returns the Ponce cardiologists with phones where known.
-2. `/providers?specialty=neurologia` and `?specialty=endocrinologia` return nonzero results.
-3. Every record has a stable `id`, `verified_at`, and `verify_url`.
-4. Unknown availability renders as null, never as a green "accepting" flag.
-5. Specialty and municipio facet counts match `/providers` results exactly.
-6. tsc, lint, and the 276 unit tests still pass with the new client; no `next build` in lane scope.
+1. `/api/search?especialidad=CARDIOLOGIA&pueblo=PONCE&limit=1000` returns the Ponce cardiologists with phones.
+2. Same for neurología and endocrinología, nonzero.
+3. SAN JUAN covered (the ORCPS gap that blocked wave 3).
+4. Every card links `/p/{npi}` and carries "Datos provistos por MedSeek · medseekpr.com"; footer repeats it.
+5. No availability or plan fields shown as fact; honest nulls only.
+6. Frozen ORCPS snapshot still serves license status when staging is unreachable.
+7. tsc, lint, and unit tests pass with the new client; no `next build` in lane scope.
 
-## 6. Open questions for the founder
+## 6. Open questions for the founder (answered ones struck)
 
-1. San Juan: covered, at what volume and freshness?
-2. Availability and plan acceptance: real per-practice data, or network membership? Update cadence?
-3. License verification: live ORCPS passthrough or cached? Max staleness? Restriction handling?
-4. Phone/address: practice locations only? What is the update source and date?
-5. Terms and attribution: exact display string, demo permission, rate limits, staging access?
+1. San Juan: covered? Volume and freshness? (Asked; verify live with one SAN JUAN query.)
+2. ~~Availability and plan acceptance data?~~ Answered 2026-10-09: limited, omit in demo.
+3. ~~Rate limit and key?~~ Answered: 60 req/min, no key.
+4. ~~Attribution?~~ Answered: "Datos provistos por MedSeek · medseekpr.com", every card and footer.
+5. License status/restriction feed: live ORCPS passthrough or cached? Still open, still the safety-critical gap.
+6. Production auth after the 2026-10-13 staging window: still open.
 
 ## 7. Appendix: current Qwida references
 
