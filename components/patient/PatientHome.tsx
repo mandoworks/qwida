@@ -100,11 +100,17 @@ export function PatientHome() {
         />
       </nav>
 
-      <p className="text-center">
-        <a href={MARISOL_TEL} className="inline-block py-3 text-p-meta text-ink-mute underline underline-offset-4">
+      <div className="flex flex-col items-center gap-2 text-center">
+        <a
+          href="tel:911"
+          className="inline-flex min-h-btn-patient w-full items-center justify-center rounded-2xl border-2 border-danger bg-danger-soft px-5 py-3 text-p-body font-bold text-danger transition-transform active:scale-[0.98]"
+        >
+          Emergencia: Llamar al 911
+        </a>
+        <a href={MARISOL_TEL} className="inline-block py-2 text-p-meta text-ink-mute underline underline-offset-4">
           Llamar a Marisol
         </a>
-      </p>
+      </div>
 
       <FenceNotice className="text-p-meta" art />
 
