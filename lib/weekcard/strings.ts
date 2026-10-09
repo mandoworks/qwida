@@ -155,6 +155,7 @@ export const STRINGS = {
     "settings.channel.both": "Llamada de voz y WhatsApp",
     "settings.phone.patient": "Teléfono de Doña Carmen (Puerto Rico): (787) 555-0192",
     "settings.phone.family": "Teléfono de Marisol (Familia): (407) 555-0143",
+    "settings.channel.note": "Simulado: en este demo no se hacen llamadas ni se envían mensajes reales.",
     "settings.digest": "Resumen automático",
     "settings.digest.simulated":
       "Simulado: no se envía nada. Solo cambia qué se muestra en Inicio.",
@@ -400,6 +401,7 @@ export const STRINGS = {
     "settings.channel.both": "Voice call and WhatsApp",
     "settings.phone.patient": "Doña Carmen's phone (Puerto Rico): (787) 555-0192",
     "settings.phone.family": "Marisol's phone (Family): (407) 555-0143",
+    "settings.channel.note": "Simulated: this demo places no real calls and sends no real messages.",
     "settings.digest": "Automatic digest",
     "settings.digest.simulated": "Simulated: nothing is sent. It only changes what Home shows.",
     "settings.digest.daily": "Daily",

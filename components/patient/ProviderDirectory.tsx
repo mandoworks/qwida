@@ -57,7 +57,7 @@ export function ProviderDirectory() {
   useEffect(() => {
     let active = true;
     const timer = setTimeout(async () => {
-      if (!specialty && !municipio && !q) {
+      if (!specialty && !municipio && !nameQuery.trim()) {
         setResults(null);
         setSearching(false);
         return;
@@ -68,7 +68,7 @@ export function ProviderDirectory() {
         const params = new URLSearchParams();
         if (specialty) params.set("especialidad", specialty);
         if (municipio) params.set("municipio", municipio);
-        if (q) params.set("nombre", q);
+        if (nameQuery.trim()) params.set("nombre", nameQuery.trim());
         const res = await fetch(`/api/providers?${params.toString()}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
