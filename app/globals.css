@@ -294,6 +294,17 @@ body {
   color: var(--yari-headline);
 }
 
+/* --- Mobile hardening (360px): patient screens are single column by construction,
+   but a single wide element must never create a horizontal scrollbar. overflow-x: clip
+   (not hidden) keeps the sticky bottom tab bar working. */
+.yari-bg {
+  overflow-x: clip;
+}
+/* Long words (doctor names, places) wrap instead of pushing the layout wide. */
+.yari-bg :where(p, li, dd, h1, h2, h3, span) {
+  overflow-wrap: break-word;
+}
+
 /* --- Tarjeta Médica + provider tab: family-dashboard card language on patient side --- */
 :root {
   --card-appointment: #dceefb;

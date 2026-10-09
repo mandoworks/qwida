@@ -5,7 +5,7 @@ import { useMemo, useSyncExternalStore, type ReactNode } from "react";
 import { Art } from "@/components/ui/Art";
 import { FenceNotice } from "@/components/ui/FenceNotice";
 import { useEvents } from "@/lib/client/useEvents";
-import { InstallHint } from "./InstallHint";
+import { InstallButton } from "./InstallButton";
 import { CameraIcon, CardIcon, MicIcon, VoiceIcon } from "./Icons";
 import { activeNotices, cardKey, greetingFor, latestWeekcard } from "./logic";
 import { Notices } from "./Notices";
@@ -47,14 +47,14 @@ function Tile({
     <Link
       href={href}
       aria-label={ariaLabel}
-      className={`yari-tile flex min-h-[11rem] w-full flex-row items-center gap-6 rounded-3xl border-4 p-6 shadow-tile transition-transform active:scale-[0.98] ${TILE_THEMES[theme]} ${
+      className={`yari-tile flex min-h-[11rem] w-full flex-col items-center justify-center gap-4 rounded-3xl border-4 p-5 shadow-tile transition-transform active:scale-[0.98] min-[420px]:flex-row min-[420px]:gap-6 min-[420px]:p-6 ${TILE_THEMES[theme]} ${
         highlight ? "ring-4 ring-warn ring-offset-2 ring-offset-bg" : ""
       }`}
     >
-      <span className="shrink-0" aria-hidden="true">
+      <span className="w-24 shrink-0 min-[420px]:w-[7.5rem]" aria-hidden="true">
         {icon}
       </span>
-      <span className="flex-1 text-center text-p-title font-bold leading-tight">{title}</span>
+      <span className="min-w-0 flex-1 text-center text-p-title font-bold leading-tight min-[420px]:text-left">{title}</span>
     </Link>
   );
 }
@@ -100,28 +100,28 @@ export function PatientHome() {
         <Tile
           href="/paciente/hablar"
           theme="hablar"
-          icon={<Art slot="icon-hablar" alt="" width={120} fallback={VoiceIcon} />}
+          icon={<Art slot="icon-hablar" alt="" width={120} className="h-auto w-full" fallback={VoiceIcon} />}
           title="Hablar"
           ariaLabel="Hablar: mandar un mensaje de voz"
         />
         <Tile
           href="/paciente/foto"
           theme="foto"
-          icon={<Art slot="icon-foto" alt="" width={120} fallback={CameraIcon} />}
+          icon={<Art slot="icon-foto" alt="" width={120} className="h-auto w-full" fallback={CameraIcon} />}
           title="Foto"
           ariaLabel="Foto: mandar una foto"
         />
         <Tile
           href="/paciente/grabar"
           theme="grabar"
-          icon={<Art slot="icon-grabar-cita" alt="" width={120} fallback={MicIcon} />}
+          icon={<Art slot="icon-grabar-cita" alt="" width={120} className="h-auto w-full" fallback={MicIcon} />}
           title="Grabar mi Cita"
           ariaLabel="Grabar mi cita: grabar la consulta"
         />
         <Tile
           href="/paciente/tarjeta"
           theme="tarjeta"
-          icon={<Art slot="icon-mi-tarjeta" alt="" width={120} fallback={CardIcon} />}
+          icon={<Art slot="icon-mi-tarjeta" alt="" width={120} className="h-auto w-full" fallback={CardIcon} />}
           title="Mi Tarjeta"
           ariaLabel="Mi tarjeta: ver la tarjeta de la semana"
           highlight={isNew}
@@ -142,7 +142,7 @@ export function PatientHome() {
 
       <FenceNotice className="text-p-meta" art />
 
-      <InstallHint />
+      <InstallButton />
     </div>
   );
 }
