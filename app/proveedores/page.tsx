@@ -1,0 +1,54 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ProviderSearch } from "@/components/providers/ProviderSearch";
+import { VERIFY_URL, catalog } from "@/lib/providers/catalog";
+import { formatConsulted } from "@/lib/providers/format";
+import { ASES_RULE } from "@/lib/providers/referido";
+
+export const metadata: Metadata = {
+  title: "Profesionales con licencia activa | Quida",
+  description:
+    "Busque profesionales de la salud de Puerto Rico con licencia activa, según el registro público de ORCPS.",
+};
+
+export default function ProveedoresPage() {
+  const consulted = formatConsulted(catalog.fetched_at);
+
+  return (
+    <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 md:px-6">
+      <Link href="/cuidador" className="text-lg underline">
+        Volver al cuidado
+      </Link>
+
+      <h1 className="mt-3 text-3xl font-bold md:text-4xl">Profesionales de la salud en Puerto Rico</h1>
+
+      <p role="note" className="mt-4 rounded-2xl border-2 border-ink-soft bg-surface p-4 text-lg">
+        Datos públicos reales, consultados el {consulted}. Quida no recomienda médicos.
+      </p>
+
+      <div className="mt-6 text-caregiver">
+        <ProviderSearch />
+      </div>
+
+      <p className="mt-6 text-base text-ink-soft">{ASES_RULE}</p>
+
+      <section aria-labelledby="de-donde-vienen" className="mt-6 flex flex-col gap-2 border-t-2 border-line pt-4">
+        <h2 id="de-donde-vienen" className="text-lg font-bold">
+          De dónde vienen estos datos
+        </h2>
+        <ul className="list-disc pl-6 text-base text-ink-soft">
+          {catalog.notes.map((note) => (
+            <li key={note}>{note}</li>
+          ))}
+        </ul>
+        <p className="text-base text-ink-soft">
+          {catalog.attribution}.{" "}
+          <a href={VERIFY_URL} target="_blank" rel="noreferrer noopener" className="font-bold underline">
+            Verifique cualquier licencia usted misma
+          </a>{" "}
+          en el registro de la Junta de Licenciamiento y Disciplina Médica.
+        </p>
+      </section>
+    </main>
+  );
+}
