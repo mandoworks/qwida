@@ -46,7 +46,8 @@ export function ProviderSearch() {
       const res = await fetch("/api/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nudgeEvent(provider, referral.expiresOn)),
+        // The server only accepts a CONFIRMADO nudge with the caregiver's tap recorded.
+        body: JSON.stringify({ ...nudgeEvent(provider, referral.expiresOn), confirmedBy: "caregiver" }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSent((prev) => ({ ...prev, [provider.license_number]: true }));

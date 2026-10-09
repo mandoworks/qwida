@@ -69,12 +69,15 @@ export function Review() {
     setPrescriptions(Array.isArray(heard) ? (heard as HeardPrescription[]) : []);
   }
 
-  /** Status only, or status plus a shallow payload merge (PATCH /api/events). */
+  /**
+   * Status only, or status plus a shallow payload merge (PATCH /api/events).
+   * The server only accepts CONFIRMADO with `confirmedBy`: this screen is the caregiver's tap.
+   */
   async function patch(id: string, body: { status?: QuidaEvent["status"]; payload?: Record<string, unknown> }) {
     const res = await fetch("/api/events", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, ...body }),
+      body: JSON.stringify({ id, ...body, confirmedBy: "caregiver" }),
     });
     return res.ok;
   }
