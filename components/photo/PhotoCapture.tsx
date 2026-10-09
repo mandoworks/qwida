@@ -57,6 +57,8 @@ export function PhotoCapture({
   size?: PhotoSize;
 }) {
   const [phase, setPhase] = useState<Phase>({ name: "idle" });
+  // Once confirmed, the next step is another photo, so that button becomes the primary one.
+  const [confirmed, setConfirmed] = useState(false);
   const patient = size === "patient";
 
   const previewUrl = phase.name === "preview" || phase.name === "processing" ? phase.url : null;
@@ -91,7 +93,10 @@ export function PhotoCapture({
     }
   }
 
-  const again = () => setPhase({ name: "idle" });
+  const again = () => {
+    setConfirmed(false);
+    setPhase({ name: "idle" });
+  };
   const btn = patient ? "" : "min-h-0 py-3 text-xl";
 
   return (
@@ -147,12 +152,15 @@ export function PhotoCapture({
                   event={e}
                   householdId={householdId}
                   size={size}
-                  onConfirmed={onConfirmed}
+                  onConfirmed={(r) => {
+                    setConfirmed(true);
+                    onConfirmed?.(r);
+                  }}
                   onDefer={patient ? () => setPhase({ name: "deferred" }) : undefined}
                 />
               ))
           )}
-          <BigButton variant="secondary" onClick={again} className={btn}>
+          <BigButton variant={confirmed ? "primary" : "secondary"} onClick={again} className={btn}>
             Mandar otra foto
           </BigButton>
         </>

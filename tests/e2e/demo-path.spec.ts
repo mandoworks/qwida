@@ -25,9 +25,8 @@ test.afterAll(async ({ request }) => {
   await page.close();
 });
 
+/** Uploads a fixture from the Foto screen's idle state and waits for the fields read from it. */
 async function sendPhoto(name: string) {
-  await page.goto("/paciente");
-  await page.getByRole("link", { name: /^Foto/ }).click();
   await page.getByLabel("O escoja una foto guardada").setInputFiles(fixture(name));
   await page.getByRole("button", { name: "Enviar foto" }).click();
   await expect(page.getByRole("region", { name: "Datos leídos de la foto" })).toBeVisible({ timeout: AI_TIMEOUT });
@@ -54,12 +53,16 @@ test("2. Paciente: Grabar mi cita con la grabación de demostración", async () 
 });
 
 test("3. Foto: receta a mano no es confiable y no se puede confirmar", async () => {
+  await page.goto("/paciente");
+  // The tile, not the label rescan notice's own Foto button.
+  await page.getByRole("link", { name: /^Foto Toque/ }).click();
   await sendPhoto("rx-handwritten.jpg");
   await expect(page.getByText("Letra de médico: no confiable")).toBeVisible();
   await expect(page.getByRole("button", { name: "Confirmar", exact: true })).toHaveCount(0);
 });
 
 test("4. Foto: confirmar la etiqueta crea el horario", async () => {
+  await page.getByRole("button", { name: "Mandar otra foto" }).click();
   await sendPhoto("rx-label.jpg");
   await page.getByRole("button", { name: "Confirmar", exact: true }).click();
 
@@ -73,6 +76,7 @@ test("4. Foto: confirmar la etiqueta crea el horario", async () => {
 });
 
 test("5. Foto: el referido muestra cuándo vence", async () => {
+  await page.getByRole("button", { name: "Mandar otra foto" }).click();
   await sendPhoto("referido.jpg");
   await page.getByRole("button", { name: "Confirmar", exact: true }).click();
   await expect(page.getByText(/^Vence el /)).toBeVisible();
@@ -87,7 +91,7 @@ test("6. Cuidador: revisar la visita, aprobar y enviar la tarjeta", async () => 
 
   await page.goto("/cuidador/tarjeta");
   await page.getByRole("button", { name: "Generar borrador" }).click();
-  const title = page.getByLabel("Título");
+  const title = page.getByRole("textbox", { name: "Título" });
   await expect(title).toBeVisible({ timeout: AI_TIMEOUT });
   cardTitle = await title.inputValue();
   expect(cardTitle).not.toBe("");

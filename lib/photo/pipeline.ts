@@ -83,7 +83,11 @@ export async function processPhoto(store: EventStore, input: PhotoInput): Promis
       simulated = true;
     }
   }
-  if (!extraction) extraction = pickFixture(input.hint, new Set(existing.map((e) => e.kind)));
+  if (!extraction) {
+    // Only photos count as demo steps: the visit recording also saves a `referido`.
+    const photoKinds = new Set(existing.filter((e) => e.source === "photo").map((e) => e.kind));
+    extraction = pickFixture(input.hint, photoKinds);
+  }
 
   const fence = checkFence(readText(extraction));
   const trust = applyTrust(extraction, latestVisitPrescriptions(existing));

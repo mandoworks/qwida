@@ -149,6 +149,14 @@ describe("photo pipeline without a key (SIMULADO)", () => {
     expect((await processPhoto(store, input(null))).class).toBe("referido");
   });
 
+  it("keeps the demo order after a visit saved its own referido", async () => {
+    const store = new MockStore();
+    await store.create({ householdId: "h", kind: "referido", source: "voice", status: "BORRADOR", confidence: null, payload: {} });
+    expect((await processPhoto(store, input(null))).class).toBe("rx_handwritten");
+    expect((await processPhoto(store, input(null))).class).toBe("rx_label");
+    expect((await processPhoto(store, input(null))).class).toBe("referido");
+  });
+
   it("label: confirm creates a CONFIRMADO schedule with refill countdown", async () => {
     const store = new MockStore();
     const r = await processPhoto(store, input("rx_label"));
