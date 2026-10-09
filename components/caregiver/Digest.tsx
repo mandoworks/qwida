@@ -6,19 +6,23 @@ import { Badge } from "@/components/ui/Badge";
 import { BigButton } from "@/components/ui/BigButton";
 import { EmergencyBanner } from "@/components/ui/EmergencyBanner";
 import { FenceNotice } from "@/components/ui/FenceNotice";
+import { ReferidoCountdown } from "@/components/photo/ReferidoCountdown";
 import { useLocalValue } from "@/components/patient/useLocalValue";
 import { useEvents } from "@/lib/client/useEvents";
 import { todayPR } from "@/lib/photo/dates";
-import { buildDigest, type ChangeKind, type DigestAction, type NextKind } from "@/lib/weekcard/digest";
+import { buildDigest, type DigestAction } from "@/lib/weekcard/digest";
 import { dayLabel } from "@/lib/weekcard/dates";
-import { longDate, relativeTime, todayLong } from "@/lib/weekcard/format";
+import { relativeTime } from "@/lib/weekcard/format";
 import type { StringKey } from "@/lib/weekcard/strings";
 import { useClock } from "./clock";
+import { Alert, AvatarCarmen, Bell, Calendar, Pill, Search } from "./icons";
 import { useLang } from "./lang-context";
 import { Pending } from "./Pending";
 
 const SEEN_KEY = "quida.cuidador.seenAt";
-const CHANGE_KEY: Record<ChangeKind, StringKey> = {
+const MAX_CHANGES = 3;
+
+const CHANGE_KEY: Record<string, StringKey> = {
   visit: "digest.change.visit",
   photo: "digest.change.photo",
   fence: "digest.change.fence",
@@ -35,19 +39,17 @@ const ACTION_KEY: Record<DigestAction["key"], StringKey> = {
   timeline: "digest.action.timeline",
 };
 
-const MARK: Record<ChangeKind, string> = {
-  visit: "●",
-  photo: "▣",
-  fence: "!",
-  weekcard: "▤",
-  referido: "➤",
-  appointment: "+",
-};
+const LINKS: { href: string; key: StringKey }[] = [
+  { href: "/cuidador/linea-de-tiempo", key: "digest.link.timeline" },
+  { href: "/cuidador/tarjeta", key: "digest.link.card" },
+  { href: "/proveedores", key: "digest.link.specialists" },
+  { href: "/cuidador/ajustes", key: "digest.link.settings" },
+];
 
-/** One glance for Marisol: what changed, what is next, and one thing to do. */
+/** One glance for Marisol: DESIGN.md 4.14 and 5.5. Exactly one primary button. */
 export function Digest() {
   const { events, error } = useEvents();
-  const { t, lang } = useLang();
+  const { t } = useLang();
   const [savedSeenAt, setSeenAt] = useLocalValue(SEEN_KEY);
   const seenAt = savedSeenAt ?? "";
 
@@ -55,7 +57,6 @@ export function Digest() {
   const clock = useClock();
   const now = clock === null ? null : new Date(clock);
   const today = clock === null ? null : now ? todayPR(now) : null;
-  // buildDigest is cheap enough to run on every poll: no memo, no stale cache.
   const digest = today === null ? null : buildDigest(events, { seenAt: seenAt || null, today });
 
   // Everything polled while this screen is open has now been seen.
@@ -72,107 +73,201 @@ export function Digest() {
     );
   }
 
+  const ago = (iso: string) => {
+    const { key, n } = relativeTime(iso, now);
+    return t(key, { n });
+  };
   const pendingCount = digest.pending.length;
+  const changes = digest.changes.slice(0, MAX_CHANGES);
+  const appointment = digest.next.find((n) => n.kind === "cita");
+  const soonRefill = digest.refills[0];
 
   return (
     <div className="flex flex-col gap-5">
       {digest.fence?.emergency && <EmergencyBanner className="-mx-4 sm:-mx-6" />}
 
-      <header>
-        <h2 className="text-3xl font-bold leading-tight sm:text-4xl">{t("digest.title")}</h2>
-        <p className="text-ink-soft">
-          Doña Carmen Rivera, 78, Adjuntas · {todayLong(lang, now)}
-        </p>
-      </header>
+      <h2 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("digest.title")}</h2>
 
-      {error && (
-        <p role="alert" className="rounded-2xl border-2 border-danger bg-surface px-4 py-3 text-danger">
-          {error}
-        </p>
-      )}
-
-      {digest.fence && (
-        <section aria-label={t("digest.change.fence")} className="rounded-2xl border-2 border-danger bg-surface p-5">
-          <div className="mb-2 flex flex-wrap items-center gap-2">
-            <h3 className="mr-auto text-2xl font-bold text-danger">{t("digest.change.fence")}</h3>
-            <Badge kind="POR_CONFIRMAR" />
-          </div>
-          <p className="mb-3">{digest.fence.emergency ? t("digest.fence.emergency") : t("digest.fence.med")}</p>
-          <FenceNotice />
-          <Link href="/cuidador/revisar" className="mt-3 inline-block font-bold text-accent underline">
-            {t("digest.action.fence")}
-          </Link>
-        </section>
-      )}
-
-      <section aria-label={t("digest.changes")} className="rounded-2xl border-2 border-line bg-surface p-5">
-        <h3 className="mb-3 text-2xl font-bold">{t("digest.changes")}</h3>
-        {digest.changes.length === 0 ? (
-          <p className="text-ink-soft">{seenAt ? t("digest.noChanges") : t("digest.quiet")}</p>
-        ) : (
-          <ul className="flex flex-col gap-2">
-            {digest.changes.slice(0, 6).map((change) => (
-              <li key={change.id} className="flex items-baseline gap-3">
-                <span aria-hidden="true" className="w-5 shrink-0 text-center font-bold text-accent">
-                  {MARK[change.kind]}
-                </span>
-                <span className="font-bold">{t(CHANGE_KEY[change.kind])}</span>
-                <span className="ml-auto shrink-0 text-ink-soft">{ago(change.at, now, t)}</span>
-              </li>
-            ))}
-          </ul>
+      {/* Live poll line: never a silent stale screen (5.5 item 3). */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span role="status" aria-live="polite" className="flex items-center gap-2 text-c-meta text-ink-mute">
+          <span aria-hidden="true" className={`size-2 rounded-full ${error ? "bg-warn" : "bg-ok"}`} />
+          {error ? t("digest.offline") : `${t("digest.updated")} ${ago(newest ?? now.toISOString())}`}
+        </span>
+        {error && (
+          <button type="button" onClick={() => window.location.reload()} className="min-h-tap-c text-c-body font-bold text-accent underline">
+            {t("digest.retry")}
+          </button>
         )}
-        {pendingCount > 0 && <p className="mt-3 font-bold text-warn">{t("digest.pending", { n: pendingCount })}</p>}
-      </section>
+      </div>
 
-      <div className="grid gap-5 lg:grid-cols-2">
-        <section aria-label={t("digest.next")} className="rounded-2xl border-2 border-line bg-surface p-5">
-          <h3 className="mb-3 text-2xl font-bold">{t("digest.next")}</h3>
-          {digest.next.length === 0 ? (
-            <p className="text-ink-soft">{t("digest.next.none")}</p>
+      {/* Digest card (4.14) */}
+      <section aria-label={t("digest.title")} className="overflow-hidden rounded-card border-2 border-line-strong bg-surface shadow-card">
+        <div
+          className={`flex items-center gap-3 border-b border-line p-5 ${
+            digest.hero === "ok" ? "bg-ok-soft" : "bg-warn-soft"
+          }`}
+        >
+          <AvatarCarmen size={72} className="shrink-0 text-ink" />
+          <div className="min-w-0">
+            <p className="text-c-title font-bold">
+              {digest.hero === "ok"
+                ? t("digest.hero.ok")
+                : digest.hero === "fence"
+                  ? t("digest.hero.fence")
+                  : pendingCount === 1
+                    ? t("digest.hero.warn1")
+                    : t("digest.hero.warnN", { n: pendingCount })}
+            </p>
+            {digest.lastSignal && (
+              <p className="text-c-meta text-ink-mute">
+                {t("digest.lastSignal", { ago: `${ago(digest.lastSignal.at)} (${t(`timeline.source.${digest.lastSignal.source}` as StringKey)})` })}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {digest.fence && (
+          <div className="flex flex-col gap-3 border-b border-line p-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <Alert size={20} className="text-warn" />
+              <span className="mr-auto text-c-title font-bold">{t("digest.change.fence")}</span>
+              <Badge kind="POR_CONFIRMAR" />
+            </div>
+            <p className="text-c-body">{digest.fence.emergency ? t("digest.fence.emergency") : t("digest.fence.med")}</p>
+            <FenceNotice />
+          </div>
+        )}
+
+        <ul className="divide-y divide-line">
+          {changes.length === 0 ? (
+            <li className="p-5 text-c-body text-ink-soft">{seenAt ? t("digest.noChanges") : t("digest.quiet")}</li>
           ) : (
-            <ul className="flex flex-col gap-3">
-              {digest.next.map((thing) => (
-                <li key={`${thing.kind}:${thing.id}`} className="flex flex-col">
-                  <span className="font-bold">{nextLabel(t, thing.kind, thing.name, thing.days, dayLabel(thing.when))}</span>
-                  <span className="text-ink-soft">{longDate(`${thing.when}T12:00:00`, lang)}</span>
-                </li>
-              ))}
-            </ul>
+            changes.map((change) => (
+              <li key={change.id} className="flex flex-wrap items-center gap-2 p-4">
+                <Badge kind="SINTETICO" />
+                <span className="text-c-meta tabular-nums text-ink-mute">{ago(change.at)}</span>
+                <span className="text-c-body font-bold">{t(CHANGE_KEY[change.kind] ?? "digest.change.visit")}</span>
+              </li>
+            ))
           )}
-        </section>
+        </ul>
 
-        <section aria-label={t("digest.action")} className="flex flex-col gap-3 rounded-2xl border-2 border-accent bg-surface p-5">
-          <h3 className="text-2xl font-bold">{t("digest.action")}</h3>
+        {digest.changes.length > MAX_CHANGES && (
+          <p className="border-t border-line p-4">
+            <Link href="/cuidador/linea-de-tiempo" className="text-c-body font-bold text-accent underline">
+              {t("digest.changesMore", { n: digest.changes.length })}
+            </Link>
+          </p>
+        )}
+
+        {/* The only primary button on the screen. */}
+        <div className="border-t border-line p-5">
+          <p className="text-c-meta uppercase tracking-wide text-ink-mute">{t("digest.actionLabel")}</p>
+          <p className="mb-3 text-c-title font-bold">{actionTitle(t, digest.action, pendingCount)}</p>
           {digest.action && (
-            <BigButton href={digest.action.href} className="min-h-14 py-3 text-xl">
+            <BigButton href={digest.action.href} className="min-h-tap-c-lg text-c-body">
               {t(ACTION_KEY[digest.action.key], { n: pendingCount })}
             </BigButton>
           )}
-          {digest.next.some((n) => n.kind === "recarga" || n.kind === "referido") && (
-            <Link href="/cuidador/recordatorios" className="font-bold text-accent underline">
-              {t("nav.recordatorios")}
-            </Link>
+        </div>
+      </section>
+
+      {/* Digest interval is SIMULADO (5.5 item 5). */}
+      <p className="flex flex-wrap items-center gap-2 text-c-meta text-ink-mute">
+        <Badge kind="SIMULADO" />
+        <span className="font-bold">{t("digest.interval")}</span>
+        <span className="rounded-well bg-sand px-3 py-1">{t("digest.intervalNote")}</span>
+      </p>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* What is coming: refill, referral, next appointment. */}
+        <section aria-label={t("digest.next.title")} className="flex flex-col gap-3 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+          <h3 className="text-c-title font-bold">{t("digest.next.title")}</h3>
+
+          {appointment && (
+            <p className="flex items-center gap-2 text-c-body">
+              <Calendar size={20} className="shrink-0 text-ink-mute" />
+              {appointment.name
+                ? t("digest.next.cita", { name: appointment.name, when: dayLabel(appointment.when) })
+                : t("digest.next.citaUnnamed", { when: dayLabel(appointment.when) })}
+            </p>
+          )}
+
+          {soonRefill && (
+            <div className="flex flex-col gap-1 rounded-well bg-sand p-3">
+              <p className="flex items-center gap-2 text-c-body font-bold">
+                <Pill size={20} />
+                {t("digest.next.recarga", { name: soonRefill.drug, days: soonRefill.days })}
+              </p>
+              {soonRefill.days <= 7 && (
+                <>
+                  <p className="text-c-body">{t("digest.refill.soon")}</p>
+                  <Link href="/cuidador/recordatorios" className="text-c-body font-bold text-accent underline">
+                    {t("nav.recordatorios")}
+                  </Link>
+                </>
+              )}
+            </div>
+          )}
+
+          {digest.referred.map((referral) => (
+            <div key={referral.id} className="flex flex-col gap-2">
+              <ReferidoCountdown
+                specialty={referral.specialty}
+                expiresOn={referral.expires_on}
+                today={today}
+                size="caregiver"
+              />
+              <Link href="/cuidador/recordatorios" className="text-c-body font-bold text-accent underline">
+                {t("digest.refill.renew")}
+              </Link>
+            </div>
+          ))}
+
+          {!appointment && !soonRefill && digest.referred.length === 0 && (
+            <p className="text-c-body text-ink-soft">{t("digest.next.none")}</p>
           )}
         </section>
+
+        <div className="flex flex-col gap-4">
+          <section aria-label={t("nav.recordatorios")} className="flex items-start gap-3 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+            <Bell size={20} className="mt-1 shrink-0 text-accent" />
+            <div>
+              <p className="text-c-title font-bold">{t("nav.recordatorios")}</p>
+              <p className="text-c-body text-ink-soft">{t("nudges.lead")}</p>
+              <Link href="/cuidador/recordatorios" className="text-c-body font-bold text-accent underline">
+                {t("nudges.title")}
+              </Link>
+            </div>
+          </section>
+          {digest.fence && <FenceNotice />}
+        </div>
       </div>
+
+      {/* Link row (5.5 item 7): a 4 card row on wide screens. */}
+      <nav aria-label={t("digest.next.title")} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {LINKS.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="flex min-h-tap-c items-center gap-2 rounded-card border-2 border-line-strong bg-surface px-4 text-c-body font-bold shadow-card motion-quick hover:bg-sand"
+          >
+            {link.href === "/proveedores" && <Search size={20} />}
+            {t(link.key)}
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 }
 
-function ago(iso: string, now: Date, t: (key: StringKey, values?: Record<string, string | number>) => string): string {
-  const { key, n } = relativeTime(iso, now);
-  return t(key, { n });
-}
-
-function nextLabel(
+function actionTitle(
   t: (key: StringKey, values?: Record<string, string | number>) => string,
-  kind: NextKind,
-  name: string | null,
-  days: number,
-  when: string,
+  action: DigestAction | null,
+  pending: number,
 ): string {
-  if (kind === "cita") return t(name ? "digest.next.cita" : "digest.next.citaUnnamed", { name: name ?? "", when });
-  if (kind === "recarga") return t(name ? "digest.next.recarga" : "digest.next.recargaUnnamed", { name: name ?? "", days });
-  return t(name ? "digest.next.referido" : "digest.next.referidoUnnamed", { name: name ?? "", when });
+  if (!action) return t("digest.quiet");
+  if (action.key === "review") return t("digest.pending", { n: pending });
+  return t(ACTION_KEY[action.key], { n: pending });
 }

@@ -105,10 +105,15 @@ export function upcoming(events: QuidaEvent[], today: string): NextThing[] {
   return out.sort((a, b) => a.days - b.days);
 }
 
-/** Everything a person still has to look at: no AI output becomes CONFIRMADO by itself. */
+/**
+ * Everything a person still has to look at: no AI output becomes CONFIRMADO by
+ * itself. A BORRADOR `weekcard` is excluded on purpose: it is the caregiver's
+ * own autosave from the editor, and confirming it here would push a card to Mamá
+ * without going through Aprobar and Enviar.
+ */
 export function pendingItems(events: QuidaEvent[]): Pending[] {
   return events
-    .filter((e) => e.status !== "CONFIRMADO" && e.kind !== "nudge")
+    .filter((e) => e.status !== "CONFIRMADO" && e.kind !== "nudge" && e.kind !== "weekcard")
     .map((e) => ({ id: e.id, kind: e.kind }));
 }
 

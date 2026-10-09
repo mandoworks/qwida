@@ -1,31 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/Badge";
+import { BigButton } from "@/components/ui/BigButton";
+import { ResetDemoButton } from "@/components/ResetDemoButton";
 import { useLocalValue } from "@/components/patient/useLocalValue";
 import { useEvents } from "@/lib/client/useEvents";
-import { buildIcs, ICS_FILENAME } from "@/lib/weekcard/ics";
 import { confirmedAppointments } from "@/lib/weekcard/digest";
+import { buildIcs, ICS_FILENAME } from "@/lib/weekcard/ics";
 import type { StringKey } from "@/lib/weekcard/strings";
+import { Download, Globe } from "./icons";
 import { useLang } from "./lang-context";
 
-const INTERVALS = ["daily", "every3", "weekly"] as const;
-type Interval = (typeof INTERVALS)[number];
+const DETAIL = ["brief", "points", "full"] as const;
+type Detail = (typeof DETAIL)[number];
 
-const INTERVAL_LABEL: Record<Interval, StringKey> = {
-  daily: "settings.digest.daily",
-  every3: "settings.digest.every3",
-  weekly: "settings.digest.weekly",
+const DETAIL_LABEL: Record<Detail, StringKey> = {
+  brief: "settings.detail.brief",
+  points: "settings.detail.points",
+  full: "settings.detail.full",
 };
 
-/** Digest interval (SIMULADO), caregiver language, and a real .ics export. */
+/** Digest detail (SIMULADO), caregiver language, contrast, .ics export, sharing. */
 export function Settings() {
   const { events } = useEvents();
   const { t, lang, setLang } = useLang();
-  const [saved, setSaved] = useLocalValue("quida.cuidador.digest");
-  const interval: Interval = INTERVALS.includes(saved as Interval) ? (saved as Interval) : "daily";
-  const setInterval = (next: Interval) => setSaved(next);
+  const [savedDetail, setSavedDetail] = useLocalValue("quida.cuidador.detail");
+  const detail: Detail = DETAIL.includes(savedDetail as Detail) ? (savedDetail as Detail) : "points";
+  const [savedContrast, setSavedContrast] = useLocalValue("quida.cuidador.contrast");
+  const highContrast = savedContrast === "high";
   const [downloaded, setDownloaded] = useState<number | null>(null);
+
+  // The high contrast theme is real: it flips data-contrast on <html> (5.10 item 4).
+  useEffect(() => {
+    document.documentElement.dataset.contrast = highContrast ? "high" : "";
+  }, [highContrast]);
 
   const appointments = confirmedAppointments(events);
 
@@ -42,37 +51,39 @@ export function Settings() {
 
   return (
     <div className="flex flex-col gap-5">
-      <h2 className="text-3xl font-bold">{t("settings.title")}</h2>
+      <h2 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("settings.title")}</h2>
 
-      <section aria-label={t("settings.digest")} className="flex flex-col gap-3 rounded-2xl border-2 border-line bg-surface p-5">
-        <div className="flex flex-wrap items-center gap-2">
-          <h3 className="mr-auto text-2xl font-bold">{t("settings.digest")}</h3>
+      <fieldset className="flex flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+        <legend className="flex items-center gap-2 text-c-title font-bold">
+          {t("settings.detail")}
           <Badge kind="SIMULADO" />
+        </legend>
+        <div role="radiogroup" aria-label={t("settings.detail")} className="flex flex-col">
+          {DETAIL.map((code) => (
+            <button
+              key={code}
+              type="button"
+              role="radio"
+              aria-checked={detail === code}
+              onClick={() => setSavedDetail(code)}
+              className={`flex min-h-tap-c-lg items-center gap-3 border-b border-line px-1 text-left text-c-body motion-quick last:border-b-0 ${
+                detail === code ? "font-bold text-accent" : ""
+              }`}
+            >
+              <span
+                aria-hidden="true"
+                className={`size-4 rounded-full border-2 ${detail === code ? "border-accent bg-accent" : "border-line-strong"}`}
+              />
+              {t(DETAIL_LABEL[code])}
+            </button>
+          ))}
         </div>
-        <p className="text-ink-soft">{t("settings.digest.simulated")}</p>
-        <fieldset>
-          <legend className="sr-only">{t("settings.digest")}</legend>
-          <div className="flex flex-wrap gap-2">
-            {INTERVALS.map((code) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => setInterval(code)}
-                aria-pressed={interval === code}
-                className={`min-h-11 rounded-xl border-2 px-4 font-bold ${
-                  interval === code ? "border-accent bg-accent text-accent-ink" : "border-line bg-surface"
-                }`}
-              >
-                {t(INTERVAL_LABEL[code])}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-      </section>
+        <p className="text-c-meta text-ink-mute">{t("settings.detail.note")}</p>
+      </fieldset>
 
-      <section aria-label={t("settings.lang")} className="flex flex-col gap-3 rounded-2xl border-2 border-line bg-surface p-5">
-        <h3 className="text-2xl font-bold">{t("settings.lang")}</h3>
-        <p className="text-ink-soft">{t("settings.lang.hint")}</p>
+      <fieldset className="flex flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+        <legend className="text-c-title font-bold">{t("settings.lang")}</legend>
+        <p className="text-c-meta text-ink-mute">{t("settings.lang.hint")}</p>
         <div className="flex gap-2">
           {(["es", "en"] as const).map((code) => (
             <button
@@ -80,36 +91,85 @@ export function Settings() {
               type="button"
               onClick={() => setLang(code)}
               aria-pressed={lang === code}
-              className={`min-h-11 rounded-xl border-2 px-4 font-bold ${
-                lang === code ? "border-accent bg-accent text-accent-ink" : "border-line bg-surface"
+              className={`flex min-h-tap-c items-center gap-2 rounded-full border-2 px-4 text-c-body font-bold motion-quick ${
+                lang === code ? "border-accent bg-accent text-white" : "border-line bg-surface"
               }`}
             >
+              <Globe size={20} />
               {t(code === "es" ? "lang.es" : "lang.en")}
             </button>
           ))}
         </div>
-      </section>
+      </fieldset>
 
-      <section aria-label={t("settings.ics")} className="flex flex-col gap-3 rounded-2xl border-2 border-line bg-surface p-5">
-        <div className="flex flex-wrap items-center gap-2">
-          <h3 className="mr-auto text-2xl font-bold">{t("settings.ics")}</h3>
-          <Badge kind="SIMULADO" />
+      <fieldset className="flex flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+        <legend className="text-c-title font-bold">{t("settings.contrast")}</legend>
+        <p className="text-c-meta text-ink-mute">{t("settings.contrast.hint")}</p>
+        <div className="flex gap-2">
+          {(["normal", "high"] as const).map((code) => (
+            <button
+              key={code}
+              type="button"
+              onClick={() => setSavedContrast(code)}
+              aria-pressed={highContrast === (code === "high")}
+              className={`min-h-tap-c rounded-full border-2 px-4 text-c-body font-bold motion-quick ${
+                highContrast === (code === "high") ? "border-accent bg-accent text-white" : "border-line bg-surface"
+              }`}
+            >
+              {t(code === "normal" ? "settings.contrast.normal" : "settings.contrast.high")}
+            </button>
+          ))}
         </div>
-        <p className="text-ink-soft">{t("settings.ics.hint")}</p>
-        <button
-          type="button"
+      </fieldset>
+
+      <fieldset className="flex flex-col gap-3 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+        <legend className="flex items-center gap-2 text-c-title font-bold">
+          {t("settings.ics")}
+          <Badge kind="SIMULADO" />
+        </legend>
+        <BigButton
+          variant="secondary"
           onClick={download}
           disabled={appointments.length === 0}
-          className="min-h-12 self-start rounded-xl border-2 border-ink bg-surface px-4 font-bold disabled:opacity-50"
+          className="min-h-tap-c-lg text-c-body"
+          icon={<Download size={20} />}
         >
           {t("settings.ics.button")}
-        </button>
+        </BigButton>
         {downloaded !== null && (
-          <p role="status" className="font-bold text-ok">
-            {appointments.length === 0 ? t("settings.ics.empty") : t("settings.ics.done", { n: downloaded })}
+          <p role="status" className="rounded-well bg-sand px-3 py-2 text-c-meta text-ink-mute">
+            {appointments.length === 0 ? t("settings.ics.empty") : t("settings.ics.downloaded", { n: downloaded })}
           </p>
         )}
-      </section>
+      </fieldset>
+
+      <fieldset className="flex flex-col gap-1 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+        <legend className="text-c-title font-bold">{t("settings.share")}</legend>
+        <ul>
+          {[t("settings.share.one"), t("settings.share.two")].map((line) => (
+            <li key={line} className="flex min-h-tap-c items-center border-b border-line text-c-body last:border-b-0">
+              {line}
+            </li>
+          ))}
+        </ul>
+        <details className="mt-2">
+          <summary className="min-h-tap-c cursor-pointer py-2 font-bold text-accent underline">
+            {t("settings.share.link")}
+          </summary>
+          <p className="rounded-well bg-sand p-3 text-c-body">
+            <strong>{t("settings.consent")}</strong>
+            <br />
+            {t("settings.consent.line")}
+          </p>
+        </details>
+      </fieldset>
+
+      <div className="flex flex-col items-start gap-4">
+        <ResetDemoButton />
+        <p className="text-c-meta text-ink-mute">
+          {t("settings.credit")} · {t("settings.credit.font")} · {t("settings.credit.model")}
+        </p>
+      </div>
     </div>
   );
 }

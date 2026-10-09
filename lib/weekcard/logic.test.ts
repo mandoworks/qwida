@@ -92,6 +92,12 @@ describe("pendingItems", () => {
     const nudge = event({ kind: "nudge", payload: { text: "Cuando recoja la receta..." } });
     expect(pendingItems([appointment, fence, nudge]).map((p) => p.kind)).toEqual(["fence"]);
   });
+
+  it("never queues the editor autosave, which is not care history", () => {
+    const draft = event({ kind: "weekcard", payload: { items: [] } });
+    const sent = event({ kind: "weekcard", status: "CONFIRMADO", payload: { items: [] } });
+    expect(pendingItems([draft, sent])).toEqual([]);
+  });
 });
 
 describe("buildDigest", () => {
@@ -216,6 +222,12 @@ describe("timeline", () => {
     const rows = timelineRows(events);
     expect(rows.map((r) => r.group).sort()).toEqual(["alerta", "cita", "nota", "nota", "receta", "receta", "referido"]);
     expect(rows[0].at >= rows.at(-1)!.at).toBe(true);
+  });
+
+  it("hides the BORRADOR weekcard autosave but keeps the sent card", () => {
+    const draft = event({ kind: "weekcard", payload: { items: [] } });
+    const sent = event({ kind: "weekcard", status: "CONFIRMADO", payload: { items: [] } });
+    expect(timelineRows([draft, sent]).map((r) => r.id)).toEqual([sent.id]);
   });
 
   it("filters by type", () => {

@@ -29,6 +29,13 @@ export function longDate(iso: string, lang: Lang): string {
   }).format(d);
 }
 
+/** Just the hour, "2:15 p. m.", for a dense timeline row. */
+export function clockTime(iso: string, lang: Lang): string {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  return new Intl.DateTimeFormat(LOCALE[lang], { hour: "numeric", minute: "2-digit" }).format(d);
+}
+
 export function todayLong(lang: Lang, now: Date): string {
   return new Intl.DateTimeFormat(LOCALE[lang], { weekday: "long", day: "numeric", month: "long" }).format(now);
 }

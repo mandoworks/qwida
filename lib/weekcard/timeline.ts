@@ -29,6 +29,8 @@ export type TimelineRow = {
   facts: { key: "doctor" | "place" | "specialty" | "date" | "expires" | "prescriptions" | "questions" | "drug" | "source" | "days"; value: string }[];
   /** Matches the specialty text filter. */
   search: string;
+  /** Where it came from, for the small source line (4.12). */
+  source: "photo" | "voice" | "visit" | "caregiver" | "system";
 };
 
 const str = (v: unknown): string | null => (typeof v === "string" && v.trim() ? v.trim() : null);
@@ -140,12 +142,13 @@ function isoDatePR(iso: string): string {
 /** Every event, newest first, with the text the specialty filter searches in. */
 export function timelineRows(events: QuidaEvent[]): TimelineRow[] {
   return events
-    .filter((e) => GROUP_OF[e.kind])
+    // The BORRADOR weekcard is the editor autosave, not care history.
+    .filter((e) => GROUP_OF[e.kind] && !(e.kind === "weekcard" && e.status !== "CONFIRMADO"))
     .map((e) => {
       const facts = factsFor(e);
       const group = GROUP_OF[e.kind];
       const search = normalize([titleFor(e, facts), ...facts.map((f) => f.value)].join(" "));
-      return { id: e.id, group, status: e.status, at: e.createdAt, title: titleFor(e, facts), facts, search };
+      return { id: e.id, group, status: e.status, at: e.createdAt, title: titleFor(e, facts), facts, search, source: sourceKey(e) };
     })
     .sort((a, b) => b.at.localeCompare(a.at));
 }

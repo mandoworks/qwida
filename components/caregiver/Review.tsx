@@ -7,7 +7,6 @@ import { BigButton } from "@/components/ui/BigButton";
 import { EmergencyBanner } from "@/components/ui/EmergencyBanner";
 import { FenceNotice } from "@/components/ui/FenceNotice";
 import { useEvents } from "@/lib/client/useEvents";
-import { HOUSEHOLD_ID } from "@/lib/seed";
 import type { QuidaEvent } from "@/lib/store/types";
 import { lowConfidence, pendingItems } from "@/lib/weekcard/digest";
 import { relativeTime } from "@/lib/weekcard/format";
@@ -70,11 +69,12 @@ export function Review() {
     setPrescriptions(Array.isArray(heard) ? (heard as HeardPrescription[]) : []);
   }
 
-  async function patch(id: string, status: QuidaEvent["status"]) {
+  /** Status only, or status plus a shallow payload merge (PATCH /api/events). */
+  async function patch(id: string, body: { status?: QuidaEvent["status"]; payload?: Record<string, unknown> }) {
     const res = await fetch("/api/events", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status }),
+      body: JSON.stringify({ id, ...body }),
     });
     return res.ok;
   }
@@ -83,7 +83,7 @@ export function Review() {
     setBusy(true);
     setError(null);
     try {
-      if (!(await patch(e.id, "CONFIRMADO"))) setError(t("review.error"));
+      if (!(await patch(e.id, { status: "CONFIRMADO" }))) setError(t("review.error"));
       else setDone(e.id);
     } catch {
       setError(t("review.error"));
@@ -93,41 +93,20 @@ export function Review() {
   }
 
   /**
-   * The store only changes a status, so a correction is saved as a new
-   * CONFIRMADO event linked to the original with `corrects`, and the original
-   * is confirmed. Ask W1 for a payload PATCH to replace this one day.
+   * The correction edits the event in place: one PATCH with the edited payload
+   * and the new status. No duplicate event, no link to follow.
    */
   async function confirmCorrected(e: QuidaEvent) {
     setBusy(true);
     setError(null);
     try {
-      const payload: Record<string, unknown> = {
-        ...e.payload,
-        synthetic: true,
-        corrects: e.id,
-        editedBy: "caregiver",
-      };
+      const payload: Record<string, unknown> = { editedBy: "caregiver" };
       for (const field of FIELDS[e.kind] ?? []) {
         const value = (fields[field.name] ?? "").trim();
         payload[field.name] = value === "" ? null : value;
       }
-      if (e.kind === "visit") {
-        payload.prescriptions = prescriptions;
-        payload.questions_back = Array.isArray(e.payload.questions_back) ? e.payload.questions_back : [];
-      }
-      const created = await fetch("/api/events", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          householdId: e.householdId || HOUSEHOLD_ID,
-          kind: e.kind,
-          status: "CONFIRMADO",
-          source: "caregiver",
-          confidence: 1,
-          payload,
-        }),
-      });
-      if (!created.ok || !(await patch(e.id, "CONFIRMADO"))) setError(t("review.error"));
+      if (e.kind === "visit") payload.prescriptions = prescriptions;
+      if (!(await patch(e.id, { status: "CONFIRMADO", payload }))) setError(t("review.error"));
       else setDone(e.id);
     } catch {
       setError(t("review.error"));
@@ -147,19 +126,19 @@ export function Review() {
   if (queue.length === 0) {
     return (
       <div className="flex flex-col gap-4">
-        <h2 className="text-3xl font-bold">{t("review.title")}</h2>
+        <h2 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("review.title")}</h2>
 
-      {done && !event && <p className="rounded-2xl border-2 border-ok bg-surface px-5 py-4 font-bold text-ok">{t("review.confirmed")}</p>}
-        <p className="rounded-2xl border-2 border-line bg-surface px-5 py-6">{t("review.empty")}</p>
+      {done && !event && <p className="rounded-card border-2 border-ok bg-surface px-5 py-4 font-bold text-ok">{t("review.confirmed")}</p>}
+        <p className="rounded-card border-2 border-line-strong bg-surface shadow-card px-5 py-6">{t("review.empty")}</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-5">
-      <h2 className="text-3xl font-bold">{t("review.title")}</h2>
+      <h2 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("review.title")}</h2>
 
-      {done && !event && <p className="rounded-2xl border-2 border-ok bg-surface px-5 py-4 font-bold text-ok">{t("review.confirmed")}</p>}
+      {done && !event && <p className="rounded-card border-2 border-ok bg-surface px-5 py-4 font-bold text-ok">{t("review.confirmed")}</p>}
 
       <div className="lg:grid lg:grid-cols-[20rem_1fr] lg:gap-6">
         <section aria-label={t("review.queue")} className="flex flex-col gap-2">
@@ -169,7 +148,7 @@ export function Review() {
               type="button"
               onClick={() => open(e.id)}
               aria-current={selected === e.id ? "true" : undefined}
-              className={`flex flex-col gap-1 rounded-2xl border-2 px-4 py-3 text-left ${
+              className={`flex min-h-tap-c flex-col gap-1 rounded-card border-2 px-4 py-3 text-left motion-quick ${
                 selected === e.id ? "border-accent bg-surface" : "border-line bg-surface"
               }`}
             >
@@ -177,7 +156,7 @@ export function Review() {
               <span className="flex flex-wrap items-center gap-2">
                 <Badge kind={e.status} />
                 {lowConfidence(e) && <span className="font-bold text-warn">{t("review.lowConfidence")}</span>}
-                <span className="ml-auto text-ink-soft">{now ? ago(e.createdAt, now, t) : null}</span>
+                <span className="ml-auto text-c-meta tabular-nums text-ink-mute">{now ? ago(e.createdAt, now, t) : null}</span>
               </span>
             </button>
           ))}
@@ -185,11 +164,11 @@ export function Review() {
 
         <section aria-label={t("review.select")} className="mt-4 min-w-0 lg:mt-0">
           {!event ? (
-            <p className="rounded-2xl border-2 border-line bg-surface px-5 py-6 text-ink-soft">{t("review.select")}</p>
+            <p className="rounded-card border-2 border-line-strong bg-surface shadow-card px-5 py-6 text-ink-soft">{t("review.select")}</p>
           ) : (
-            <article className="flex flex-col gap-4 rounded-2xl border-2 border-line bg-surface p-5">
+            <article className="flex flex-col gap-4 rounded-card border-2 border-line-strong bg-surface shadow-card p-5">
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="mr-auto text-2xl font-bold">{itemLabel(event, t)}</h3>
+                <h3 className="mr-auto text-c-title font-bold">{itemLabel(event, t)}</h3>
                 <Badge kind={done === event.id ? "CONFIRMADO" : event.status} />
                 {event.payload.simulated === true && <Badge kind="SIMULADO" />}
               </div>
@@ -218,7 +197,7 @@ export function Review() {
               )}
 
               {error && (
-                <p role="alert" className="rounded-xl border-2 border-danger bg-surface px-4 py-3 text-danger">
+                <p role="alert" className="rounded-well border-2 border-danger bg-surface px-4 py-3 text-danger">
                   {error}
                 </p>
               )}
@@ -226,10 +205,10 @@ export function Review() {
 
               {!PHOTO_KINDS.has(event.kind) && event.status !== "CONFIRMADO" && (
                 <div className="flex flex-wrap gap-2">
-                  <BigButton onClick={() => (editing ? confirmCorrected(event) : confirmPlain(event))} disabled={busy} className="min-h-14 py-3 text-xl">
+                  <BigButton onClick={() => (editing ? confirmCorrected(event) : confirmPlain(event))} disabled={busy} className="min-h-tap-c-lg text-c-body">
                     {busy ? t("review.confirming") : editing ? t("review.saveCorrect") : t("review.confirm")}
                   </BigButton>
-                  <BigButton variant="secondary" onClick={() => setEditing((v) => !v)} disabled={busy} className="min-h-14 py-3 text-xl">
+                  <BigButton variant="secondary" onClick={() => setEditing((v) => !v)} disabled={busy} className="min-h-tap-c-lg text-c-body">
                     {editing ? t("review.confirm") : t("review.correct")}
                   </BigButton>
                 </div>
@@ -290,7 +269,7 @@ function ItemReview({
               type={field.type ?? "text"}
               value={fields[field.name] ?? ""}
               onChange={(e) => onField(field.name, e.target.value)}
-              className="min-h-11 rounded-lg border-2 border-ink bg-surface px-3"
+              className="min-h-tap-c rounded-btn border-2 border-line-strong bg-surface px-3"
             />
           ) : (
             <span className="font-bold">{fields[field.name] || "—"}</span>
@@ -300,10 +279,10 @@ function ItemReview({
 
       {prescriptions.length > 0 && (
         <div>
-          <h4 className="mb-2 font-bold">{t("review.drug")}</h4>
+          <h4 className="mb-2 text-c-subtitle font-bold">{t("review.drug")}</h4>
           <ul className="flex flex-col gap-3">
             {prescriptions.map((p, i) => (
-              <li key={i} className="flex flex-col gap-2 rounded-xl border-2 border-line p-3">
+              <li key={i} className="flex flex-col gap-2 rounded-well border-2 border-line p-3">
                 {(
                   [
                     ["drug", t("review.drug")],
@@ -317,7 +296,7 @@ function ItemReview({
                       <input
                         value={str(p[name])}
                         onChange={(e) => onPrescription(i, { [name]: e.target.value })}
-                        className="min-h-11 rounded-lg border-2 border-ink bg-surface px-3"
+                        className="min-h-tap-c rounded-btn border-2 border-line-strong bg-surface px-3"
                       />
                     ) : (
                       <span className="font-bold">{str(p[name]) || "—"}</span>
@@ -338,13 +317,13 @@ function ItemReview({
       {typeof event.payload.transcript === "string" && (
         <details>
           <summary className="cursor-pointer font-bold">{t("review.transcript")}</summary>
-          <p className="mt-2 whitespace-pre-line rounded-xl border-2 border-line p-3 text-ink-soft">{event.payload.transcript}</p>
+          <p className="mt-2 whitespace-pre-line rounded-well border-2 border-line p-3 text-ink-soft">{event.payload.transcript}</p>
         </details>
       )}
 
       {Array.isArray(event.payload.questions_back) && event.payload.questions_back.length > 0 && (
-        <div className="rounded-xl border-2 border-warn p-3">
-          <h4 className="font-bold text-warn">{t("review.questions")}</h4>
+        <div className="rounded-well border-2 border-warn p-3">
+          <h4 className="text-c-subtitle font-bold text-warn">{t("review.questions")}</h4>
           <ul className="list-disc pl-5">
             {(event.payload.questions_back as string[]).map((q, i) => (
               <li key={i}>{q}</li>
