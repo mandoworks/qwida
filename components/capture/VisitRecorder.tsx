@@ -277,11 +277,11 @@ function ItemCard({
     <li className="flex flex-col gap-3 rounded-2xl border-2 border-line bg-surface p-5">
       <div className="flex flex-wrap items-center gap-2">
         <h4 className="mr-auto font-bold">{title}</h4>
-        <Badge kind="BORRADOR" />
-        {needsConfirmation && <Badge kind="POR_CONFIRMAR" />}
+        <Badge kind="BORRADOR" size="patient" />
+        {needsConfirmation && <Badge kind="POR_CONFIRMAR" size="patient" />}
       </div>
       <dl className="grid gap-2">{children}</dl>
-      <blockquote className="border-l-4 border-accent pl-4 text-lg italic text-ink-soft">“{quote}”</blockquote>
+      <blockquote className="border-l-4 border-accent pl-4 text-lg text-ink-soft">“{quote}”</blockquote>
     </li>
   );
 }
@@ -294,8 +294,8 @@ function VisitResult({ result, onAgain }: { result: VisitResponse; onAgain: () =
       {fence.emergency && <EmergencyBanner className="-mx-5" />}
       <div className="flex flex-wrap items-center gap-2">
         <h2 className="mr-auto text-3xl font-bold">Lo que escuchamos</h2>
-        <Badge kind="SINTETICO" />
-        {result.simulated && <Badge kind="SIMULADO" />}
+        <Badge kind="SINTETICO" size="patient" />
+        {result.simulated && <Badge kind="SIMULADO" size="patient" />}
       </div>
       <p className="text-xl">Esto es un borrador. Su familia lo revisa y lo confirma.</p>
       {fence.triggered && <FenceNotice className="text-xl" />}

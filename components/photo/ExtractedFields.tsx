@@ -117,8 +117,8 @@ export function ExtractedFields({
   return (
     <section aria-label="Datos leídos de la foto" className={`flex flex-col gap-5 ${patient ? "text-patient" : "text-caregiver"}`}>
       <div className="flex flex-wrap items-center gap-2">
-        <Badge kind={confirmed ? "CONFIRMADO" : event.status} />
-        {p.simulated === true && <Badge kind="SIMULADO" />}
+        <Badge kind={confirmed ? "CONFIRMADO" : event.status} size={patient ? "patient" : "caregiver"} />
+        {p.simulated === true && <Badge kind="SIMULADO" size={patient ? "patient" : "caregiver"} />}
       </div>
 
       {handwritten && (

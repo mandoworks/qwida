@@ -30,13 +30,29 @@ const STYLES: Record<BadgeKind, { label: string; className: string; title: strin
   },
 };
 
-/** Status vocabulary shared by both sides. Accepts store statuses directly. */
-export function Badge({ kind, className = "" }: { kind: BadgeKind; className?: string }) {
+/**
+ * Status vocabulary shared by both sides. Accepts store statuses directly.
+ * `size="patient"` renders at the 20px elderly floor per the typography spec;
+ * the default compact badge keeps the caregiver rendering unchanged.
+ */
+export function Badge({
+  kind,
+  className = "",
+  size = "caregiver",
+}: {
+  kind: BadgeKind;
+  className?: string;
+  size?: "patient" | "caregiver";
+}) {
   const s = STYLES[kind];
+  const sizeCls =
+    size === "patient"
+      ? "px-3 py-1 text-p-meta font-bold"
+      : "px-2 py-0.5 text-sm font-bold tracking-wide";
   const badge = (
     <span
       title={s.title}
-      className={`inline-flex items-center rounded-md border-2 px-2 py-0.5 text-sm font-bold tracking-wide ${s.className} ${className}`}
+      className={`inline-flex items-center rounded-md border-2 ${sizeCls} ${s.className} ${className}`}
     >
       {s.label}
     </span>

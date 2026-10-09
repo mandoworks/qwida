@@ -135,8 +135,8 @@ export function VoiceNote() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center gap-2">
-        <Badge kind="SINTETICO" className="w-fit" />
-        {result?.simulated && <Badge kind="SIMULADO" className="w-fit" />}
+        <Badge kind="SINTETICO" className="w-fit" size="patient" />
+        {result?.simulated && <Badge kind="SIMULADO" className="w-fit" size="patient" />}
       </div>
 
       {phase === "idle" && (

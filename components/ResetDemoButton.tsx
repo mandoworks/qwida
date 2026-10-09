@@ -29,7 +29,7 @@ export function ResetDemoButton() {
       onClick={reset}
       disabled={state === "busy"}
       aria-live="polite"
-      className="rounded-xl border-2 border-ink-soft bg-surface px-5 py-3 text-lg font-bold text-ink-soft disabled:opacity-60"
+      className="rounded-xl border-2 border-ink-soft bg-surface px-5 py-3 text-p-meta font-bold text-ink-soft disabled:opacity-60"
     >
       {label}
     </button>
