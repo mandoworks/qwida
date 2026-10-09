@@ -46,12 +46,73 @@ export function mapMedSeekToProvider(raw: MedSeekRawProvider, fetchedAt = new Da
   };
 }
 
+const SPECIALTY_MAP: Record<string, string> = {
+  "cardiólogo": "CARDIOLOGIA",
+  "cardiologo": "CARDIOLOGIA",
+  "cardiología": "CARDIOLOGIA",
+  "cardiologia": "CARDIOLOGIA",
+  "geriatra": "GERIATRIA",
+  "geriatría": "GERIATRIA",
+  "geriatria": "GERIATRIA",
+  "neurólogo": "NEUROLOGIA",
+  "neurologo": "NEUROLOGIA",
+  "neurología": "NEUROLOGIA",
+  "neurologia": "NEUROLOGIA",
+  "oftalmólogo": "OFTALMOLOGIA",
+  "oftalmologo": "OFTALMOLOGIA",
+  "oftalmología": "OFTALMOLOGIA",
+  "oftalmologia": "OFTALMOLOGIA",
+  "endocrinólogo": "ENDOCRINOLOGIA",
+  "endocrinologo": "ENDOCRINOLOGIA",
+  "endocrinología": "ENDOCRINOLOGIA",
+  "endocrinologia": "ENDOCRINOLOGIA",
+  "internista": "MEDICINA INTERNA",
+  "médico internista": "MEDICINA INTERNA",
+  "medico internista": "MEDICINA INTERNA",
+  "generalista": "GENERALISTA",
+  "médico general": "GENERALISTA",
+  "medico general": "GENERALISTA",
+  "médico de familia": "MEDICINA DE FAMILIA",
+  "medico de familia": "MEDICINA DE FAMILIA",
+  "psiquiatra": "PSIQUIATRIA",
+  "psiquiatría": "PSIQUIATRIA",
+  "psiquiatria": "PSIQUIATRIA",
+  "psicólogo": "PSICOLOGIA",
+  "psicologo": "PSICOLOGIA",
+  "psicología": "PSICOLOGIA",
+  "psicologia": "PSICOLOGIA",
+  "nefrólogo": "NEFROLOGIA",
+  "nefrologo": "NEFROLOGIA",
+  "nefrología": "NEFROLOGIA",
+  "nefrologia": "NEFROLOGIA",
+  "neumólogo": "NEUMOLOGIA",
+  "neumologo": "NEUMOLOGIA",
+  "neumología": "NEUMOLOGIA",
+  "neumologia": "NEUMOLOGIA",
+  "ortopeda": "ORTOPEDIA",
+  "ortopedia": "ORTOPEDIA",
+  "reumatólogo": "REUMATOLOGIA",
+  "reumatologo": "REUMATOLOGIA",
+  "reumatología": "REUMATOLOGIA",
+  "reumatologia": "REUMATOLOGIA",
+  "fisiatra": "MEDICINA FISICA REHABILITACION",
+  "pediatra": "PEDIATRIA",
+  "pediatría": "PEDIATRIA",
+  "pediatria": "PEDIATRIA",
+};
+
+export function normalizeMedSeekSpecialty(spec: string): string {
+  const clean = spec.toLowerCase().trim();
+  return SPECIALTY_MAP[clean] || spec.toUpperCase().trim();
+}
+
 export type MedSeekSearchParams = {
   categoria?: string;
   especialidad?: string | null;
   pueblo?: string | null;
   nombre?: string | null;
   apellidos?: string | null;
+  q?: string | null;
   limit?: number;
 };
 
@@ -64,10 +125,13 @@ export async function searchMedSeek(
   fetchOptions?: { timeoutMs?: number }
 ): Promise<Provider[]> {
   const url = new URL(`${MEDSEEK_BASE_URL}/search`);
-  url.searchParams.set("categoria", params.categoria || "MEDICOS");
+  if (params.categoria) url.searchParams.set("categoria", params.categoria);
   url.searchParams.set("limit", String(params.limit || 1000));
-  if (params.especialidad) url.searchParams.set("especialidad", params.especialidad);
-  if (params.pueblo) url.searchParams.set("pueblo", params.pueblo);
+  if (params.especialidad) {
+    url.searchParams.set("especialidad", normalizeMedSeekSpecialty(params.especialidad));
+  }
+  if (params.pueblo) url.searchParams.set("pueblo", params.pueblo.trim().toUpperCase());
+  if (params.q) url.searchParams.set("q", params.q);
   if (params.nombre) url.searchParams.set("nombre", params.nombre);
   if (params.apellidos) url.searchParams.set("apellidos", params.apellidos);
 
