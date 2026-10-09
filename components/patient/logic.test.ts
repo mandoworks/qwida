@@ -7,7 +7,6 @@ import {
   greetingFor,
   inkOn,
   latestWeekcard,
-  medSlots,
   speechText,
 } from "./logic";
 
@@ -84,19 +83,6 @@ describe("theme contrast", () => {
     expect(inkOn("#0b4f42")).toBe("#ffffff");
     expect(inkOn("#fbf7f0")).toBe("#1b1a17");
     expect(inkOn("#808080")).toBeNull();
-  });
-});
-
-describe("medSlots", () => {
-  it("fills slots from confirmed schedules only, accents optional", () => {
-    const a = ev("med_schedule", "CONFIRMADO", { drug: "metformina", dose: "500 mg", slots: ["mañana", "noche"] });
-    const b = ev("med_schedule", "CONFIRMADO", { drug: "amlodipino", slots: ["manana"] });
-    const c = ev("med_schedule", "POR_CONFIRMAR", { drug: "otra", slots: ["tarde"] });
-    const slots = medSlots([a, b, c]);
-    expect(slots.mañana.map((m) => m.drug)).toEqual(["metformina", "amlodipino"]);
-    expect(slots.noche).toHaveLength(1);
-    expect(slots.tarde).toHaveLength(0);
-    expect(slots.mediodía).toHaveLength(0);
   });
 });
 

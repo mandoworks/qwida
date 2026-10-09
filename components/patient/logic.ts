@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { checkFence, normalize } from "@/lib/fence";
+import { checkFence } from "@/lib/fence";
 import type { QuidaEvent } from "@/lib/store/types";
 
 /** "Buenos días" until noon, "Buenas tardes" until 7 pm, "Buenas noches" otherwise. */
@@ -94,41 +94,6 @@ export function inkOn(bg: string): string | null {
     if (contrastRatio(bg, ink) >= 7) return ink;
   }
   return null;
-}
-
-// Medicines (confirmed `med_schedule` events), four daily slots
-
-export const SLOTS = ["mañana", "mediodía", "tarde", "noche"] as const;
-export type Slot = (typeof SLOTS)[number];
-
-const SLOT_BY_NORM: Record<string, Slot> = {
-  manana: "mañana",
-  mediodia: "mediodía",
-  tarde: "tarde",
-  noche: "noche",
-};
-
-const MedPayload = z.object({
-  drug: z.string(),
-  dose: z.string().optional(),
-  frequency: z.string().optional(),
-  slots: z.array(z.string()).default([]),
-});
-
-export type SlotMed = { id: string; drug: string; dose?: string };
-
-export function medSlots(events: QuidaEvent[]): Record<Slot, SlotMed[]> {
-  const out: Record<Slot, SlotMed[]> = { mañana: [], mediodía: [], tarde: [], noche: [] };
-  for (const e of events) {
-    if (e.kind !== "med_schedule" || e.status !== "CONFIRMADO") continue;
-    const p = MedPayload.safeParse(e.payload);
-    if (!p.success) continue;
-    for (const raw of p.data.slots) {
-      const slot = SLOT_BY_NORM[normalize(raw)];
-      if (slot) out[slot].push({ id: e.id, drug: p.data.drug, dose: p.data.dose });
-    }
-  }
-  return out;
 }
 
 // Notices (fence tripwire, label rescan nudge)
