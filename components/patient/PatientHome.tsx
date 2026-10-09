@@ -106,7 +106,7 @@ export function PatientHome() {
         </a>
       </p>
 
-      <FenceNotice className="text-p-meta" />
+      <FenceNotice className="text-p-meta" art />
 
       <InstallHint />
     </div>

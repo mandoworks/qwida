@@ -23,7 +23,7 @@ export default function RoleChooser() {
           </BigButton>
         </nav>
 
-        <FenceNotice className="text-lg" />
+        <FenceNotice className="text-lg" art />
 
         <div className="mt-auto flex justify-center">
           <ResetDemoButton />
