@@ -130,9 +130,11 @@ export async function processVisit(store: EventStore, input: VisitInput): Promis
     try {
       extraction = await extractVisit(transcript, today);
     } catch (err) {
-      // The real transcript and its Fence result stay; only the extraction is SIMULADO.
+      // The whole visit becomes the labeled fixture, so the cards always match the
+      // transcript shown. The Fence result from what was really said is kept.
       console.error("visit extraction failed, using SIMULADO fixture", err);
       simulated = true;
+      transcript = FIXTURE_TRANSCRIPT;
     }
   }
 

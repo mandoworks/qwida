@@ -150,12 +150,12 @@ describe("processVisit when the gateway refuses", () => {
     expect(r.events.every((e) => e.status === "BORRADOR" && e.payload.simulated === true)).toBe(true);
   });
 
-  it("keeps the real transcript and Fence when only extraction fails", async () => {
+  it("uses the whole fixture when only extraction fails, but keeps the real Fence result", async () => {
     vi.mocked(generateText).mockRejectedValueOnce(refused());
     const transcript = "¿Puedo dejar el losartán? Vuelva en tres meses.";
     const r = await processVisit(new MockStore(), { householdId: "h", transcript });
     expect(r.simulated).toBe(true);
-    expect(r.transcript).toBe(transcript);
+    expect(r.transcript).toBe(FIXTURE_TRANSCRIPT);
     expect(r.fence.medChange).toBe(true);
     expect(r.extraction).toEqual(FIXTURE_EXTRACTION);
     expect(r.events.map((e) => e.kind)).toContain("fence");
