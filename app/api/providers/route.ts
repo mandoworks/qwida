@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { catalog, providers as localProviders } from "@/lib/providers/catalog";
+import { catalog, providers as localProviders, type Provider } from "@/lib/providers/catalog";
 import { fetchMedSeekPueblos, fetchMedSeekSpecialties, fetchMedSeekProfile, searchMedSeek } from "@/lib/providers/medseek";
 import { searchProviders } from "@/lib/providers/search";
 
@@ -80,15 +80,49 @@ export async function GET(request: Request) {
 
   // Try live MedSeek PR search first
   try {
-    const medseekResults = await searchMedSeek(
-      {
-        especialidad: specialty || null,
-        pueblo: municipio || null,
-        nombre: nombre || null,
-        apellidos: apellidos || null,
-      },
-      { timeoutMs: 4000 }
-    );
+    const rawQuery = (nombre || url.searchParams.get("q") || "").trim();
+    const queryWords = rawQuery.split(/\s+/).filter(Boolean);
+    let medseekResults: Provider[] = [];
+
+    // 1. If multi-word name (e.g. "Gerardo Alayon"), try splitting firstName & lastName
+    if (queryWords.length >= 2) {
+      const firstName = queryWords[0];
+      const lastName = queryWords.slice(1).join(" ");
+      medseekResults = await searchMedSeek(
+        {
+          especialidad: specialty || null,
+          pueblo: municipio || null,
+          nombre: firstName,
+          apellidos: lastName,
+        },
+        { timeoutMs: 3500 }
+      );
+    }
+
+    // 2. If single word or multi-word gave no results, try q query (searches both firstName and lastName in MedSeek)
+    if (medseekResults.length === 0 && rawQuery.length > 0) {
+      medseekResults = await searchMedSeek(
+        {
+          especialidad: specialty || null,
+          pueblo: municipio || null,
+          q: rawQuery,
+        },
+        { timeoutMs: 3500 }
+      );
+    }
+
+    // 3. Fallback: query without q or as explicit fields if still empty
+    if (medseekResults.length === 0) {
+      medseekResults = await searchMedSeek(
+        {
+          especialidad: specialty || null,
+          pueblo: municipio || null,
+          nombre: queryWords.length === 1 ? queryWords[0] : (nombre || null),
+          apellidos: apellidos || null,
+        },
+        { timeoutMs: 3500 }
+      );
+    }
 
     if (medseekResults.length > 0) {
       return NextResponse.json({
