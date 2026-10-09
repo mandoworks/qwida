@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
     const sid = process.env.TWILIO_ACCOUNT_SID;
     const token = process.env.TWILIO_AUTH_TOKEN;
-    const from = process.env.TWILIO_PHONE_NUMBER || "+17873392039";
+    const from = process.env.TWILIO_PHONE_NUMBER || "+17875550199";
 
     const speechScript = `Bendición ${recipientName}. De parte de su familia en Quida le recordamos: ${message}. Que pase un lindo día.`;
 
