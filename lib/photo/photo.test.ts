@@ -1,7 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { MockStore } from "@/lib/store/mock";
+import { capImage, MAX_IMAGE_CHARS } from "@/lib/store/redis";
 import type { HeardPrescription } from "@/lib/visit/schema";
-import { confirmPhoto, hideReplaced } from "./confirm";
+import { confirmPhoto } from "./confirm";
 import { formatDia, referidoExpiresOn } from "./dates";
 import { FIXTURE_HANDWRITTEN, FIXTURE_LABEL } from "./fixture";
 import { processPhoto } from "./pipeline";
@@ -158,7 +159,8 @@ describe("photo pipeline without a key (SIMULADO)", () => {
     if (!c.ok) throw new Error(c.error);
     expect(c.confirmed.status).toBe("CONFIRMADO");
     expect(c.created).toMatchObject({ kind: "med_schedule", status: "CONFIRMADO" });
-    expect(c.created.payload).toMatchObject({
+    expect(c.confirmed.payload.scheduleId).toBe(c.created!.id);
+    expect(c.created!.payload).toMatchObject({
       drug: "losartán",
       dose: "50 mg",
       slots: ["mañana"],
@@ -177,10 +179,10 @@ describe("photo pipeline without a key (SIMULADO)", () => {
 
     const c = await confirm(store, r.events[0].id, { frequency: "dos veces al día", times_per_day: 2 });
     if (!c.ok) throw new Error(c.error);
-    expect(c.created.payload).toMatchObject({ slots: ["mañana", "noche"], edited: ["frequency", "times_per_day"] });
+    expect(c.created!.payload).toMatchObject({ slots: ["mañana", "noche"], edited: ["frequency", "times_per_day"] });
   });
 
-  it("referido: expires 90 days after issue, confirmed replaces the photo event", async () => {
+  it("referido: expires 90 days after issue, confirmed in place with the edited date", async () => {
     const store = new MockStore();
     const r = await processPhoto(store, input("referido"));
     expect(r.expires_on).toBe("2027-01-07");
@@ -188,10 +190,27 @@ describe("photo pipeline without a key (SIMULADO)", () => {
 
     const c = await confirm(store, r.events[0].id, { issue_date: "2026-10-01" });
     if (!c.ok) throw new Error(c.error);
-    expect(c.created).toMatchObject({ kind: "referido", status: "CONFIRMADO" });
-    expect(c.created.payload).toMatchObject({ issue_date: "2026-10-01", expires_on: "2026-12-30", specialty: "cardiología" });
+    expect(c.created).toBeNull();
+    expect(c.confirmed).toMatchObject({ id: r.events[0].id, kind: "referido", status: "CONFIRMADO" });
+    expect(c.confirmed.payload).toMatchObject({ issue_date: "2026-10-01", expires_on: "2026-12-30", specialty: "cardiología" });
 
-    const visible = hideReplaced(await store.list("h")).filter((e) => e.kind === "referido");
-    expect(visible.map((e) => e.id)).toEqual([c.created.id]);
+    const referidos = (await store.list("h")).filter((e) => e.kind === "referido");
+    expect(referidos.map((e) => e.id)).toEqual([r.events[0].id]);
+  });
+  it("saves the small preview with the event, and returns a photo the store kept out", async () => {
+    const store = new MockStore();
+    const preview = { bytes: new Uint8Array([9, 9]), mediaType: "image/jpeg" };
+    const r = await processPhoto(store, { ...input("rx_label"), preview });
+    expect((await store.list("h"))[0].payload.image).toBe("data:image/jpeg;base64,CQk=");
+    expect(r.events[0].payload.image).toBe("data:image/jpeg;base64,CQk=");
+
+    // A store that drops large photos (as RedisStore does over 300 KB).
+    const capped = new MockStore();
+    const create = capped.create.bind(capped);
+    capped.create = (e) => create({ ...e, payload: capImage(e.payload) });
+    const big = new Uint8Array(MAX_IMAGE_CHARS);
+    const r2 = await processPhoto(capped, { ...input("rx_label"), image: big });
+    expect((await capped.list("h"))[0].payload).toMatchObject({ image: null, image_omitted: true });
+    expect(String(r2.events[0].payload.image)).toMatch(/^data:image\/jpeg;base64,/);
   });
 });

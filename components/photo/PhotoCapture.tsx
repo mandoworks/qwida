@@ -16,20 +16,22 @@ type Phase =
   | { name: "deferred" }
   | { name: "error"; message: string };
 
-/** Longest side sent to the server. Keeps uploads small and well under the 4.5 MB limit. */
+/** Longest side read by the model. Keeps uploads well under the 4.5 MB limit. */
 const MAX_SIDE = 1600;
+/** Smaller copy saved with the event (about 100 KB) so it fits the shared store and the other phone sees it. */
+const PREVIEW_SIDE = 960;
 
-/** Re-encode as JPEG at most MAX_SIDE wide. Falls back to the original file if the browser cannot. */
-async function shrink(file: File): Promise<Blob> {
+/** Re-encode as JPEG at most `side` px. Falls back to the original file if the browser cannot. */
+async function shrink(file: Blob, side = MAX_SIDE, quality = 0.85): Promise<Blob> {
   try {
     const bitmap = await createImageBitmap(file);
-    const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
+    const scale = Math.min(1, side / Math.max(bitmap.width, bitmap.height));
     const canvas = document.createElement("canvas");
     canvas.width = Math.round(bitmap.width * scale);
     canvas.height = Math.round(bitmap.height * scale);
     canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
     bitmap.close();
-    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.85));
+    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", quality));
     return blob ?? file;
   } catch {
     return file;
@@ -75,6 +77,7 @@ export function PhotoCapture({
     setPhase({ name: "processing", url });
     const form = new FormData();
     form.append("image", blob, "foto.jpg");
+    form.append("preview", await shrink(blob, PREVIEW_SIDE, 0.7), "vista.jpg");
     if (householdId) form.append("householdId", householdId);
     if (hint) form.append("hint", hint);
     try {

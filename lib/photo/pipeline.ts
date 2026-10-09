@@ -60,6 +60,8 @@ type PhotoInput = {
   householdId: string;
   image: Uint8Array;
   mediaType: string;
+  /** Smaller copy saved with the event so the other phone can see it. Defaults to the full image. */
+  preview?: { bytes: Uint8Array; mediaType: string };
   hint: string | null;
 };
 
@@ -89,7 +91,8 @@ export async function processPhoto(store: EventStore, input: PhotoInput): Promis
   const expires_on = extraction.class === "referido" && typeof issue === "string" ? referidoExpiresOn(issue) : null;
 
   const tag = { synthetic: true, simulated };
-  const image = `data:${input.mediaType};base64,${Buffer.from(input.image).toString("base64")}`;
+  const shown = input.preview ?? { bytes: input.image, mediaType: input.mediaType };
+  const image = `data:${shown.mediaType};base64,${Buffer.from(shown.bytes).toString("base64")}`;
   const toSave: NewEvent[] = [];
 
   if (trust.fields && (extraction.class === "rx_handwritten" || extraction.class === "rx_label" || extraction.class === "referido")) {
@@ -134,7 +137,11 @@ export async function processPhoto(store: EventStore, input: PhotoInput): Promis
   }
 
   const events: QuidaEvent[] = [];
-  for (const e of toSave) events.push(await store.create(e));
+  for (const e of toSave) {
+    const saved = await store.create(e);
+    // A store may keep a large photo out (Redis over 300 KB); the phone that took it still gets it back.
+    events.push(saved.payload.image_omitted ? { ...saved, payload: { ...saved.payload, image } } : saved);
+  }
 
   return {
     simulated,

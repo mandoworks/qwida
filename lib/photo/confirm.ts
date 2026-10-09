@@ -7,7 +7,7 @@ import { deriveSlots } from "./trust";
 type Values = Record<string, string | number | null>;
 
 export type ConfirmResult =
-  | { ok: true; confirmed: QuidaEvent; created: QuidaEvent }
+  | { ok: true; confirmed: QuidaEvent; created: QuidaEvent | null }
   | { ok: false; status: number; error: string; needsFrequency?: boolean };
 
 /** Extracted values with the person's edits on top. Edits always win. */
@@ -25,10 +25,10 @@ const num = (v: unknown) => {
 };
 
 /**
- * Runs only after a person taps Confirmar. A printed label becomes a CONFIRMADO
- * med_schedule; a referido becomes a CONFIRMADO referido with its 90 day expiry.
- * The new event carries `fromEventId`; the photo event is marked CONFIRMADO.
- * A handwritten prescription is refused: it never becomes a schedule.
+ * Runs only after a person taps Confirmar. A printed label becomes a new
+ * CONFIRMADO med_schedule (with `fromEventId`) and the label is marked CONFIRMADO;
+ * a referido is confirmed in place with its 90 day expiry. A handwritten
+ * prescription is refused: it never becomes a schedule.
  */
 export async function confirmPhoto(
   store: EventStore,
@@ -56,7 +56,6 @@ export async function confirmPhoto(
   };
   const source = body.confirmedBy === "caregiver" ? "caregiver" : "photo";
 
-  let created: QuidaEvent;
   if (event.kind === "rx_label") {
     const drug = str(v.drug);
     if (!drug) return { ok: false, status: 422, error: "Falta el nombre del medicamento." };
@@ -68,7 +67,7 @@ export async function confirmPhoto(
     const quantity = num(v.quantity);
     const fillDate = str(v.date);
     const refill = refillCountdown({ quantity, perDay: slots.length * unitsPerDose(str(v.dose)), fillDate, today });
-    created = await store.create({
+    const created = await store.create({
       householdId: body.householdId,
       kind: "med_schedule",
       status: "CONFIRMADO",
@@ -91,36 +90,30 @@ export async function confirmPhoto(
         refill: refill && { days_supply: refill.days_supply, runs_out_on: refill.runs_out_on, remind_on: refill.remind_on },
       },
     });
-  } else {
-    const issue = str(v.issue_date);
-    const expires_on = issue ? referidoExpiresOn(issue) : null;
-    if (!expires_on) return { ok: false, status: 422, error: "Falta la fecha del referido (año, mes y día)." };
-    created = await store.create({
-      householdId: body.householdId,
-      kind: "referido",
+    // The label itself is now confirmed and points at its schedule.
+    const confirmed = await store.update(event.id, {
       status: "CONFIRMADO",
-      source,
-      confidence: 1,
-      payload: {
-        ...common,
-        specialty: str(v.specialty),
-        issue_date: issue,
-        expires_on,
-        referring_doctor: str(v.referring_doctor),
-        plan: str(v.plan),
-      },
+      payload: { confirmedBy: body.confirmedBy, edited, scheduleId: created.id },
     });
+    return { ok: true, confirmed: confirmed ?? event, created };
   }
 
-  const confirmed = await store.updateStatus(event.id, "CONFIRMADO");
-  return { ok: true, confirmed: confirmed ?? event, created };
-}
-
-/**
- * Hides a photo event once a confirmation of the same kind replaced it, so a
- * confirmed referido is not listed twice. A label stays: its med_schedule is a different kind.
- */
-export function hideReplaced(events: QuidaEvent[]): QuidaEvent[] {
-  const replaced = new Set(events.map((e) => `${e.kind}:${String(e.payload.fromEventId)}`));
-  return events.filter((e) => !replaced.has(`${e.kind}:${e.id}`));
+  const issue = str(v.issue_date);
+  const expires_on = issue ? referidoExpiresOn(issue) : null;
+  if (!expires_on) return { ok: false, status: 422, error: "Falta la fecha del referido (año, mes y día)." };
+  // A referido is confirmed in place: same event, final values on top of what was read.
+  const confirmed = await store.update(event.id, {
+    status: "CONFIRMADO",
+    payload: {
+      confirmedBy: body.confirmedBy,
+      edited,
+      specialty: str(v.specialty),
+      issue_date: issue,
+      expires_on,
+      referring_doctor: str(v.referring_doctor),
+      plan: str(v.plan),
+    },
+  });
+  if (!confirmed) return { ok: false, status: 404, error: "No encontramos esa foto." };
+  return { ok: true, confirmed, created: null };
 }

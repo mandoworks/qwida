@@ -32,7 +32,8 @@ const DATE_FIELDS = new Set(["date", "issue_date"]);
 const NUMBER_FIELDS = new Set(["times_per_day", "quantity", "refills"]);
 const FREQUENCIES = ["una vez al día", "dos veces al día", "tres veces al día", "cuatro veces al día"];
 
-export type ConfirmResponse = { confirmed: QuidaEvent; created: QuidaEvent };
+/** `created` is the new med_schedule for a label; null for a referido, which is confirmed in place. */
+export type ConfirmResponse = { confirmed: QuidaEvent; created: QuidaEvent | null };
 
 const asText = (v: TrustedField["value"]) => (v === null ? "" : String(v));
 
@@ -192,13 +193,13 @@ export function ExtractedFields({
         </BigButton>
       )}
 
-      {done?.created.kind === "med_schedule" && (
+      {done?.created?.kind === "med_schedule" && (
         <MedSchedule items={scheduleItems([done.created], todayPR())} size={size} />
       )}
-      {done?.created.kind === "referido" && typeof done.created.payload.expires_on === "string" && (
+      {done?.confirmed.kind === "referido" && typeof done.confirmed.payload.expires_on === "string" && (
         <ReferidoCountdown
-          specialty={typeof done.created.payload.specialty === "string" ? done.created.payload.specialty : null}
-          expiresOn={done.created.payload.expires_on}
+          specialty={typeof done.confirmed.payload.specialty === "string" ? done.confirmed.payload.specialty : null}
+          expiresOn={done.confirmed.payload.expires_on}
           size={size}
         />
       )}

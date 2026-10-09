@@ -13,6 +13,7 @@ const IMAGE_TYPES = /^image\/(jpeg|png|webp|heic|heif|gif)$/;
  *   image        photo of a prescription, pharmacy label, referido or slip
  *   householdId  optional, defaults to the demo household
  *   hint         optional: rx_handwritten, rx_label or referido. Picks the SIMULADO fixture.
+ *   preview      optional smaller copy of the photo, saved with the event for the other phone
  * Returns PhotoResponse. Events are saved as POR_CONFIRMAR; no schedule is created here.
  */
 export async function POST(request: Request) {
@@ -41,7 +42,12 @@ export async function POST(request: Request) {
   try {
     const store = await getStore();
     const image = new Uint8Array(await file.arrayBuffer());
-    return Response.json(await processPhoto(store, { householdId, image, mediaType, hint }));
+    const p = form.get("preview");
+    const preview =
+      p instanceof File && p.size > 0 && IMAGE_TYPES.test(p.type)
+        ? { bytes: new Uint8Array(await p.arrayBuffer()), mediaType: p.type }
+        : undefined;
+    return Response.json(await processPhoto(store, { householdId, image, mediaType, hint, preview }));
   } catch (err) {
     console.error("photo pipeline failed", err);
     return Response.json({ error: "No pudimos leer la foto. Intente otra vez." }, { status: 502 });
