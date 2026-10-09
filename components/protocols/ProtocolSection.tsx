@@ -1,0 +1,50 @@
+"use client";
+
+import { useState } from "react";
+import { ProtocolCard } from "@/components/protocols/ProtocolCard";
+import { getAllProtocols, searchProtocols } from "@/lib/protocols/catalog";
+
+export function ProtocolSection() {
+  const [query, setQuery] = useState("");
+  const protocols = query ? searchProtocols(query) : getAllProtocols();
+
+  return (
+    <section aria-labelledby="protocolos-heading" className="flex flex-col gap-6">
+      <header className="flex flex-col gap-2">
+        <h2 id="protocolos-heading" className="text-3xl font-bold">
+          Protocolos de visita («No pierda el viaje»)
+        </h2>
+        <p className="text-lg text-ink-soft leading-relaxed">
+          Muchos pacientes llegan a su cita o estudio médico y pierden el viaje por no
+          cumplir requisitos previos. Revise estas guías antes de salir de casa.
+        </p>
+      </header>
+
+      <div className="flex flex-col gap-2">
+        <label htmlFor="protocol-filter" className="text-base font-bold">
+          Buscar por procedimiento o pueblo:
+        </label>
+        <input
+          id="protocol-filter"
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Ejemplo: endoscopía, resonancia, Humacao, Menonita..."
+          className="rounded-xl border-2 border-line bg-surface p-3 text-lg focus:border-ink focus:outline-hidden"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {protocols.map((p) => (
+          <ProtocolCard key={p.id} protocol={p} />
+        ))}
+      </div>
+
+      {protocols.length === 0 && (
+        <p className="rounded-xl border-2 border-line p-6 text-center text-lg text-ink-soft">
+          No se encontraron protocolos con ese término de búsqueda.
+        </p>
+      )}
+    </section>
+  );
+}

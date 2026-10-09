@@ -1,0 +1,39 @@
+{
+  "id": "generico-especialista",
+  "title": "Consulta médica con especialista (Guía general)",
+  "procedure": "Visita inicial o de seguimiento con médico especialista",
+  "facility": "Consultorios y clínicas en Puerto Rico",
+  "municipio": "Toda la isla",
+  "summary": "Protocolo general de preparación para citas médicas especializadas en Puerto Rico.",
+  "warning_notice": "¡No pierda el viaje! Verifique la vigencia de su referido (máximo 90 días según normativa de ASES) y lleve su pastillero o lista completa de medicamentos.",
+  "source_url": "https://www.asespr.org",
+  "fetched_at": "2026-10-09T00:00:00Z",
+  "is_simulated": false,
+  "badge_label": "GUÍA GENERAL",
+  "requirements": [
+    {
+      "category": "referido",
+      "title": "Referido médico vigente (Norma ASES)",
+      "description": "Si su cubierta es Plan Vital o requiere referido de su médico primario, confirme que no hayan pasado más de 90 días desde su emisión.",
+      "critical": true
+    },
+    {
+      "category": "medicamentos",
+      "title": "Pastillero o lista de medicamentos",
+      "description": "Lleve todos los frascos de sus pastillas o una lista escrita clara con nombres y dosis exactas de lo que toma a diario.",
+      "critical": false
+    },
+    {
+      "category": "documentos",
+      "title": "Tarjeta médica e identificación",
+      "description": "Tarjeta física de su plan de salud vigente e identificación del gobierno con foto (licencia de conducir o Real ID).",
+      "critical": true
+    },
+    {
+      "category": "llegada",
+      "title": "Llegada con anticipación",
+      "description": "Llegue entre 20 y 30 minutos antes de la hora pautada para completar el registro y toma de signos vitales.",
+      "critical": false
+    }
+  ]
+}

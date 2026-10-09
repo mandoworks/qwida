@@ -1,0 +1,40 @@
+{
+  "id": "menonita-mri-contraste",
+  "title": "Resonancia magnética (MRI) con contraste intravenoso",
+  "procedure": "Resonancia Magnética (MRI) con contraste",
+  "facility": "Sistema de Salud Menonita",
+  "municipio": "Cayey / Caguas / Aibonito",
+  "summary": "Protocolo de preparación para estudio de imágenes con gadolinio intravenoso.",
+  "warning_notice": "¡No pierda el viaje! Requiere prueba previa de creatinina sérica en sangre (menos de 30 días de realizada) para verificar la función de los riñones antes de inyectar el contraste.",
+  "source_url": null,
+  "fetched_at": "2026-10-09T00:00:00Z",
+  "is_simulated": true,
+  "badge_label": "Ejemplo ilustrativo (SIMULADO)",
+  "simulated_notice": "Ejemplo ilustrativo (SIMULADO). No se encontró publicación web de la norma específica de esta instalación. Basado en guías radiológicas estándar en Puerto Rico.",
+  "requirements": [
+    {
+      "category": "laboratorio",
+      "title": "Prueba de creatinina sérica previa",
+      "description": "Resultado de laboratorio de creatinina sérica realizado dentro de los últimos 30 días. Si no lo trae impreso o en sistema, no se puede realizar el estudio.",
+      "critical": true
+    },
+    {
+      "category": "ayuno",
+      "title": "Ayuno previo al contraste",
+      "description": "Ayuno de 4 horas antes del estudio. Puede tomar sorbos pequeños de agua con sus medicamentos habituales si su médico lo autorizó.",
+      "critical": true
+    },
+    {
+      "category": "seguridad",
+      "title": "Sin objetos metálicos ni marcapasos",
+      "description": "Debe remover prendas, joyas, ganchos de pelo, audífonos y dentadura postiza. Notificar de inmediato si tiene marcapasos, stents o clips vasculares.",
+      "critical": true
+    },
+    {
+      "category": "documentos",
+      "title": "Documentos requeridos",
+      "description": "Orden médica original con justificación clínica, referido aprobado por su plan médico, identificación con foto y tarjeta del plan vigente.",
+      "critical": false
+    }
+  ]
+}
