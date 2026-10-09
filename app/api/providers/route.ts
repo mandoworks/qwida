@@ -94,7 +94,7 @@ export async function GET(request: Request) {
       return NextResponse.json({
         ok: true,
         source: "medseekpr.com",
-        attribution: "Directorio Médico de Puerto Rico vía MedSeek PR (medseekpr.com)",
+        attribution: "Datos provistos por MedSeek · medseekpr.com",
         count: medseekResults.length,
         providers: medseekResults,
       });

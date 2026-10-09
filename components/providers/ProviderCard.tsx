@@ -85,6 +85,23 @@ export function ProviderCard({ provider, consultedOn, expiry, sent, busy, onUseR
         <span className="text-base text-ink-soft">(se abre en otra pestaña)</span>
       </p>
 
+      {provider.npi && (
+        <p>
+          <a
+            href={`https://medseekpr.com/p/${provider.npi}`}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="font-bold underline text-ink"
+          >
+            Ver perfil en MedSeek (medseekpr.com/p/{provider.npi})
+          </a>
+        </p>
+      )}
+
+      <footer className="mt-1 border-t border-line pt-2 text-xs text-ink-mute">
+        Datos provistos por MedSeek · medseekpr.com
+      </footer>
+
       {expiry && (
         <div className="flex flex-col gap-3 rounded-2xl border-2 border-warn p-4">
           <p className="font-bold">{expiry}</p>

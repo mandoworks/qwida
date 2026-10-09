@@ -53,7 +53,7 @@ export default function ProveedoresPage() {
           ))}
         </ul>
         <p className="text-base text-ink-soft">
-          {catalog.attribution}. Integración directa con MedSeek PR para datos de localización y NPI.{" "}
+          Datos provistos por MedSeek · medseekpr.com. {catalog.attribution}.{" "}
           <a href={VERIFY_URL} target="_blank" rel="noreferrer noopener" className="font-bold underline">
             Verifique cualquier licencia usted misma
           </a>{" "}

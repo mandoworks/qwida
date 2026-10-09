@@ -16,6 +16,8 @@ type Provider = {
   phone: string | null;
   address: string | null;
   license_status?: string;
+  npi?: string | null;
+  source_url?: string;
 };
 
 /** Patient grade provider directory. Big controls, plain words, live
@@ -231,14 +233,29 @@ export function ProviderDirectory() {
                     Llamar: {p.phone}
                   </a>
                 )}
+                {p.npi && (
+                  <div className="mt-2">
+                    <a
+                      href={`https://medseekpr.com/p/${p.npi}`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="text-p-meta font-bold text-ink underline"
+                    >
+                      Ver perfil en MedSeek (medseekpr.com/p/{p.npi})
+                    </a>
+                  </div>
+                )}
+                <p className="mt-3 border-t border-line pt-2 text-p-meta text-ink-mute">
+                  Datos provistos por MedSeek · medseekpr.com
+                </p>
               </li>
             ))}
           </ul>
         )}
 
-        {source && results !== null && (
+        {results !== null && (
           <p className="mt-4 text-p-meta text-ink-mute">
-            Datos de {source === "medseekpr.com" ? "MedSeek PR (medseekpr.com)" : "nuestro directorio local"}. Quida no recomienda doctores. Datos de ejemplo (SIMULADO).
+            Datos provistos por MedSeek · medseekpr.com. Quida no recomienda doctores. Datos de ejemplo (SIMULADO).
           </p>
         )}
       </section>
