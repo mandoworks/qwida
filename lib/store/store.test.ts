@@ -2,7 +2,8 @@ import type { Redis } from "@upstash/redis";
 import { describe, expect, it } from "vitest";
 import { MockStore } from "./mock";
 import { capImage, MAX_IMAGE_CHARS, RedisStore, TTL_SECONDS } from "./redis";
-import type { EventStore, NewEvent } from "./types";
+import { sourceKey } from "@/lib/weekcard/timeline";
+import { QuidaEvent, type EventStore, type NewEvent } from "./types";
 
 /** In memory stand in for the Upstash REST client: only the commands RedisStore uses. No network. */
 class FakeRedis {
@@ -132,6 +133,17 @@ describe.each(stores)("EventStore contract: %s", (_, make) => {
     expect(await s.updateStatus(a.id, "POR_CONFIRMAR")).toMatchObject({ status: "POR_CONFIRMAR", payload: { p: 1 } });
     expect(await s.update("missing", { status: "CONFIRMADO" })).toBeNull();
     expect(await s.updateStatus("missing", "CONFIRMADO")).toBeNull();
+  });
+
+  it("reads a row stored before the rename, when source was caregiver", async () => {
+    const s = make();
+    const e = await s.create({ ...ev("h"), source: "familia" });
+    // A deploy does not rewrite the store, so a row written before the rename keeps
+    // source "caregiver". It must still parse, and it must read as familia on screen.
+    const legacy = QuidaEvent.parse({ ...e, source: "caregiver" });
+    expect(legacy.source).toBe("caregiver");
+    expect(sourceKey(legacy)).toBe("familia");
+    expect(sourceKey(await s.create({ ...ev("h2"), source: "familia" }))).toBe("familia");
   });
 
   it("rejects an invalid status", async () => {

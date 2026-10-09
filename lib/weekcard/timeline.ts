@@ -4,7 +4,7 @@ import type { EventStatus, QuidaEvent } from "@/lib/store/types";
 import { whenLabel } from "./dates";
 
 export type TimelineGroup = "cita" | "receta" | "referido" | "nota" | "alerta" | "otro";
-/** The groups a caregiver can filter by. "otro" has no chip, it is the rest. */
+/** The groups a family member can filter by. "otro" has no chip, it is the rest. */
 export const TIMELINE_GROUPS: TimelineGroup[] = ["cita", "receta", "referido", "nota", "alerta"];
 
 /**
@@ -37,7 +37,7 @@ export type TimelineRow = {
   /** Matches the specialty text filter. */
   search: string;
   /** Where it came from, for the small source line (4.12). */
-  source: "photo" | "voice" | "visit" | "caregiver" | "system";
+  source: "photo" | "voice" | "visit" | "familia" | "system";
 };
 
 const str = (v: unknown): string | null => (typeof v === "string" && v.trim() ? v.trim() : null);
@@ -108,12 +108,13 @@ function titleFor(e: QuidaEvent, facts: TimelineRow["facts"]): string {
 }
 
 /** Where the row came from, for the small source line under it (DESIGN 4.12). */
-export function sourceKey(e: QuidaEvent): "photo" | "voice" | "visit" | "caregiver" | "system" {
+export function sourceKey(e: QuidaEvent): "photo" | "voice" | "visit" | "familia" | "system" {
   if (e.kind === "voice_note") return "voice";
   if (e.kind === "visit") return "visit";
   if (e.kind === "rx_label" || e.kind === "rx_handwritten") return "photo";
   if (e.source === "system") return "system";
-  return "caregiver";
+  // `caregiver` is a pre-rename row, shown as familia like any other.
+  return "familia";
 }
 
 export type DayGroup = {

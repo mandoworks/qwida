@@ -12,6 +12,6 @@ export const LangContext = createContext<LangValue | null>(null);
 
 export function useLang(): LangValue {
   const value = useContext(LangContext);
-  if (!value) throw new Error("LangProvider is missing around the caregiver side");
+  if (!value) throw new Error("LangProvider is missing around the family member side");
   return value;
 }

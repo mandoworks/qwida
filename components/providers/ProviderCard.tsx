@@ -2,7 +2,7 @@ import { BigButton } from "@/components/ui/BigButton";
 import { VERIFY_URL, type Provider } from "@/lib/providers/catalog";
 import { readable } from "@/lib/providers/format";
 
-const CAREGIVER_BUTTON = "min-h-0 py-3 text-xl";
+const FAMILIA_BUTTON = "min-h-0 py-3 text-xl";
 
 type ProviderCardProps = {
   provider: Provider;
@@ -10,7 +10,7 @@ type ProviderCardProps = {
   consultedOn: string;
   /** Referral deadline line, only when a confirmed referral exists. */
   expiry: string | null;
-  /** True once this caregiver created the call reminder from this card. */
+  /** True once this family member created the call reminder from this card. */
   sent: boolean;
   busy?: boolean;
   onUseReferido?: () => void;
@@ -94,7 +94,7 @@ export function ProviderCard({ provider, consultedOn, expiry, sent, busy, onUseR
             </p>
           ) : (
             onUseReferido && (
-              <BigButton variant="secondary" className={CAREGIVER_BUTTON} onClick={onUseReferido} disabled={busy}>
+              <BigButton variant="secondary" className={FAMILIA_BUTTON} onClick={onUseReferido} disabled={busy}>
                 {busy ? "Guardando…" : "Usar con mi referido"}
               </BigButton>
             )

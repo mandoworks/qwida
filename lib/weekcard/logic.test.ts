@@ -22,7 +22,7 @@ function event(partial: Partial<QuidaEvent> & { kind: QuidaEvent["kind"] }): Qui
     kind: partial.kind,
     status: partial.status ?? "BORRADOR",
     payload: partial.payload ?? {},
-    source: partial.source ?? "caregiver",
+    source: partial.source ?? "familia",
     confidence: partial.confidence ?? null,
     createdAt,
     updatedAt: partial.updatedAt ?? createdAt,
@@ -320,7 +320,7 @@ describe("send", () => {
     expect(sendReducer("sending", { type: "send" })).toBe("sending");
   });
 
-  it("drops the sent seal when the caregiver edits the card again", () => {
+  it("drops the sent seal when the family member edits the card again", () => {
     expect(sendReducer("sent", { type: "edit" })).toBe("idle");
     expect(sendReducer("failed", { type: "edit" })).toBe("failed");
   });
@@ -442,7 +442,7 @@ describe("strings", () => {
     expect(t("en", "digest.action.review", { n: 3 })).toBe("Review 3 pending items");
   });
 
-  it("keeps the caregiver copy free of em dashes and clause hyphens", () => {
+  it("keeps the family member copy free of em dashes and clause hyphens", () => {
     for (const lang of ["es", "en"] as const) {
       for (const [key, value] of Object.entries(STRINGS[lang])) {
         expect(`${key}: ${value}`).not.toMatch(/[—–]/);

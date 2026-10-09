@@ -3,7 +3,7 @@ import type { QuidaEvent } from "@/lib/store/types";
 import { dayLabel, isoDate, timeLabel } from "./dates";
 
 export type NudgeKind = "label_rescan" | "refill" | "referido" | "appointment";
-export type Nudge = { id: string; kind: NudgeKind; /** Spanish text, the caregiver sends it. */ message: string };
+export type Nudge = { id: string; kind: NudgeKind; /** Spanish text, the family member sends it. */ message: string };
 
 /** A referral gets a line inside this window, or when it already expired. */
 const REFERIDO_WINDOW_DAYS = 30;
@@ -14,7 +14,7 @@ const str = (v: unknown): string | null => (typeof v === "string" && v.trim() ? 
 
 /**
  * Ready to send nudges, written from what the events actually say. Nothing is
- * sent anywhere: the caregiver copies the text or opens WhatsApp with it.
+ * sent anywhere: the family member copies the text or opens WhatsApp with it.
  */
 export function buildNudges(events: QuidaEvent[], today: string): Nudge[] {
   const out: Nudge[] = [];

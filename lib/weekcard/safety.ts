@@ -15,7 +15,7 @@ export type StrippedCard = {
 
 /**
  * Runs the Fence on every line of the card, whatever produced it (model,
- * fixture or a caregiver edit) and drops anything that reads as advice to
+ * fixture or a family member edit) and drops anything that reads as advice to
  * start, stop, skip, raise or lower a medication. Emergency words are reported,
  * never silently sent.
  */
@@ -56,7 +56,7 @@ export function stripMedAdvice(input: WeekCard): StrippedCard {
   };
 }
 
-/** Text a caregiver must not be able to save: empty lines, whatever the source. */
+/** Text a family member must not be able to save: empty lines, whatever the source. */
 export function normalizeCard(input: WeekCard): WeekCard {
   return {
     ...input,

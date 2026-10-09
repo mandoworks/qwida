@@ -6,7 +6,7 @@ const NOW = new Date("2026-10-09T15:00:00.000Z");
 describe("gateCreate", () => {
   it("passes drafts through and strips client written confirmation keys", () => {
     const r = gateCreate(
-      { kind: "visit", source: "voice", status: "BORRADOR", payload: { a: 1, confirmedBy: "caregiver", confirmedAt: "x" } },
+      { kind: "visit", source: "voice", status: "BORRADOR", payload: { a: 1, confirmedBy: "familia", confirmedAt: "x" } },
       undefined,
       NOW,
     );
@@ -14,27 +14,27 @@ describe("gateCreate", () => {
   });
 
   it("refuses CONFIRMADO without a person", () => {
-    const r = gateCreate({ kind: "weekcard", source: "caregiver", status: "CONFIRMADO", payload: {} }, undefined, NOW);
+    const r = gateCreate({ kind: "weekcard", source: "familia", status: "CONFIRMADO", payload: {} }, undefined, NOW);
     expect(r.ok).toBe(false);
   });
 
   it("refuses model output kinds arriving as CONFIRMADO, even with a person named", () => {
     for (const kind of ["visit", "referido", "appointment", "rx_label", "fence", "voice_note"] as const) {
-      expect(gateCreate({ kind, source: "voice", status: "CONFIRMADO", payload: {} }, "caregiver", NOW).ok).toBe(false);
+      expect(gateCreate({ kind, source: "voice", status: "CONFIRMADO", payload: {} }, "familia", NOW).ok).toBe(false);
     }
   });
 
   it("refuses a system source as CONFIRMADO", () => {
-    expect(gateCreate({ kind: "weekcard", source: "system", status: "CONFIRMADO", payload: {} }, "caregiver", NOW).ok).toBe(false);
+    expect(gateCreate({ kind: "weekcard", source: "system", status: "CONFIRMADO", payload: {} }, "familia", NOW).ok).toBe(false);
   });
 
-  it("accepts the caregiver's week card and stamps who and when", () => {
-    const r = gateCreate({ kind: "weekcard", source: "caregiver", status: "CONFIRMADO", payload: { a: 1 } }, "caregiver", NOW);
-    expect(r).toEqual({ ok: true, payload: { a: 1, confirmedBy: "caregiver", confirmedAt: NOW.toISOString() } });
+  it("accepts the family member's week card and stamps who and when", () => {
+    const r = gateCreate({ kind: "weekcard", source: "familia", status: "CONFIRMADO", payload: { a: 1 } }, "familia", NOW);
+    expect(r).toEqual({ ok: true, payload: { a: 1, confirmedBy: "familia", confirmedAt: NOW.toISOString() } });
   });
 
   it("refuses a week card the patient claims to approve", () => {
-    expect(gateCreate({ kind: "weekcard", source: "caregiver", status: "CONFIRMADO", payload: {} }, "patient", NOW).ok).toBe(false);
+    expect(gateCreate({ kind: "weekcard", source: "familia", status: "CONFIRMADO", payload: {} }, "patient", NOW).ok).toBe(false);
   });
 
   it("accepts a med schedule only when it comes from a confirmed photo", () => {
@@ -43,8 +43,8 @@ describe("gateCreate", () => {
     expect(gateCreate({ ...base, payload: { fromEventId: "evt_1" } }, "patient", NOW).ok).toBe(true);
   });
 
-  it("accepts the caregiver's one tap nudge", () => {
-    expect(gateCreate({ kind: "nudge", source: "caregiver", status: "CONFIRMADO", payload: {} }, "caregiver", NOW).ok).toBe(true);
+  it("accepts the family member's one tap nudge", () => {
+    expect(gateCreate({ kind: "nudge", source: "familia", status: "CONFIRMADO", payload: {} }, "familia", NOW).ok).toBe(true);
   });
 });
 
@@ -87,11 +87,11 @@ describe("/api/events with the gate", () => {
     const refused = await route.PATCH(json("PATCH", { id: event.id, status: "CONFIRMADO" }));
     expect(refused.status).toBe(403);
 
-    const ok = await route.PATCH(json("PATCH", { id: event.id, status: "CONFIRMADO", confirmedBy: "caregiver" }));
+    const ok = await route.PATCH(json("PATCH", { id: event.id, status: "CONFIRMADO", confirmedBy: "familia" }));
     expect(ok.status).toBe(200);
     const { event: confirmed } = await ok.json();
     expect(confirmed.status).toBe("CONFIRMADO");
-    expect(confirmed.payload.confirmedBy).toBe("caregiver");
+    expect(confirmed.payload.confirmedBy).toBe("familia");
     expect(typeof confirmed.payload.confirmedAt).toBe("string");
   });
 

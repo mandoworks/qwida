@@ -2,7 +2,7 @@ import type { NewEvent } from "@/lib/store/types";
 import type { FenceResult } from "./index";
 
 /**
- * The `fence` event that routes a tripwire to the caregiver. Always
+ * The `fence` event that routes a tripwire to the family member. Always
  * POR_CONFIRMAR from `system`: a person must look at it.
  */
 export function fenceEvent(

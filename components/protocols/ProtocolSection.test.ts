@@ -9,7 +9,7 @@ import { ProtocolSection } from "./ProtocolSection";
  * Marley QA (production 6c89d18) asked for the protocol cards on /proveedores,
  * with the SIMULADO badge and the simulated notice shown exactly as the data
  * has them. Markup is rendered here because a card that is merely present in
- * the catalog says nothing about what the caregiver ends up reading.
+ * the catalog says nothing about what the family member ends up reading.
  */
 const markup = (node: ReturnType<typeof createElement>) => renderToStaticMarkup(node);
 

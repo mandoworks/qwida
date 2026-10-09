@@ -1,4 +1,4 @@
-import { WeekCardEditor } from "@/components/caregiver/WeekCard";
+import { WeekCardEditor } from "@/components/familia/WeekCard";
 
 export default function FamiliaTarjetaPage() {
   return <WeekCardEditor />;

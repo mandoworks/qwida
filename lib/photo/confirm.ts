@@ -32,7 +32,7 @@ const num = (v: unknown) => {
  */
 export async function confirmPhoto(
   store: EventStore,
-  body: Required<Pick<ConfirmBody, "eventId" | "householdId">> & { values: Values; confirmedBy: "patient" | "caregiver" },
+  body: Required<Pick<ConfirmBody, "eventId" | "householdId">> & { values: Values; confirmedBy: "patient" | "familia" },
   today = todayPR(),
 ): Promise<ConfirmResult> {
   const event = (await store.list(body.householdId)).find((e) => e.id === body.eventId);
@@ -54,7 +54,7 @@ export async function confirmPhoto(
     confirmedBy: body.confirmedBy,
     edited,
   };
-  const source = body.confirmedBy === "caregiver" ? "caregiver" : "photo";
+  const source = body.confirmedBy === "familia" ? "familia" : "photo";
 
   if (event.kind === "rx_label") {
     const drug = str(v.drug);

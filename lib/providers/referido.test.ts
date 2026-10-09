@@ -6,7 +6,7 @@ import type { QuidaEvent } from "@/lib/store/types";
 
 const BASE = {
   householdId: "demo-carmen",
-  source: "caregiver" as const,
+  source: "familia" as const,
   confidence: 1,
   createdAt: "2026-10-09T10:00:00.000Z",
   updatedAt: "2026-10-09T10:00:00.000Z",
@@ -58,7 +58,7 @@ describe("nudgeEvent", () => {
     const event = nudgeEvent(provider, "2027-01-07");
     expect(event.kind).toBe("nudge");
     expect(event.status).toBe("CONFIRMADO");
-    expect(event.source).toBe("caregiver");
+    expect(event.source).toBe("familia");
     expect(event.payload.text).toBe(`Llamar a ${readable(provider.name)} para cita antes del 7 de enero`);
     expect(event.payload.doctor_license).toBe(provider.license_number);
     expect(event.payload.expires_on).toBe("2027-01-07");

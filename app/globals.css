@@ -15,7 +15,7 @@
   --sim: #5b4b8a;
 
   --text-patient: 1.5rem; /* 24px minimum on the patient side */
-  --text-caregiver: 1rem; /* 16px minimum on the caregiver side */
+  --text-familia: 1rem; /* 16px minimum on the family member side */
   --button-patient: 4.5rem; /* 72px tall minimum */
 }
 
@@ -33,7 +33,7 @@
   --color-sim: var(--sim);
 
   --text-patient: var(--text-patient);
-  --text-caregiver: var(--text-caregiver);
+  --text-familia: var(--text-familia);
   --spacing-btn-patient: var(--button-patient);
 
   --font-sans: var(--font-atkinson), Verdana, Tahoma, system-ui, sans-serif;
@@ -180,7 +180,7 @@ body {
   --text-p-meta: 1.25rem;
   --text-p-meta--line-height: 1.875rem;
 
-  /* caregiver type (2.3) */
+  /* family member type (2.3) */
   --text-c-hero: 1.875rem;
   --text-c-hero--line-height: 2.375rem;
   --text-c-title: 1.375rem;

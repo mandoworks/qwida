@@ -20,7 +20,7 @@ import { Alert, AvatarCarmen, Bell, Calendar, Pill, Search } from "./icons";
 import { useLang } from "./lang-context";
 import { Pending } from "./Pending";
 
-const SEEN_KEY = "quida.cuidador.seenAt";
+const SEEN_KEY = "quida.familia.seenAt";
 const MAX_CHANGES = 3;
 
 const CHANGE_KEY: Record<string, StringKey> = {
@@ -218,7 +218,7 @@ export function Digest() {
                 specialty={referral.specialty}
                 expiresOn={referral.expires_on}
                 today={today}
-                size="caregiver"
+                size="familia"
               />
               <Link href="/familia/recordatorios" className="text-c-body font-bold text-accent underline">
                 {t("digest.refill.renew")}

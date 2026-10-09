@@ -71,13 +71,13 @@ export function Review() {
 
   /**
    * Status only, or status plus a shallow payload merge (PATCH /api/events).
-   * The server only accepts CONFIRMADO with `confirmedBy`: this screen is the caregiver's tap.
+   * The server only accepts CONFIRMADO with `confirmedBy`: this screen is the family member's tap.
    */
   async function patch(id: string, body: { status?: QuidaEvent["status"]; payload?: Record<string, unknown> }) {
     const res = await fetch("/api/events", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, ...body, confirmedBy: "caregiver" }),
+      body: JSON.stringify({ id, ...body, confirmedBy: "familia" }),
     });
     return res.ok;
   }
@@ -103,7 +103,7 @@ export function Review() {
     setBusy(true);
     setError(null);
     try {
-      const payload: Record<string, unknown> = { editedBy: "caregiver" };
+      const payload: Record<string, unknown> = { editedBy: "familia" };
       for (const field of FIELDS[e.kind] ?? []) {
         const value = (fields[field.name] ?? "").trim();
         payload[field.name] = value === "" ? null : value;
@@ -184,7 +184,7 @@ export function Review() {
               )}
 
               {PHOTO_KINDS.has(event.kind) || (event.kind === "referido" && event.payload.fields) ? (
-                <ExtractedFields event={event} householdId={event.householdId} size="caregiver" onConfirmed={() => setDone(event.id)} />
+                <ExtractedFields event={event} householdId={event.householdId} size="familia" onConfirmed={() => setDone(event.id)} />
               ) : (
                 <ItemReview
                   event={event}

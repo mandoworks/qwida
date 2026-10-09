@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 
 /**
- * Rendered until the caregiver side has mounted in the browser. Keeps the
+ * Rendered until the family member side has mounted in the browser. Keeps the
  * prerender stable: nothing inside reads the clock or the device locale.
  */
 export function Pending({ label, children }: { label: string; children: ReactNode }) {

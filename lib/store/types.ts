@@ -15,11 +15,18 @@ export const EVENT_KINDS = [
 
 export const EVENT_STATUSES = ["BORRADOR", "POR_CONFIRMAR", "CONFIRMADO"] as const;
 
-export const EVENT_SOURCES = ["voice", "photo", "caregiver", "system"] as const;
+export const EVENT_SOURCES = ["voice", "photo", "familia", "system"] as const;
+
+/**
+ * Rows written before the rename carry `source: "caregiver"`. A deploy does not
+ * rewrite the store (Redis rows survive, Supabase rows survive), so the read
+ * schema still accepts the old value. New writes must use "familia".
+ */
+export const LEGACY_EVENT_SOURCE = "caregiver";
 
 export const EventKind = z.enum(EVENT_KINDS);
 export const EventStatus = z.enum(EVENT_STATUSES);
-export const EventSource = z.enum(EVENT_SOURCES);
+export const EventSource = z.union([z.enum(EVENT_SOURCES), z.literal(LEGACY_EVENT_SOURCE)]);
 
 export type EventKind = z.infer<typeof EventKind>;
 export type EventStatus = z.infer<typeof EventStatus>;

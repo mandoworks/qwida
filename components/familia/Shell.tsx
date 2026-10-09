@@ -30,7 +30,7 @@ const ICON = {
 };
 
 /** Header, ES/EN toggle, the sections and the way back to the role chooser. */
-export function CaregiverShell({ children }: { children: ReactNode }) {
+export function FamiliaShell({ children }: { children: ReactNode }) {
   return (
     <LangProvider>
       <ShellBody>{children}</ShellBody>

@@ -13,7 +13,7 @@ const Body = z.object({ householdId: z.string().min(1).default(HOUSEHOLD_ID) });
  * from the CONFIRMADO events: the model through the AI Gateway, or the
  * deterministic SIMULADO fixture when there is no key or the call fails.
  * Returns { card, simulated, removed, emergency }. Nothing is saved here; the
- * card becomes CONFIRMADO only after the caregiver taps send.
+ * card becomes CONFIRMADO only after the family member taps send.
  */
 export async function POST(request: Request) {
   const body = Body.safeParse(await request.json().catch(() => ({})));

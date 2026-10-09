@@ -14,7 +14,7 @@ let n = 0;
 function ev(kind: QuidaEvent["kind"], status: QuidaEvent["status"], payload: Record<string, unknown>): QuidaEvent {
   n += 1;
   const t = new Date(2026, 9, 9, 8, n).toISOString();
-  return { id: `e${n}`, householdId: "demo-carmen", kind, status, payload, source: "caregiver", confidence: null, createdAt: t, updatedAt: t };
+  return { id: `e${n}`, householdId: "demo-carmen", kind, status, payload, source: "familia", confidence: null, createdAt: t, updatedAt: t };
 }
 
 describe("greetingFor", () => {
