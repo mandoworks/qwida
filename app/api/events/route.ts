@@ -35,16 +35,25 @@ export async function POST(request: Request) {
   return Response.json({ event }, { status: 201 });
 }
 
-const PatchBody = z.object({ id: z.string().min(1), status: EventStatus });
+const PatchBody = z
+  .object({
+    id: z.string().min(1),
+    status: EventStatus.optional(),
+    payload: z.record(z.string(), z.unknown()).optional(),
+  })
+  .refine((b) => b.status !== undefined || b.payload !== undefined, {
+    message: "status or payload required",
+  });
 
-/** PATCH /api/events with { id, status }. */
+/** PATCH /api/events with { id, status?, payload? }. Payload merges shallowly. */
 export async function PATCH(request: Request) {
   const body = PatchBody.safeParse(await request.json().catch(() => null));
   if (!body.success) {
     return Response.json({ error: z.treeifyError(body.error) }, { status: 400 });
   }
   const store = await getStore();
-  const event = await store.updateStatus(body.data.id, body.data.status);
+  const { id, ...patch } = body.data;
+  const event = await store.update(id, patch);
   if (!event) return Response.json({ error: "not found" }, { status: 404 });
   return Response.json({ event });
 }
