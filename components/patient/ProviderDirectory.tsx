@@ -16,6 +16,8 @@ type Provider = {
   phone: string | null;
   address: string | null;
   license_status?: string;
+  npi?: string | null;
+  source_url?: string;
 };
 
 /** Patient grade provider directory. Big controls, plain words, live
@@ -230,6 +232,18 @@ export function ProviderDirectory() {
                   >
                     Llamar: {p.phone}
                   </a>
+                )}
+                {p.npi && (
+                  <div className="mt-2">
+                    <a
+                      href={`https://medseekpr.com/p/${p.npi}`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="text-p-meta font-bold text-ink underline"
+                    >
+                      Ver perfil en MedSeek (medseekpr.com/p/{p.npi})
+                    </a>
+                  </div>
                 )}
               </li>
             ))}

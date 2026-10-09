@@ -8,7 +8,7 @@ export const MedSeekRawProvider = z.object({
   inicial: z.string().nullable().optional(),
   apellidos: z.string(),
   especialidad: z.string(),
-  npi: z.string().nullable().optional(),
+  npi: z.union([z.string(), z.number()]).nullish(),
   direccion_trabajo: z.string().nullable().optional(),
   pueblo: z.string(),
   estado: z.string().nullable().optional(),
@@ -27,7 +27,10 @@ export function mapMedSeekToProvider(raw: MedSeekRawProvider, fetchedAt = new Da
   const fullName = parts.join(" ").trim();
   const addressParts = [raw.direccion_trabajo, raw.pueblo, raw.estado ? raw.estado : "PR", raw.codigo_postal].filter(Boolean);
   const fullAddress = addressParts.join(", ");
-  const licenseNumber = raw.npi || raw.source_id || "NPI-PENDIENTE";
+  const npiStr = raw.npi !== null && raw.npi !== undefined ? String(raw.npi) : null;
+  const licenseNumber = npiStr || raw.source_id || "NPI-PENDIENTE";
+  const directNpiUrl = npiStr ? `https://medseekpr.com/p/${npiStr}` : null;
+  const searchUrl = `https://medseekpr.com/directorio.html?categoria=MEDICOS&pueblo=${encodeURIComponent(raw.pueblo || "")}`;
 
   return {
     name: fullName || "Médico Especialista",
@@ -36,10 +39,10 @@ export function mapMedSeekToProvider(raw: MedSeekRawProvider, fetchedAt = new Da
     license_number: licenseNumber,
     license_status: "ACTIVO",
     phone: raw.telefono && raw.telefono.trim().length > 0 ? raw.telefono.trim() : null,
-    source_url: `https://medseekpr.com/directorio.html?categoria=MEDICOS&pueblo=${encodeURIComponent(raw.pueblo || "")}`,
+    source_url: directNpiUrl || searchUrl,
     fetched_at: fetchedAt,
     address: fullAddress || null,
-    npi: raw.npi || null,
+    npi: npiStr,
   };
 }
 
@@ -49,6 +52,7 @@ export type MedSeekSearchParams = {
   pueblo?: string | null;
   nombre?: string | null;
   apellidos?: string | null;
+  limit?: number;
 };
 
 /**
@@ -61,6 +65,7 @@ export async function searchMedSeek(
 ): Promise<Provider[]> {
   const url = new URL(`${MEDSEEK_BASE_URL}/search`);
   url.searchParams.set("categoria", params.categoria || "MEDICOS");
+  url.searchParams.set("limit", String(params.limit || 1000));
   if (params.especialidad) url.searchParams.set("especialidad", params.especialidad);
   if (params.pueblo) url.searchParams.set("pueblo", params.pueblo);
   if (params.nombre) url.searchParams.set("nombre", params.nombre);
