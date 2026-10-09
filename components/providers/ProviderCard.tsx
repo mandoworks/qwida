@@ -54,17 +54,17 @@ export function ProviderCard({ provider, expiry, sent, busy, onUseReferido }: Pr
         <li className="w-fit rounded-full border-2 border-ink-soft px-4 py-2">
           <span className="font-bold">¿Acepta pacientes nuevos?</span>{" "}
           {provider.accepts_new_patients === true
-            ? "Sí"
+            ? "Según MedSeek PR: sí · Llame para confirmar"
             : provider.accepts_new_patients === false
-              ? "No"
+              ? "Según MedSeek PR: no · Llame para confirmar"
               : "No hay datos públicos"}
         </li>
         <li className="w-fit rounded-full border-2 border-ink-soft px-4 py-2">
           <span className="font-bold">¿Acepta su plan?</span>{" "}
           {provider.accepts_plan_vital === true
-            ? "Acepta Plan Vital"
+            ? "Según MedSeek PR: sí · Llame para confirmar"
             : provider.accepts_plan_vital === false
-              ? "No acepta Plan Vital"
+              ? "Según MedSeek PR: no · Llame para confirmar"
               : "Llame para confirmar"}
         </li>
         {provider.telemedicina && (
