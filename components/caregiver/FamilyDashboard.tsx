@@ -20,13 +20,14 @@ import { useLang } from "./lang-context";
 import { Pending } from "./Pending";
 
 const SEEN_KEY = "quida.cuidador.seenAt";
+// Each achievement wears one of Yari's hand drawn pieces already in the app.
 const MEDALS: { slot: string; key: StringKey }[] = [
-  { slot: "medal-lista-doctor", key: "logros.lista_doctor" },
-  { slot: "medal-foto-dia", key: "logros.foto_dia" },
-  { slot: "medal-en-familia", key: "logros.en_familia" },
-  { slot: "medal-recordatorio", key: "logros.recordatorio" },
-  { slot: "medal-acompanante", key: "logros.acompanante" },
-  { slot: "medal-primera-llamada", key: "logros.primera_llamada" },
+  { slot: "receta-letra", key: "logros.lista_doctor" },
+  { slot: "etiqueta-farmacia", key: "logros.foto_dia" },
+  { slot: "cerca", key: "logros.en_familia" },
+  { slot: "slot-manana", key: "logros.recordatorio" },
+  { slot: "avatar-marisol", key: "logros.acompanante" },
+  { slot: "slot-noche", key: "logros.primera_llamada" },
 ];
 
 
