@@ -12,9 +12,9 @@ export const DRAFT_MODEL = "anthropic/claude-sonnet-5.5";
 
 const ModelItem = z.object({
   day: z.string(),
-  time: z.string().nullish(),
+  time: z.string().nullable(),
   text: z.string(),
-  icon: z.string().nullish(),
+  icon: z.string().nullable(),
 });
 
 const ModelCard = z.object({
