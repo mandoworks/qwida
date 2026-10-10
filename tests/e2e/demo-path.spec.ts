@@ -55,7 +55,7 @@ test("2. Paciente: Grabar mi cita con la grabación de demostración", async () 
 test("3. Foto: receta a mano no es confiable y no se puede confirmar", async () => {
   await page.goto("/paciente");
   // The tile, not the label rescan notice's own Foto button.
-  await page.getByRole("link", { name: /^Foto Toque/ }).click();
+  await page.getByRole("link", { name: /^Foto: mandar una foto/ }).click();
   await sendPhoto("rx-handwritten.jpg");
   await expect(page.getByText("Letra de médico: no confiable")).toBeVisible();
   await expect(page.getByRole("button", { name: "Confirmar", exact: true })).toHaveCount(0);
