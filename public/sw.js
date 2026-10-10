@@ -26,7 +26,7 @@ self.addEventListener("push", (event) => {
     return;
   }
   event.waitUntil(
-    self.registration.showNotification(payload.title ?? "Quida", {
+    self.registration.showNotification(payload.title ?? "Qwida", {
       body: payload.body ?? "",
       tag: payload.tag,
       renotify: true,
