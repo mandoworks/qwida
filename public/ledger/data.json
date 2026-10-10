@@ -1,0 +1,1268 @@
+{
+ "generated": "2026-10-10T00:05:00-04:00",
+ "source": "tokscale (local session logs on the team laptop), window 2026-10-08 to 2026-10-10 AST",
+ "rows": [
+  {
+   "workspace": "qwida",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "provider": "anthropic",
+   "input": 1970,
+   "output": 619916,
+   "cacheRead": 278954399,
+   "cacheWrite": 4171781,
+   "messages": 983,
+   "cost": 100.22
+  },
+  {
+   "workspace": "qwida",
+   "client": "claude",
+   "model": "claude-fable-5-1",
+   "provider": "anthropic",
+   "input": 5498,
+   "output": 156777,
+   "cacheRead": 45115249,
+   "cacheWrite": 1216397,
+   "messages": 214,
+   "cost": 37.52
+  },
+  {
+   "workspace": "qwida-app",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "provider": "anthropic",
+   "input": 710,
+   "output": 324962,
+   "cacheRead": 53926616,
+   "cacheWrite": 1226581,
+   "messages": 355,
+   "cost": 27.1
+  },
+  {
+   "workspace": "qwida",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-n",
+   "provider": "google",
+   "input": 13932540,
+   "output": 284637,
+   "cacheRead": 176839253,
+   "cacheWrite": 0,
+   "messages": 1355,
+   "cost": 25.87
+  },
+  {
+   "workspace": "qwida-warroom",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-n",
+   "provider": "google",
+   "input": 6338668,
+   "output": 157656,
+   "cacheRead": 68804518,
+   "cacheWrite": 0,
+   "messages": 620,
+   "cost": 11.2
+  },
+  {
+   "workspace": "qwida-app",
+   "client": "claude",
+   "model": "claude-sonnet-5-5",
+   "provider": "anthropic",
+   "input": 316,
+   "output": 98882,
+   "cacheRead": 17453919,
+   "cacheWrite": 832284,
+   "messages": 158,
+   "cost": 6.06
+  },
+  {
+   "workspace": "cais-tickets",
+   "client": "opencode",
+   "model": "glm-5.3-flash-abliterated",
+   "provider": "explabs",
+   "input": 4872238,
+   "output": 85885,
+   "cacheRead": 96076800,
+   "cacheWrite": 0,
+   "messages": 312,
+   "cost": 3.68
+  },
+  {
+   "workspace": "qwida-warroom",
+   "client": "claude",
+   "model": "claude-sonnet-5-5",
+   "provider": "anthropic",
+   "input": 150,
+   "output": 96396,
+   "cacheRead": 7894630,
+   "cacheWrite": 423150,
+   "messages": 75,
+   "cost": 3.45
+  },
+  {
+   "workspace": "cais-tickets",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "provider": "anthropic",
+   "input": 44,
+   "output": 7985,
+   "cacheRead": 1743794,
+   "cacheWrite": 66979,
+   "messages": 22,
+   "cost": 1.04
+  },
+  {
+   "workspace": "qwida-warroom",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "provider": "anthropic",
+   "input": 16,
+   "output": 3596,
+   "cacheRead": 502788,
+   "cacheWrite": 57093,
+   "messages": 8,
+   "cost": 0.63
+  },
+  {
+   "workspace": "qwida",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-tiered",
+   "provider": "google",
+   "input": 119565,
+   "output": 4562,
+   "cacheRead": 32665,
+   "cacheWrite": 0,
+   "messages": 11,
+   "cost": 0.12
+  },
+  {
+   "workspace": "cais-tickets",
+   "client": "opencode",
+   "model": "glm-5.1",
+   "provider": "zai_coding_plan",
+   "input": 0,
+   "output": 0,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "messages": 2,
+   "cost": 0.0
+  },
+  {
+   "workspace": "qwida-warroom",
+   "client": "opencode",
+   "model": "glm-5.1",
+   "provider": "zai_coding_plan",
+   "input": 0,
+   "output": 0,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "messages": 2,
+   "cost": 0.0
+  },
+  {
+   "workspace": "cais-tickets",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "provider": "opencode",
+   "input": 1025427,
+   "output": 57215,
+   "cacheRead": 37545019,
+   "cacheWrite": 0,
+   "messages": 170,
+   "cost": 0.0
+  },
+  {
+   "workspace": "qwida-app",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "provider": "opencode",
+   "input": 1472623,
+   "output": 166219,
+   "cacheRead": 52666256,
+   "cacheWrite": 0,
+   "messages": 502,
+   "cost": 0.0
+  },
+  {
+   "workspace": "workspace/qwida",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "provider": "opencode",
+   "input": 1096838,
+   "output": 95001,
+   "cacheRead": 13665360,
+   "cacheWrite": 0,
+   "messages": 146,
+   "cost": 0.0
+  },
+  {
+   "workspace": "qwida-app",
+   "client": "opencode",
+   "model": "muse-spark-1.3-contributor-free",
+   "provider": "opencode",
+   "input": 121987,
+   "output": 24619,
+   "cacheRead": 7133234,
+   "cacheWrite": 0,
+   "messages": 83,
+   "cost": 0.0
+  },
+  {
+   "workspace": "qwida-warroom",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "provider": "opencode",
+   "input": 3779953,
+   "output": 269365,
+   "cacheRead": 106374614,
+   "cacheWrite": 0,
+   "messages": 911,
+   "cost": 0.0
+  }
+ ],
+ "hours": [
+  {
+   "hour": "2026-10-08 00:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 01:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 02:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 03:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 04:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 05:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 06:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 07:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 08:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 09:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 10:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 11:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 12:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 13:00",
+   "tokens": 7570700,
+   "output": 12628,
+   "messages": 37,
+   "cost": 0.23,
+   "models": [
+    "glm-5.1",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-08 14:00",
+   "tokens": 23287404,
+   "output": 37146,
+   "messages": 109,
+   "cost": 0.07,
+   "models": [
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-08 15:00",
+   "tokens": 10655801,
+   "output": 10872,
+   "messages": 42,
+   "cost": 0.0,
+   "models": [
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-08 16:00",
+   "tokens": 4853502,
+   "output": 4221,
+   "messages": 18,
+   "cost": 0.0,
+   "models": [
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-08 17:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 18:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 19:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 20:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 21:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 22:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-08 23:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-09 00:00",
+   "tokens": 6846910,
+   "output": 7093,
+   "messages": 27,
+   "cost": 0.22,
+   "models": [
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 01:00",
+   "tokens": 3585389,
+   "output": 12051,
+   "messages": 28,
+   "cost": 1.33,
+   "models": [
+    "claude-opus-5-5",
+    "glm-5.1",
+    "glm-5.3-flash-abliterated"
+   ]
+  },
+  {
+   "hour": "2026-10-09 02:00",
+   "tokens": 18069243,
+   "output": 73872,
+   "messages": 107,
+   "cost": 4.26,
+   "models": [
+    "claude-opus-5-5",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 03:00",
+   "tokens": 17156556,
+   "output": 95778,
+   "messages": 115,
+   "cost": 5.54,
+   "models": [
+    "claude-opus-5-5",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 04:00",
+   "tokens": 55252803,
+   "output": 207666,
+   "messages": 339,
+   "cost": 14.6,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 05:00",
+   "tokens": 64221100,
+   "output": 241258,
+   "messages": 363,
+   "cost": 12.7,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 06:00",
+   "tokens": 108444340,
+   "output": 238421,
+   "messages": 512,
+   "cost": 12.1,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "gemini-3.8-flash-n",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 07:00",
+   "tokens": 74018772,
+   "output": 140186,
+   "messages": 426,
+   "cost": 11.68,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "gemini-3.8-flash-n",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 08:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 1,
+   "cost": 0.0,
+   "models": [
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 09:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-09 10:00",
+   "tokens": 0,
+   "output": 0,
+   "messages": 0,
+   "cost": 0,
+   "models": []
+  },
+  {
+   "hour": "2026-10-09 11:00",
+   "tokens": 2535835,
+   "output": 3997,
+   "messages": 30,
+   "cost": 0.05,
+   "models": [
+    "gemini-3.8-flash-n",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 12:00",
+   "tokens": 107028722,
+   "output": 301589,
+   "messages": 550,
+   "cost": 32.17,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "gemini-3.8-flash-n",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 13:00",
+   "tokens": 61628668,
+   "output": 137229,
+   "messages": 449,
+   "cost": 10.65,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "gemini-3.8-flash-n",
+    "glm-5.1",
+    "glm-5.3-flash-abliterated",
+    "muse-spark-1.3-contributor-free",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 14:00",
+   "tokens": 65230932,
+   "output": 83340,
+   "messages": 404,
+   "cost": 6.14,
+   "models": [
+    "gemini-3.8-flash-n",
+    "glm-5.3-flash-abliterated",
+    "muse-spark-1.3-contributor-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 15:00",
+   "tokens": 47279220,
+   "output": 74738,
+   "messages": 339,
+   "cost": 5.83,
+   "models": [
+    "gemini-3.8-flash-n",
+    "glm-5.3-flash-abliterated",
+    "muse-spark-1.3-contributor-free",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 16:00",
+   "tokens": 45645917,
+   "output": 87256,
+   "messages": 365,
+   "cost": 5.77,
+   "models": [
+    "gemini-3.8-flash-n",
+    "gemini-3.8-flash-tiered",
+    "glm-5.3-flash-abliterated",
+    "muse-spark-1.3-contributor-free",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 17:00",
+   "tokens": 78114266,
+   "output": 192837,
+   "messages": 464,
+   "cost": 25.12,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "gemini-3.8-flash-n",
+    "glm-5.3-flash-abliterated",
+    "muse-spark-1.3-contributor-free",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 18:00",
+   "tokens": 55885248,
+   "output": 121566,
+   "messages": 390,
+   "cost": 8.6,
+   "models": [
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "gemini-3.8-flash-n",
+    "glm-5.3-flash-abliterated",
+    "muse-spark-1.3-contributor-free",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 19:00",
+   "tokens": 52230116,
+   "output": 118072,
+   "messages": 288,
+   "cost": 19.35,
+   "models": [
+    "claude-fable-5-1",
+    "claude-opus-5-5",
+    "gemini-3.8-flash-n",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 20:00",
+   "tokens": 56480654,
+   "output": 137142,
+   "messages": 333,
+   "cost": 19.32,
+   "models": [
+    "claude-fable-5-1",
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "gemini-3.8-flash-n",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 21:00",
+   "tokens": 34700050,
+   "output": 82925,
+   "messages": 157,
+   "cost": 17.93,
+   "models": [
+    "claude-fable-5-1",
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "gemini-3.8-flash-n",
+    "glm-5.3-flash-abliterated",
+    "space-bunny-free"
+   ]
+  },
+  {
+   "hour": "2026-10-09 22:00",
+   "tokens": 3091256,
+   "output": 18312,
+   "messages": 17,
+   "cost": 1.17,
+   "models": [
+    "claude-opus-5-5"
+   ]
+  },
+  {
+   "hour": "2026-10-09 23:00",
+   "tokens": 11612579,
+   "output": 44061,
+   "messages": 53,
+   "cost": 4.97,
+   "models": [
+    "claude-opus-5-5"
+   ]
+  }
+ ],
+ "sessions": [
+  {
+   "session": "7e15e8b1",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 1516,
+   "output": 482877,
+   "cacheRead": 246858426,
+   "cacheWrite": 3076034,
+   "messages": 757,
+   "cost": 82.3
+  },
+  {
+   "session": "7145eb3f",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-n",
+   "input": 9766369,
+   "output": 183853,
+   "cacheRead": 120634938,
+   "cacheWrite": 0,
+   "messages": 900,
+   "cost": 17.8
+  },
+  {
+   "session": "ses_eed7",
+   "client": "opencode",
+   "model": "glm-5.3-flash-abliterated",
+   "input": 4872238,
+   "output": 85885,
+   "cacheRead": 96076800,
+   "cacheWrite": 0,
+   "messages": 312,
+   "cost": 3.68
+  },
+  {
+   "session": "de73eab6",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-n",
+   "input": 4332760,
+   "output": 113773,
+   "cacheRead": 57706182,
+   "cacheWrite": 0,
+   "messages": 476,
+   "cost": 8.58
+  },
+  {
+   "session": "84366053",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-n",
+   "input": 3972962,
+   "output": 96491,
+   "cacheRead": 54994744,
+   "cacheWrite": 0,
+   "messages": 418,
+   "cost": 7.8
+  },
+  {
+   "session": "ses_eeb5",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 1025427,
+   "output": 57215,
+   "cacheRead": 37545019,
+   "cacheWrite": 0,
+   "messages": 170,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_ee03",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 1161451,
+   "output": 82625,
+   "cacheRead": 34400599,
+   "cacheWrite": 0,
+   "messages": 197,
+   "cost": 0.0
+  },
+  {
+   "session": "76a6954f",
+   "client": "claude",
+   "model": "claude-fable-5-1",
+   "input": 4416,
+   "output": 123974,
+   "cacheRead": 30125229,
+   "cacheWrite": 825440,
+   "messages": 168,
+   "cost": 26.7
+  },
+  {
+   "session": "ses_ede6",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 1140572,
+   "output": 69127,
+   "cacheRead": 29848966,
+   "cacheWrite": 0,
+   "messages": 256,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_edff",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 141322,
+   "output": 94105,
+   "cacheRead": 28042112,
+   "cacheWrite": 0,
+   "messages": 180,
+   "cost": 0.0
+  },
+  {
+   "session": "db16183e",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 294,
+   "output": 92702,
+   "cacheRead": 20582253,
+   "cacheWrite": 793054,
+   "messages": 146,
+   "cost": 12.32
+  },
+  {
+   "session": "ecb7c9e1",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 218,
+   "output": 72666,
+   "cacheRead": 18376596,
+   "cacheWrite": 359174,
+   "messages": 109,
+   "cost": 8.0
+  },
+  {
+   "session": "351778fd",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 184,
+   "output": 89475,
+   "cacheRead": 16316218,
+   "cacheWrite": 383753,
+   "messages": 92,
+   "cost": 8.12
+  },
+  {
+   "session": "ses_edd5",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 372482,
+   "output": 39189,
+   "cacheRead": 15313299,
+   "cacheWrite": 0,
+   "messages": 160,
+   "cost": 0.0
+  },
+  {
+   "session": "d81b3765",
+   "client": "claude",
+   "model": "claude-fable-5-1",
+   "input": 1082,
+   "output": 32803,
+   "cacheRead": 14990020,
+   "cacheWrite": 390957,
+   "messages": 46,
+   "cost": 10.81
+  },
+  {
+   "session": "08c367b7",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 176,
+   "output": 48885,
+   "cacheRead": 13453781,
+   "cacheWrite": 313134,
+   "messages": 88,
+   "cost": 6.17
+  },
+  {
+   "session": "c9e5710b",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 148,
+   "output": 96084,
+   "cacheRead": 11842708,
+   "cacheWrite": 252617,
+   "messages": 74,
+   "cost": 6.31
+  },
+  {
+   "session": "6edc001b",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-n",
+   "input": 1562627,
+   "output": 32269,
+   "cacheRead": 9528952,
+   "cacheWrite": 0,
+   "messages": 107,
+   "cost": 2.1
+  },
+  {
+   "session": "ses_ede3",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 204611,
+   "output": 23601,
+   "cacheRead": 9788972,
+   "cacheWrite": 0,
+   "messages": 111,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_ee03",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 556089,
+   "output": 30080,
+   "cacheRead": 8961622,
+   "cacheWrite": 0,
+   "messages": 93,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_edf8",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 292944,
+   "output": 16131,
+   "cacheRead": 8986615,
+   "cacheWrite": 0,
+   "messages": 78,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_ee08",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 599661,
+   "output": 48213,
+   "cacheRead": 7895612,
+   "cacheWrite": 0,
+   "messages": 73,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_ee03",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 227712,
+   "output": 22188,
+   "cacheRead": 7226634,
+   "cacheWrite": 0,
+   "messages": 75,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_ede3",
+   "client": "opencode",
+   "model": "muse-spark-1.3-contributor-free",
+   "input": 121987,
+   "output": 24619,
+   "cacheRead": 7133234,
+   "cacheWrite": 0,
+   "messages": 83,
+   "cost": 0.0
+  },
+  {
+   "session": "dd2a79b8",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 114,
+   "output": 58051,
+   "cacheRead": 6628676,
+   "cacheWrite": 142200,
+   "messages": 57,
+   "cost": 3.62
+  },
+  {
+   "session": "d09af863",
+   "client": "claude",
+   "model": "claude-sonnet-5-5",
+   "input": 106,
+   "output": 30729,
+   "cacheRead": 6114995,
+   "cacheWrite": 518326,
+   "messages": 53,
+   "cost": 2.99
+  },
+  {
+   "session": "ses_ee08",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 497177,
+   "output": 46788,
+   "cacheRead": 5769748,
+   "cacheWrite": 0,
+   "messages": 73,
+   "cost": 0.0
+  },
+  {
+   "session": "c1bae3b0",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 88,
+   "output": 32467,
+   "cacheRead": 5685233,
+   "cacheWrite": 134877,
+   "messages": 44,
+   "cost": 2.87
+  },
+  {
+   "session": "ses_edfe",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 446593,
+   "output": 17331,
+   "cacheRead": 5137024,
+   "cacheWrite": 0,
+   "messages": 57,
+   "cost": 0.0
+  },
+  {
+   "session": "39101dd5",
+   "client": "claude",
+   "model": "claude-sonnet-5-5",
+   "input": 86,
+   "output": 46045,
+   "cacheRead": 5341515,
+   "cacheWrite": 141058,
+   "messages": 43,
+   "cost": 1.56
+  },
+  {
+   "session": "946e912f",
+   "client": "claude",
+   "model": "claude-sonnet-5-5",
+   "input": 94,
+   "output": 14509,
+   "cacheRead": 4737042,
+   "cacheWrite": 96963,
+   "messages": 47,
+   "cost": 1.01
+  },
+  {
+   "session": "ses_ede5",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 248068,
+   "output": 10060,
+   "cacheRead": 4211838,
+   "cacheWrite": 0,
+   "messages": 68,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_edf8",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 85589,
+   "output": 17430,
+   "cacheRead": 4217743,
+   "cacheWrite": 0,
+   "messages": 67,
+   "cost": 0.0
+  },
+  {
+   "session": "4f69bc7f",
+   "client": "claude",
+   "model": "claude-sonnet-5-5",
+   "input": 52,
+   "output": 41143,
+   "cacheRead": 3084885,
+   "cacheWrite": 136219,
+   "messages": 26,
+   "cost": 1.26
+  },
+  {
+   "session": "b9d1e2a3",
+   "client": "claude",
+   "model": "claude-sonnet-5-5",
+   "input": 56,
+   "output": 29336,
+   "cacheRead": 2827377,
+   "cacheWrite": 192214,
+   "messages": 28,
+   "cost": 1.35
+  },
+  {
+   "session": "30f8c17e",
+   "client": "claude",
+   "model": "claude-sonnet-5-5",
+   "input": 42,
+   "output": 25917,
+   "cacheRead": 1982368,
+   "cacheWrite": 94717,
+   "messages": 21,
+   "cost": 0.84
+  },
+  {
+   "session": "3f22bd3d",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-n",
+   "input": 443281,
+   "output": 11614,
+   "cacheRead": 1569384,
+   "cacheWrite": 0,
+   "messages": 37,
+   "cost": 0.52
+  },
+  {
+   "session": "8549660f",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 44,
+   "output": 7985,
+   "cacheRead": 1743794,
+   "cacheWrite": 66979,
+   "messages": 22,
+   "cost": 1.04
+  },
+  {
+   "session": "ses_edf7",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 151239,
+   "output": 8119,
+   "cacheRead": 1325722,
+   "cacheWrite": 0,
+   "messages": 27,
+   "cost": 0.0
+  },
+  {
+   "session": "620c9bba",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-n",
+   "input": 193209,
+   "output": 4293,
+   "cacheRead": 1209571,
+   "cacheWrite": 0,
+   "messages": 37,
+   "cost": 0.27
+  },
+  {
+   "session": "145eb134",
+   "client": "claude",
+   "model": "claude-sonnet-5-5",
+   "input": 30,
+   "output": 7599,
+   "cacheRead": 1260367,
+   "cacheWrite": 75937,
+   "messages": 15,
+   "cost": 0.51
+  },
+  {
+   "session": "ses_edf8",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 117036,
+   "output": 2555,
+   "cacheRead": 834522,
+   "cacheWrite": 0,
+   "messages": 19,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_ede6",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 106868,
+   "output": 3043,
+   "cacheRead": 745202,
+   "cacheWrite": 0,
+   "messages": 25,
+   "cost": 0.0
+  },
+  {
+   "session": "7db7b950",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 16,
+   "output": 3596,
+   "cacheRead": 502788,
+   "cacheWrite": 57093,
+   "messages": 8,
+   "cost": 0.63
+  },
+  {
+   "session": "56727155",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 8,
+   "output": 1562,
+   "cacheRead": 219658,
+   "cacheWrite": 45964,
+   "messages": 4,
+   "cost": 0.44
+  },
+  {
+   "session": "04d93fc7",
+   "client": "antigravity-cli",
+   "model": "gemini-3.8-flash-tiered",
+   "input": 119565,
+   "output": 4562,
+   "cacheRead": 32665,
+   "cacheWrite": 0,
+   "messages": 11,
+   "cost": 0.12
+  },
+  {
+   "session": "ses_ee35",
+   "client": "opencode",
+   "model": "glm-5.1",
+   "input": 0,
+   "output": 0,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "messages": 1,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_ee0e",
+   "client": "opencode",
+   "model": "glm-5.1",
+   "input": 0,
+   "output": 0,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "messages": 1,
+   "cost": 0.0
+  },
+  {
+   "session": "ses_ede5",
+   "client": "opencode",
+   "model": "glm-5.1",
+   "input": 0,
+   "output": 0,
+   "cacheRead": 0,
+   "cacheWrite": 0,
+   "messages": 2,
+   "cost": 0.0
+  }
+ ]
+}

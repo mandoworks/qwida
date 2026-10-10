@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qwida AI Ledger</title>
+<style>
+:root{--bg:#FBF8F3;--surface:#FFFFFF;--ink:#1B1A17;--muted:#5E5A52;--line:#E4DDD0;--bar:#0B4F42;--bar-hover:#127A65;--chip:#E3F0EB;--warn:#B54708}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101815;--surface:#17221E;--ink:#F2EBDF;--muted:#A9B3AE;--line:#2A3833;--bar:#6FC2A8;--bar-hover:#9BDCC6;--chip:#1F3A31;--warn:#F0A060}}
+:root[data-theme="dark"]{--bg:#101815;--surface:#17221E;--ink:#F2EBDF;--muted:#A9B3AE;--line:#2A3833;--bar:#6FC2A8;--bar-hover:#9BDCC6;--chip:#1F3A31;--warn:#F0A060}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1040px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:28px;line-height:1.2;margin:8px 0}
+h2{font-size:20px;margin:40px 0 8px}
+p{margin:8px 0}
+.lede{color:var(--muted);max-width:720px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:24px 0}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.tile .v{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+.tile .k{color:var(--muted);font-size:13px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0;overflow-x:auto}
+svg text{fill:var(--muted);font-size:12px}
+svg .lbl{fill:var(--ink)}
+.bar{fill:var(--bar)}.bar:hover{fill:var(--bar-hover)}
+.grid{stroke:var(--line);stroke-width:1}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:0 8px;font-size:12px;margin-left:6px}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2),th:nth-child(3),td:nth-child(3){text-align:left}
+th{color:var(--muted);font-weight:600}
+#tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:6px 8px;border-radius:6px;opacity:0;transition:opacity .1s;max-width:280px}
+code{background:var(--chip);padding:1px 5px;border-radius:4px;font-size:13px;word-break:break-all}
+.note{border-left:3px solid var(--warn);padding-left:12px;color:var(--muted)}
+video{width:100%;max-width:320px;border-radius:12px;border:1px solid var(--line)}
+.vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+a{color:var(--bar)}
+</style>
+</head>
+<body>
+<main>
+<p><a href="/">← Qwida</a></p>
+<h1>How Qwida was built: every AI token, every hand-drawn line</h1>
+<p class="lede">Coding agents wrote most of Qwida's code under human review. Instead of describing that in words, this page lists every model, every session and every hour, straight from the agents' own logs, so anyone can audit it. Every image in the app was drawn by hand; the timelapses are at the bottom.</p>
+
+<div class="tiles" id="tiles"></div>
+
+<h2>Tokens by model</h2>
+<p class="lede">Tokens processed (input, output and prompt cache). Hover a bar for the breakdown. <span class="chip">free</span> marks free tier models.</p>
+<div class="card"><svg id="byModel" role="img" aria-label="Tokens processed by model"></svg></div>
+
+<h2>Activity by hour (AST)</h2>
+<p class="lede">Tokens processed per hour, Thursday Oct 8 to Saturday Oct 10. Hover a column for the models used that hour.</p>
+<div class="card"><svg id="byHour" role="img" aria-label="Tokens processed per hour"></svg></div>
+
+<h2>Full ledger: repository, tool, model</h2>
+<div class="card"><table id="rows"></table></div>
+
+<h2>Every session</h2>
+<p class="lede">One row per agent session and model. Session ids are the first 8 characters of each agent session id. Raw data: <a href="data.json">data.json</a>.</p>
+<div class="card"><table id="sessions"></table></div>
+
+<h2>What this does and does not cover</h2>
+<div class="note">
+<p><strong>Covered:</strong> every coding agent session on the team laptop between Oct 8 and Oct 10 in the Qwida repositories (Claude Code, Antigravity, OpenCode), read by <a href="https://github.com/junhoyeo/tokscale">tokscale</a> from the agents' local logs.</p>
+<p><strong>Not covered:</strong> agents that ran on our two servers, and the AI calls Qwida itself makes for users (speech to text, photo reading, the week card). Those run on OpenAI and are not development work.</p>
+<p><strong>Cost column:</strong> what these tokens would cost at public API list prices. We worked on flat subscriptions and free tiers, so this is a measure of size, not an invoice.</p>
+<p><strong>Reproduce:</strong> <code>tokscale models --json --group-by workspace,model --merge-worktrees --since 2026-10-08 --until 2026-10-10</code></p>
+</div>
+
+<h2>Hand-drawn by Yari</h2>
+<p class="lede">The logo and every icon in the app were drawn by Yari in Procreate, not generated.</p>
+<div class="vids" id="vids"><p class="lede" id="noVids">Timelapses are being exported and will appear here.</p></div>
+</main>
+<div id="tip" role="tooltip"></div>
+<script>
+const fmt=n=>n>=1e9?(n/1e9).toFixed(2)+"B":n>=1e6?(n/1e6).toFixed(1)+"M":n>=1e3?(n/1e3).toFixed(1)+"K":String(n);
+const usd=n=>"$"+n.toFixed(2);
+const tot=r=>r.input+r.output+r.cacheRead+r.cacheWrite;
+const NS="http://www.w3.org/2000/svg";
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
+const tip=document.getElementById("tip");
+function hover(node,html){node.addEventListener("mousemove",e=>{tip.innerHTML=html;tip.style.opacity=1;const x=Math.min(e.clientX+12,innerWidth-tip.offsetWidth-8);tip.style.left=x+"px";tip.style.top=(e.clientY+12)+"px"});node.addEventListener("mouseleave",()=>tip.style.opacity=0)}
+function table(id,cols,rows){const t=document.getElementById(id);t.innerHTML="<thead><tr>"+cols.map(c=>"<th>"+c[0]+"</th>").join("")+"</tr></thead><tbody>"+rows.map(r=>"<tr>"+cols.map(c=>"<td>"+c[1](r)+"</td>").join("")+"</tr>").join("")+"</tbody>"}
+fetch("data.json").then(r=>r.json()).then(d=>{
+  const R=d.rows;
+  const all=R.reduce((a,r)=>({t:a.t+tot(r),o:a.o+r.output,m:a.m+r.messages,c:a.c+r.cost}),{t:0,o:0,m:0,c:0});
+  const models=[...new Set(R.map(r=>r.model))];
+  const freeModels=new Set(models.filter(m=>R.filter(r=>r.model===m).every(r=>r.cost===0)));
+  document.getElementById("tiles").innerHTML=[
+    [fmt(all.t),"tokens processed"],[fmt(all.o),"tokens written by agents"],[all.m.toLocaleString(),"agent messages"],
+    [models.length+" ("+freeModels.size+" free)","models used"],[d.sessions.length,"agent sessions"],[usd(all.c),"list-price equivalent"]
+  ].map(([v,k])=>`<div class="tile"><div class="v">${v}</div><div class="k">${k}</div></div>`).join("");
+
+  // by model
+  const bm=models.map(m=>{const rs=R.filter(r=>r.model===m);return{m,t:rs.reduce((a,r)=>a+tot(r),0),o:rs.reduce((a,r)=>a+r.output,0),c:rs.reduce((a,r)=>a+r.cost,0),msg:rs.reduce((a,r)=>a+r.messages,0),cl:[...new Set(rs.map(r=>r.client))].join(", ")}}).sort((a,b)=>b.t-a.t);
+  const W=900,lw=230,rh=30,svg=document.getElementById("byModel"),H=bm.length*rh+24,max=bm[0].t;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);svg.setAttribute("width","100%");
+  bm.forEach((b,i)=>{const y=i*rh+4,w=Math.max(4,(W-lw-90)*b.t/max);
+    el("text",{x:lw-8,y:y+17,"text-anchor":"end",class:"lbl"},svg).textContent=b.m+(freeModels.has(b.m)?" (free)":"");
+    const g=el("g",{},svg);el("rect",{x:lw,y:y+2,width:w+8,height:rh-12,rx:4,class:"bar"},g);el("rect",{x:lw,y,width:W-lw,height:rh,fill:"transparent"},g);
+    el("text",{x:lw+w+14,y:y+17},svg).textContent=fmt(b.t);
+    hover(g,`<b>${b.m}</b><br>${b.cl}<br>${fmt(b.t)} tokens, ${fmt(b.o)} written<br>${b.msg.toLocaleString()} messages · ${usd(b.c)} list price`)});
+
+  // by hour
+  const Hs=d.hours,hs=document.getElementById("byHour"),HW=900,HH=220,pad=36,bw=(HW-pad)/Hs.length,hm=Math.max(...Hs.map(h=>h.tokens));
+  hs.setAttribute("viewBox",`0 0 ${HW} ${HH+30}`);hs.setAttribute("width","100%");
+  [0,.5,1].forEach(f=>{const y=HH-f*(HH-10);el("line",{x1:pad,x2:HW,y1:y,y2:y,class:"grid"},hs);el("text",{x:pad-6,y:y+4,"text-anchor":"end"},hs).textContent=fmt(hm*f)});
+  Hs.forEach((h,i)=>{const x=pad+i*bw,hgt=h.tokens?Math.max(3,(HH-10)*h.tokens/hm):0;
+    const g=el("g",{},hs);if(hgt)el("rect",{x:x+1,y:HH-hgt,width:Math.max(2,bw-2),height:hgt,rx:2,class:"bar"},g);el("rect",{x,y:0,width:bw,height:HH,fill:"transparent"},g);
+    if(h.hour.endsWith("00:00")||h.hour.endsWith("12:00"))el("text",{x:x,y:HH+18},hs).textContent=new Date(h.hour.replace(" ","T")).toLocaleString("en-US",{weekday:"short",hour:"numeric"});
+    hover(g,`<b>${h.hour} AST</b><br>${h.tokens?fmt(h.tokens)+" tokens, "+h.messages+" messages<br>"+h.models.join(", "):"no agent activity"}`)});
+
+  table("rows",[["Repository",r=>r.workspace],["Tool",r=>r.client],["Model",r=>r.model],["Input",r=>r.input.toLocaleString()],["Output",r=>r.output.toLocaleString()],["Cache read",r=>r.cacheRead.toLocaleString()],["Cache write",r=>r.cacheWrite.toLocaleString()],["Messages",r=>r.messages.toLocaleString()],["List price",r=>usd(r.cost)]],[...R].sort((a,b)=>tot(b)-tot(a)));
+  table("sessions",[["Session",r=>"<code>"+r.session+"</code>"],["Tool",r=>r.client],["Model",r=>r.model],["Input",r=>r.input.toLocaleString()],["Output",r=>r.output.toLocaleString()],["Cache read",r=>r.cacheRead.toLocaleString()],["Messages",r=>r.messages.toLocaleString()],["List price",r=>usd(r.cost)]],d.sessions);
+
+  const v=d.timelapses||[];if(v.length){document.getElementById("noVids").remove();document.getElementById("vids").innerHTML=v.map(t=>`<figure><video src="${t.src}" controls muted playsinline preload="metadata"></video><figcaption>${t.title}</figcaption></figure>`).join("")}
+}).catch(()=>{document.getElementById("tiles").textContent="Could not load data.json."});
+</script>
+</body>
+</html>
