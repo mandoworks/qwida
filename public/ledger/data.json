@@ -1,24 +1,22 @@
 {
- "generated": "2026-10-10T00:05:00-04:00",
- "source": "tokscale (local session logs on the team laptop), window 2026-10-08 to 2026-10-10 AST",
+ "generated": "2026-10-09T23:25-04:00",
+ "source": "tokscale (local session logs on the team laptop), Qwida repositories only, 2026-10-08 to 2026-10-10 AST",
  "rows": [
   {
    "workspace": "qwida",
    "client": "claude",
    "model": "claude-opus-5-5",
-   "provider": "anthropic",
-   "input": 1970,
-   "output": 619916,
-   "cacheRead": 278954399,
-   "cacheWrite": 4171781,
-   "messages": 983,
-   "cost": 100.22
+   "input": 2084,
+   "output": 673077,
+   "cacheRead": 293818362,
+   "cacheWrite": 4269825,
+   "messages": 1040,
+   "cost": 105.04
   },
   {
    "workspace": "qwida",
    "client": "claude",
    "model": "claude-fable-5-1",
-   "provider": "anthropic",
    "input": 5498,
    "output": 156777,
    "cacheRead": 45115249,
@@ -30,7 +28,6 @@
    "workspace": "qwida-app",
    "client": "claude",
    "model": "claude-opus-5-5",
-   "provider": "anthropic",
    "input": 710,
    "output": 324962,
    "cacheRead": 53926616,
@@ -42,7 +39,6 @@
    "workspace": "qwida",
    "client": "antigravity-cli",
    "model": "gemini-3.8-flash-n",
-   "provider": "google",
    "input": 13932540,
    "output": 284637,
    "cacheRead": 176839253,
@@ -54,19 +50,17 @@
    "workspace": "qwida-warroom",
    "client": "antigravity-cli",
    "model": "gemini-3.8-flash-n",
-   "provider": "google",
-   "input": 6338668,
-   "output": 157656,
-   "cacheRead": 68804518,
+   "input": 7049808,
+   "output": 167128,
+   "cacheRead": 73066332,
    "cacheWrite": 0,
-   "messages": 620,
-   "cost": 11.2
+   "messages": 642,
+   "cost": 12.12
   },
   {
    "workspace": "qwida-app",
    "client": "claude",
    "model": "claude-sonnet-5-5",
-   "provider": "anthropic",
    "input": 316,
    "output": 98882,
    "cacheRead": 17453919,
@@ -75,22 +69,9 @@
    "cost": 6.06
   },
   {
-   "workspace": "cais-tickets",
-   "client": "opencode",
-   "model": "glm-5.3-flash-abliterated",
-   "provider": "explabs",
-   "input": 4872238,
-   "output": 85885,
-   "cacheRead": 96076800,
-   "cacheWrite": 0,
-   "messages": 312,
-   "cost": 3.68
-  },
-  {
    "workspace": "qwida-warroom",
    "client": "claude",
    "model": "claude-sonnet-5-5",
-   "provider": "anthropic",
    "input": 150,
    "output": 96396,
    "cacheRead": 7894630,
@@ -99,22 +80,9 @@
    "cost": 3.45
   },
   {
-   "workspace": "cais-tickets",
-   "client": "claude",
-   "model": "claude-opus-5-5",
-   "provider": "anthropic",
-   "input": 44,
-   "output": 7985,
-   "cacheRead": 1743794,
-   "cacheWrite": 66979,
-   "messages": 22,
-   "cost": 1.04
-  },
-  {
    "workspace": "qwida-warroom",
    "client": "claude",
    "model": "claude-opus-5-5",
-   "provider": "anthropic",
    "input": 16,
    "output": 3596,
    "cacheRead": 502788,
@@ -126,7 +94,6 @@
    "workspace": "qwida",
    "client": "antigravity-cli",
    "model": "gemini-3.8-flash-tiered",
-   "provider": "google",
    "input": 119565,
    "output": 4562,
    "cacheRead": 32665,
@@ -135,46 +102,20 @@
    "cost": 0.12
   },
   {
-   "workspace": "cais-tickets",
-   "client": "opencode",
-   "model": "glm-5.1",
-   "provider": "zai_coding_plan",
-   "input": 0,
-   "output": 0,
-   "cacheRead": 0,
-   "cacheWrite": 0,
-   "messages": 2,
-   "cost": 0.0
-  },
-  {
    "workspace": "qwida-warroom",
    "client": "opencode",
-   "model": "glm-5.1",
-   "provider": "zai_coding_plan",
-   "input": 0,
-   "output": 0,
-   "cacheRead": 0,
-   "cacheWrite": 0,
-   "messages": 2,
-   "cost": 0.0
-  },
-  {
-   "workspace": "cais-tickets",
-   "client": "opencode",
    "model": "space-bunny-free",
-   "provider": "opencode",
-   "input": 1025427,
-   "output": 57215,
-   "cacheRead": 37545019,
+   "input": 3779953,
+   "output": 269365,
+   "cacheRead": 106374614,
    "cacheWrite": 0,
-   "messages": 170,
+   "messages": 911,
    "cost": 0.0
   },
   {
    "workspace": "qwida-app",
    "client": "opencode",
    "model": "space-bunny-free",
-   "provider": "opencode",
    "input": 1472623,
    "output": 166219,
    "cacheRead": 52666256,
@@ -183,22 +124,9 @@
    "cost": 0.0
   },
   {
-   "workspace": "workspace/qwida",
-   "client": "opencode",
-   "model": "space-bunny-free",
-   "provider": "opencode",
-   "input": 1096838,
-   "output": 95001,
-   "cacheRead": 13665360,
-   "cacheWrite": 0,
-   "messages": 146,
-   "cost": 0.0
-  },
-  {
    "workspace": "qwida-app",
    "client": "opencode",
    "model": "muse-spark-1.3-contributor-free",
-   "provider": "opencode",
    "input": 121987,
    "output": 24619,
    "cacheRead": 7133234,
@@ -209,13 +137,23 @@
   {
    "workspace": "qwida-warroom",
    "client": "opencode",
-   "model": "space-bunny-free",
-   "provider": "opencode",
-   "input": 3779953,
-   "output": 269365,
-   "cacheRead": 106374614,
+   "model": "glm-5.1",
+   "input": 0,
+   "output": 0,
+   "cacheRead": 0,
    "cacheWrite": 0,
-   "messages": 911,
+   "messages": 2,
+   "cost": 0.0
+  },
+  {
+   "workspace": "workspace/qwida",
+   "client": "opencode",
+   "model": "space-bunny-free",
+   "input": 1096838,
+   "output": 95001,
+   "cacheRead": 13665360,
+   "cacheWrite": 0,
+   "messages": 146,
    "cost": 0.0
   }
  ],
@@ -715,12 +653,13 @@
   },
   {
    "hour": "2026-10-09 23:00",
-   "tokens": 11612579,
-   "output": 44061,
-   "messages": 53,
-   "cost": 4.97,
+   "tokens": 24397091,
+   "output": 77673,
+   "messages": 102,
+   "cost": 8.24,
    "models": [
-    "claude-opus-5-5"
+    "claude-opus-5-5",
+    "gemini-3.8-flash-n"
    ]
   }
  ],
@@ -748,26 +687,15 @@
    "cost": 17.8
   },
   {
-   "session": "ses_eed7",
-   "client": "opencode",
-   "model": "glm-5.3-flash-abliterated",
-   "input": 4872238,
-   "output": 85885,
-   "cacheRead": 96076800,
-   "cacheWrite": 0,
-   "messages": 312,
-   "cost": 3.68
-  },
-  {
    "session": "de73eab6",
    "client": "antigravity-cli",
    "model": "gemini-3.8-flash-n",
-   "input": 4332760,
-   "output": 113773,
-   "cacheRead": 57706182,
+   "input": 5043900,
+   "output": 123245,
+   "cacheRead": 61967996,
    "cacheWrite": 0,
-   "messages": 476,
-   "cost": 8.58
+   "messages": 498,
+   "cost": 9.5
   },
   {
    "session": "84366053",
@@ -781,18 +709,7 @@
    "cost": 7.8
   },
   {
-   "session": "ses_eeb5",
-   "client": "opencode",
-   "model": "space-bunny-free",
-   "input": 1025427,
-   "output": 57215,
-   "cacheRead": 37545019,
-   "cacheWrite": 0,
-   "messages": 170,
-   "cost": 0.0
-  },
-  {
-   "session": "ses_ee03",
+   "session": "ee036577",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 1161451,
@@ -814,7 +731,7 @@
    "cost": 26.7
   },
   {
-   "session": "ses_ede6",
+   "session": "ede63cea",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 1140572,
@@ -825,7 +742,7 @@
    "cost": 0.0
   },
   {
-   "session": "ses_edff",
+   "session": "edff2d88",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 141322,
@@ -834,6 +751,17 @@
    "cacheWrite": 0,
    "messages": 180,
    "cost": 0.0
+  },
+  {
+   "session": "ecb7c9e1",
+   "client": "claude",
+   "model": "claude-opus-5-5",
+   "input": 274,
+   "output": 97498,
+   "cacheRead": 26377683,
+   "cacheWrite": 400737,
+   "messages": 137,
+   "cost": 10.43
   },
   {
    "session": "db16183e",
@@ -847,17 +775,6 @@
    "cost": 12.32
   },
   {
-   "session": "ecb7c9e1",
-   "client": "claude",
-   "model": "claude-opus-5-5",
-   "input": 218,
-   "output": 72666,
-   "cacheRead": 18376596,
-   "cacheWrite": 359174,
-   "messages": 109,
-   "cost": 8.0
-  },
-  {
    "session": "351778fd",
    "client": "claude",
    "model": "claude-opus-5-5",
@@ -869,7 +786,7 @@
    "cost": 8.12
   },
   {
-   "session": "ses_edd5",
+   "session": "edd50b41",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 372482,
@@ -924,7 +841,7 @@
    "cost": 2.1
   },
   {
-   "session": "ses_ede3",
+   "session": "ede3de7a",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 204611,
@@ -935,7 +852,7 @@
    "cost": 0.0
   },
   {
-   "session": "ses_ee03",
+   "session": "ee035008",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 556089,
@@ -946,7 +863,7 @@
    "cost": 0.0
   },
   {
-   "session": "ses_edf8",
+   "session": "edf8df79",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 292944,
@@ -957,7 +874,7 @@
    "cost": 0.0
   },
   {
-   "session": "ses_ee08",
+   "session": "ee08ec6f",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 599661,
@@ -968,7 +885,7 @@
    "cost": 0.0
   },
   {
-   "session": "ses_ee03",
+   "session": "ee0353b9",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 227712,
@@ -979,7 +896,7 @@
    "cost": 0.0
   },
   {
-   "session": "ses_ede3",
+   "session": "ede35a7b",
    "client": "opencode",
    "model": "muse-spark-1.3-contributor-free",
    "input": 121987,
@@ -1012,7 +929,7 @@
    "cost": 2.99
   },
   {
-   "session": "ses_ee08",
+   "session": "ee08e725",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 497177,
@@ -1034,7 +951,7 @@
    "cost": 2.87
   },
   {
-   "session": "ses_edfe",
+   "session": "edfecfaa",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 446593,
@@ -1067,7 +984,7 @@
    "cost": 1.01
   },
   {
-   "session": "ses_ede5",
+   "session": "ede573a5",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 248068,
@@ -1078,7 +995,7 @@
    "cost": 0.0
   },
   {
-   "session": "ses_edf8",
+   "session": "edf8a4ab",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 85589,
@@ -1133,18 +1050,7 @@
    "cost": 0.52
   },
   {
-   "session": "8549660f",
-   "client": "claude",
-   "model": "claude-opus-5-5",
-   "input": 44,
-   "output": 7985,
-   "cacheRead": 1743794,
-   "cacheWrite": 66979,
-   "messages": 22,
-   "cost": 1.04
-  },
-  {
-   "session": "ses_edf7",
+   "session": "edf7f9e4",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 151239,
@@ -1177,7 +1083,7 @@
    "cost": 0.51
   },
   {
-   "session": "ses_edf8",
+   "session": "edf82ce2",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 117036,
@@ -1188,7 +1094,7 @@
    "cost": 0.0
   },
   {
-   "session": "ses_ede6",
+   "session": "ede6350a",
    "client": "opencode",
    "model": "space-bunny-free",
    "input": 106868,
@@ -1210,17 +1116,6 @@
    "cost": 0.63
   },
   {
-   "session": "56727155",
-   "client": "claude",
-   "model": "claude-opus-5-5",
-   "input": 8,
-   "output": 1562,
-   "cacheRead": 219658,
-   "cacheWrite": 45964,
-   "messages": 4,
-   "cost": 0.44
-  },
-  {
    "session": "04d93fc7",
    "client": "antigravity-cli",
    "model": "gemini-3.8-flash-tiered",
@@ -1232,29 +1127,7 @@
    "cost": 0.12
   },
   {
-   "session": "ses_ee35",
-   "client": "opencode",
-   "model": "glm-5.1",
-   "input": 0,
-   "output": 0,
-   "cacheRead": 0,
-   "cacheWrite": 0,
-   "messages": 1,
-   "cost": 0.0
-  },
-  {
-   "session": "ses_ee0e",
-   "client": "opencode",
-   "model": "glm-5.1",
-   "input": 0,
-   "output": 0,
-   "cacheRead": 0,
-   "cacheWrite": 0,
-   "messages": 1,
-   "cost": 0.0
-  },
-  {
-   "session": "ses_ede5",
+   "session": "ede585c2",
    "client": "opencode",
    "model": "glm-5.1",
    "input": 0,
@@ -1264,5 +1137,6 @@
    "messages": 2,
    "cost": 0.0
   }
- ]
+ ],
+ "timelapses": []
 }
