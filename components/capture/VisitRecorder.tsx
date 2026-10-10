@@ -16,6 +16,15 @@ type Phase =
   | { name: "done"; result: VisitResponse }
   | { name: "error"; message: string };
 
+/** Role played synthetic visits (actors, fictional doctors) in public/demo. The first is the main demo. */
+const DEMO_CLIPS = [
+  { file: "visita-1.mp3", label: "Visita completa de Doña Carmen: losartán, omeprazol, laboratorio" },
+  { file: "visita-cardiologia.mp3", label: "Doña Carmen: losartán y referido a cardiología" },
+  { file: "visita-etiqueta.mp3", label: "Doña Carmen: la etiqueta de la farmacia manda" },
+  { file: "visita-diabetes.mp3", label: "Otro paciente, Don José: metformina y cita en tres semanas" },
+  { file: "visita-oftalmologia.mp3", label: "Otro paciente, Don Ángel: gotas y referido a oftalmología" },
+];
+
 /** Formats Safari and Chrome can both record, best first. */
 const MIME_CANDIDATES = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus"];
 
@@ -45,6 +54,9 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
   const [recordable] = useState(canRecord);
 
   const recorderRef = useRef<MediaRecorder | null>(null);
+  const playerRef = useRef<HTMLAudioElement | null>(null);
+  const [clip, setClip] = useState(0);
+  const [playing, setPlaying] = useState<string | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -62,6 +74,8 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
   }
 
   useEffect(() => cleanup, []);
+  // Leaving the screen stops a demo clip that is still playing.
+  useEffect(() => () => playerRef.current?.pause(), []);
 
   async function upload(blob: Blob, filename: string) {
     setPhase({ name: "processing" });
@@ -138,18 +152,35 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
     if (file) upload(file, file.name);
   }
 
-  /** Plays the role-played synthetic visit through the real pipeline (actors, fictional doctor). */
+  function stopClip() {
+    playerRef.current?.pause();
+    playerRef.current = null;
+    setPlaying(null);
+  }
+
+  /**
+   * Plays the chosen role played visit out loud while the same file goes through the real
+   * pipeline, so the room hears the doctor while Qwida reads it.
+   */
   async function sendDemoClip() {
+    const { file, label } = DEMO_CLIPS[clip];
+    stopClip();
+    const player = new Audio(`/demo/${file}`);
+    player.onended = () => setPlaying(null);
+    playerRef.current = player;
+    setPlaying(label);
+    player.play().catch(() => setPlaying(null));
     try {
-      const res = await fetch("/demo/visita-1.mp3");
+      const res = await fetch(`/demo/${file}`);
       if (!res.ok) throw new Error();
-      upload(await res.blob(), "visita-1.mp3");
+      upload(await res.blob(), file);
     } catch {
       setPhase({ name: "error", message: "No encontramos la grabación de demostración." });
     }
   }
 
   function restart() {
+    stopClip();
     setLevel(0);
     setSeconds(0);
     setPhase({ name: "ready" });
@@ -208,13 +239,30 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
             <p>Este teléfono no puede grabar aquí. Suba un archivo de audio.</p>
           )}
           {uploadInput}
-          <button
-            type="button"
-            onClick={sendDemoClip}
-            className="text-left text-xl text-ink-soft underline underline-offset-4"
-          >
-            Usar la grabación de demostración (actores, datos sintéticos)
-          </button>
+          <div className="flex flex-col gap-2 rounded-2xl border-2 border-line-strong p-4">
+            <label htmlFor="demo-clip" className="text-xl font-bold">
+              Grabaciones de demostración (actores, datos sintéticos)
+            </label>
+            <select
+              id="demo-clip"
+              value={clip}
+              onChange={(e) => setClip(Number(e.target.value))}
+              className="min-h-14 rounded-xl border-2 border-ink bg-surface px-3 text-lg"
+            >
+              {DEMO_CLIPS.map((c, i) => (
+                <option key={c.file} value={i}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              onClick={sendDemoClip}
+              className="text-left text-xl font-bold text-ink underline underline-offset-4"
+            >
+              Usar la grabación de demostración: escuchar y analizar
+            </button>
+          </div>
         </>
       )}
 
@@ -248,6 +296,15 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
           </BigButton>
           {uploadInput}
         </>
+      )}
+
+      {playing && (
+        <div role="status" className="flex items-center gap-3 rounded-2xl bg-sand px-4 py-3 text-lg">
+          <span className="mr-auto">Sonando: {playing}</span>
+          <button type="button" onClick={stopClip} className="font-bold underline">
+            Detener
+          </button>
+        </div>
       )}
 
       {phase.name === "done" && <VisitResult result={phase.result} onAgain={restart} />}
