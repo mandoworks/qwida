@@ -1,4 +1,5 @@
 import { HOUSEHOLD_ID } from "@/lib/seed";
+import { notifyCaregiver } from "@/lib/push/send";
 import { getStore } from "@/lib/store";
 import { processVisit } from "@/lib/visit/pipeline";
 
@@ -46,6 +47,7 @@ export async function POST(request: Request) {
   try {
     const store = await getStore();
     const result = await processVisit(store, { householdId, audio, transcript: text });
+    await notifyCaregiver(householdId, result.events);
     return Response.json(result);
   } catch (err) {
     console.error("visit pipeline failed", err);

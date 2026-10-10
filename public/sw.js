@@ -15,6 +15,43 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+// Caregiver alerts. The payload is { tag, title, body, url } from lib/push/send.
+// The tag replaces a previous alert about the same thing instead of stacking.
+self.addEventListener("push", (event) => {
+  if (!event.data) return;
+  let payload;
+  try {
+    payload = event.data.json();
+  } catch {
+    return;
+  }
+  event.waitUntil(
+    self.registration.showNotification(payload.title ?? "Quida", {
+      body: payload.body ?? "",
+      tag: payload.tag,
+      renotify: true,
+      icon: "/icons/icon-192.png",
+      badge: "/icons/icon-192.png",
+      lang: "es",
+      data: { url: payload.url ?? "/familia/revisar" },
+      vibrate: [40, 40, 40],
+    }),
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = event.notification.data?.url ?? "/familia/revisar";
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((windows) => {
+      for (const client of windows) {
+        if (client.url.includes(url) && "focus" in client) return client.focus();
+      }
+      return self.clients.openWindow(url);
+    }),
+  );
+});
+
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
