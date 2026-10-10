@@ -34,6 +34,11 @@ code{background:var(--chip);padding:1px 5px;border-radius:4px;font-size:13px;wor
 .note{border-left:3px solid var(--warn);padding-left:12px;color:var(--muted)}
 video{width:100%;max-width:320px;border-radius:12px;border:1px solid var(--line)}
 .vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.vids figure{margin:0}.vids video{max-width:100%;display:block}
+figcaption{font-size:13px;color:var(--muted);margin-top:4px}
+.sub{font-size:13px;font-weight:400;color:var(--muted);margin-left:8px}
+.tiles.two{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.tile .k b{color:var(--ink)}
 a{color:var(--bar)}
 </style>
 </head>
@@ -41,7 +46,12 @@ a{color:var(--bar)}
 <main>
 <p><a href="/">← Qwida</a></p>
 <h1>How Qwida was built: every AI token, every hand-drawn line</h1>
-<p class="lede">Coding agents wrote most of Qwida's code under human review. Instead of describing that in words, this page lists every model, every session and every hour, straight from the agents' own logs, so anyone can audit it. Every image in the app was drawn by hand; the timelapses are at the bottom.</p>
+<p class="lede">Coding agents wrote most of Qwida's code under human review. Instead of describing that in words, this page lists every model, every session and every hour, straight from the agents' own logs, so anyone can audit it. Every image in the app was drawn by hand; the timelapses are right below.</p>
+
+<h2 id="hand">Hecho a mano <span class="sub">Made by hand</span></h2>
+<div class="tiles two" id="handTiles"></div>
+<div class="vids" id="vids"></div>
+<p class="lede">Arte de Yari, dibujado a mano en Procreate. Presentación de Heather, hecha a mano en Canva.</p>
 
 <div class="tiles" id="tiles"></div>
 
@@ -68,9 +78,6 @@ a{color:var(--bar)}
 <p><strong>Reproduce:</strong> <code>tokscale models --json --group-by workspace,model --merge-worktrees --since 2026-10-08 --until 2026-10-10</code></p>
 </div>
 
-<h2>Hand-drawn by Yari</h2>
-<p class="lede">The logo and every icon in the app were drawn by Yari in Procreate, not generated.</p>
-<div class="vids" id="vids"><p class="lede" id="noVids">Timelapses are being exported and will appear here.</p></div>
 </main>
 <div id="tip" role="tooltip"></div>
 <script>
@@ -114,7 +121,13 @@ fetch("/ledger/data.json").then(r=>r.json()).then(d=>{
   table("rows",[["Repository",r=>r.workspace],["Tool",r=>r.client],["Model",r=>r.model],["Input",r=>r.input.toLocaleString()],["Output",r=>r.output.toLocaleString()],["Cache read",r=>r.cacheRead.toLocaleString()],["Cache write",r=>r.cacheWrite.toLocaleString()],["Messages",r=>r.messages.toLocaleString()],["List price",r=>usd(r.cost)]],[...R].sort((a,b)=>tot(b)-tot(a)));
   table("sessions",[["Session",r=>"<code>"+r.session+"</code>"],["Tool",r=>r.client],["Model",r=>r.model],["Input",r=>r.input.toLocaleString()],["Output",r=>r.output.toLocaleString()],["Cache read",r=>r.cacheRead.toLocaleString()],["Messages",r=>r.messages.toLocaleString()],["List price",r=>usd(r.cost)]],d.sessions);
 
-  const v=d.timelapses||[];if(v.length){document.getElementById("noVids").remove();document.getElementById("vids").innerHTML=v.map(t=>`<figure><video src="${t.src}" controls muted playsinline preload="metadata"></video><figcaption>${t.title}</figcaption></figure>`).join("")}
+  const A=d.art,ah=d.hours.filter(h=>h.tokens>0||h.messages>0).length;
+  if(A){const hrs=(A.minutes_total/60).toFixed(1);
+    document.getElementById("handTiles").innerHTML=
+      `<div class="tile"><div class="v">${hrs} h · ${A.strokes_total.toLocaleString()}</div><div class="k">Human time and strokes: <b>${A.artist}</b>, ${A.pieces} pieces in ${A.tool}, tracked by the app (tiempo humano, trazos)</div></div>`+
+      `<div class="tile"><div class="v">${fmt(all.t)} · ${ah} h</div><div class="k">AI tokens processed and hours with agent activity, from the logs below (tiempo de agentes)</div></div>`}
+  const v=d.timelapses||[];
+  document.getElementById("vids").innerHTML=v.map(t=>`<figure><video src="${t.file}" controls muted loop playsinline preload="none"></video><figcaption>${t.title}${t.minutes!=null?" · "+t.minutes+" min":""}${t.strokes!=null?" · "+t.strokes+" trazos":""}</figcaption></figure>`).join("");
 }).catch(()=>{document.getElementById("tiles").textContent="Could not load data.json."});
 </script>
 </body>
