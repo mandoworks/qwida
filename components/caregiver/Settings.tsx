@@ -323,7 +323,10 @@ export function Settings() {
       </fieldset>
 
       <div className="flex flex-col items-start gap-4">
-        <ResetDemoButton />
+        <div className="flex flex-wrap gap-3">
+          <ResetDemoButton />
+          <ResetDemoButton mode="full" />
+        </div>
         <p className="text-c-meta text-ink-mute">
           {t("settings.credit")} · {t("settings.credit.font")} · {t("settings.credit.model")}
         </p>

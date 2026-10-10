@@ -160,7 +160,7 @@ export async function processVisit(store: EventStore, input: VisitInput): Promis
   return { simulated, transcript, fence, extraction, events };
 }
 
-async function saveVisit(
+export async function saveVisit(
   store: EventStore,
   householdId: string,
   v: { transcript: string; fence: FenceResult; extraction: VisitExtraction; simulated: boolean; consent: VisitConsent | null },
