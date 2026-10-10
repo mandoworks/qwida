@@ -67,6 +67,10 @@ describe("narrowToQuery", () => {
     expect(narrowToQuery(rows, { municipio: "CAGUAS" }).map((r) => r.name)).toEqual(["JORGE E RUIZ DIAZ"]);
   });
 
+  it("matches names even when the doctor has a middle initial or multiple surnames", () => {
+    expect(narrowToQuery(rows, { raw: "Jorge Ruiz" }).map((r) => r.name)).toEqual(["JORGE E RUIZ DIAZ"]);
+  });
+
   it("returns an empty list when nothing matches, rather than the full directory", () => {
     expect(narrowToQuery(rows, { raw: "Nobody Here" })).toEqual([]);
   });

@@ -92,9 +92,8 @@ export function narrowToQuery<T extends { name: string; specialty: string; munic
   rows: readonly T[],
   query: { specialty?: string | null; municipio?: string | null; raw?: string | null; nombre?: string | null; apellidos?: string | null },
 ): T[] {
-  const terms = [query.raw, query.nombre, query.apellidos]
-    .map((v) => normalize(v ?? ""))
-    .filter(Boolean);
+  const allText = [query.raw, query.nombre, query.apellidos].filter(Boolean).join(" ");
+  const terms = Array.from(new Set(allText.split(/\s+/).map((v) => normalize(v)).filter(Boolean)));
   const specialty = normalize(query.specialty ?? "");
   const municipio = normalize(query.municipio ?? "");
 
