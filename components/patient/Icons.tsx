@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 /**
- * Simple line icons. Each is a named slot: Heather and Yari's drawings replace
+ * Simple line icons. Each is a named slot: Yari's drawings replace
  * the paths here without touching any screen.
  */
 function Svg({ children, size = 48 }: { children: ReactNode; size?: number }) {

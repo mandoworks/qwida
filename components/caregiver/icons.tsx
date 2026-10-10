@@ -174,7 +174,7 @@ export function Pill({ size = 24, className = "" }: IconProps) {
 }
 
 /**
- * Fallback for `Art slot=avatar-carmen` (3.2) until Heather's drawing lands.
+ * Fallback for `Art slot=avatar-carmen` (3.2) until Yari's drawing lands.
  * Line art, no fill, ink coloured by `currentColor`.
  */
 export function AvatarCarmen({ size = 72, className = "" }: IconProps) {
