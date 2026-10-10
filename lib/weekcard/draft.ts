@@ -1,4 +1,5 @@
-import { gateway, generateText, Output } from "ai";
+import { generateText, Output } from "ai";
+import { firstThatWorks, textModels } from "@/lib/ai/providers";
 import { z } from "zod";
 import type { QuidaEvent } from "@/lib/store/types";
 import { hasAiKey } from "@/lib/visit/pipeline";
@@ -45,12 +46,15 @@ export async function draftWeekCard(events: QuidaEvent[], today: string): Promis
 
   const facts = confirmedFacts(events, today);
   try {
-    const { output } = await generateText({
-      model: gateway(DRAFT_MODEL),
-      system: SYSTEM,
-      prompt: `Fecha de hoy: ${today}\n\nDatos confirmados:\n${JSON.stringify(facts, null, 2)}`,
-      output: Output.object({ schema: ModelCard }),
-    });
+    const { value } = await firstThatWorks("week card draft", textModels(DRAFT_MODEL), (model) =>
+      generateText({
+        model,
+        system: SYSTEM,
+        prompt: `Fecha de hoy: ${today}\n\nDatos confirmados:\n${JSON.stringify(facts, null, 2)}`,
+        output: Output.object({ schema: ModelCard }),
+      }),
+    );
+    const { output } = value;
     const items: CardItem[] = output.items.map((i) => ({
       day: i.day,
       time: i.time ?? undefined,

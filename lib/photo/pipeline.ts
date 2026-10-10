@@ -1,4 +1,5 @@
-import { gateway, generateText, Output } from "ai";
+import { generateText, Output } from "ai";
+import { firstThatWorks, textModels } from "@/lib/ai/providers";
 import { checkFence } from "@/lib/fence";
 import type { EventStore, NewEvent, QuidaEvent } from "@/lib/store/types";
 import { hasAiKey } from "@/lib/visit/pipeline";
@@ -22,21 +23,23 @@ Reglas:
 - No des consejos médicos ni recomendaciones. Solo lee.`;
 
 export async function extractPhoto(image: Uint8Array, mediaType: string, hint: string | null): Promise<PhotoExtraction> {
-  const { output } = await generateText({
-    model: gateway(PHOTO_MODEL),
-    system: PHOTO_SYSTEM,
-    messages: [
-      {
-        role: "user",
-        content: [
-          { type: "text", text: hint ? `La persona dice que la foto es: ${hint}.` : "Lea esta foto." },
-          { type: "file", mediaType, data: image },
-        ],
-      },
-    ],
-    output: Output.object({ schema: PhotoExtraction }),
-  });
-  return output;
+  const { value } = await firstThatWorks("photo extraction", textModels(PHOTO_MODEL), (model) =>
+    generateText({
+      model,
+      system: PHOTO_SYSTEM,
+      messages: [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: hint ? `La persona dice que la foto es: ${hint}.` : "Lea esta foto." },
+            { type: "file", mediaType, data: image },
+          ],
+        },
+      ],
+      output: Output.object({ schema: PhotoExtraction }),
+    }),
+  );
+  return value.output;
 }
 
 /** Every value and every piece of text read, for the Fence. */

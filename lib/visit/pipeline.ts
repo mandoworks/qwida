@@ -1,4 +1,5 @@
-import { gateway, generateText, Output, transcribe } from "ai";
+import { generateText, Output, transcribe } from "ai";
+import { firstThatWorks, hasOpenAIKey, textModels, transcriptionModels } from "@/lib/ai/providers";
 import { checkFence, type FenceResult } from "@/lib/fence";
 import { fenceEvent } from "@/lib/fence/event";
 import type { EventStore, NewEvent, QuidaEvent } from "@/lib/store/types";
@@ -26,26 +27,30 @@ Reglas:
 
 export function hasAiKey(): boolean {
   // On Vercel the AI Gateway authenticates through OIDC per request, so no env var is visible here.
-  return Boolean(process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN || process.env.VERCEL);
+  return Boolean(process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN || process.env.VERCEL) || hasOpenAIKey();
 }
 
 export async function transcribeVisit(audio: Uint8Array): Promise<string> {
-  const result = await transcribe({
-    model: gateway.transcription(TRANSCRIBE_MODEL),
-    audio,
-    providerOptions: { openai: { language: "es", prompt: TRANSCRIBE_PROMPT } },
-  });
-  return result.text;
+  const { value } = await firstThatWorks("visit transcription", transcriptionModels(TRANSCRIBE_MODEL), (model) =>
+    transcribe({
+      model,
+      audio,
+      providerOptions: { openai: { language: "es", prompt: TRANSCRIBE_PROMPT } },
+    }),
+  );
+  return value.text;
 }
 
 export async function extractVisit(transcript: string, today: string): Promise<VisitExtraction> {
-  const { output } = await generateText({
-    model: gateway(EXTRACT_MODEL),
-    system: EXTRACT_SYSTEM,
-    prompt: `Fecha de hoy: ${today}\n\nTranscripción:\n${transcript}`,
-    output: Output.object({ schema: VisitExtraction }),
-  });
-  return enforceUncertainty(output);
+  const { value } = await firstThatWorks("visit extraction", textModels(EXTRACT_MODEL), (model) =>
+    generateText({
+      model,
+      system: EXTRACT_SYSTEM,
+      prompt: `Fecha de hoy: ${today}\n\nTranscripción:\n${transcript}`,
+      output: Output.object({ schema: VisitExtraction }),
+    }),
+  );
+  return enforceUncertainty(value.output);
 }
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;

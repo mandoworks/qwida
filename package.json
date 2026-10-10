@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ai-sdk/gateway": "^4.0.110",
+    "@ai-sdk/openai": "^4.0.91",
     "@upstash/redis": "1.39.0",
     "ai": "^7.0.136",
     "next": "16.4.0",

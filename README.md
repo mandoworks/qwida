@@ -35,6 +35,7 @@ npm run e2e     # playwright, needs E2E_BASE_URL
 | `QUIDA_STORE` | `mock` | Shared state backend. `mock` keeps events in server memory. |
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | unset | Upstash Redis via the Vercel Marketplace, shared state across phones in production. |
 | `AI_GATEWAY_API_KEY` | unset | Vercel AI Gateway key, optional locally. Without it, AI routes return labeled `SIMULADO` fixtures. |
+| `OPENAI_API_KEY` | unset | Optional production fallback. Every AI call tries the AI Gateway first, then OpenAI direct with this key, then the `SIMULADO` fixture. `OPENAI_TEXT_MODEL` (default `gpt-4o`) and `OPENAI_TRANSCRIBE_MODEL` (default `gpt-4o-transcribe`) pick the OpenAI models. |
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER` | unset | Optional. The voice call reminder stays `SIMULADO` without them. |
 | `E2E_BASE_URL` | unset | Base URL for `npm run e2e`. |
 
