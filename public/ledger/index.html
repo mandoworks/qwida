@@ -57,7 +57,7 @@ a{color:var(--bar)}
 <div class="card"><table id="rows"></table></div>
 
 <h2>Every session</h2>
-<p class="lede">One row per agent session and model. Session ids are the first 8 characters of each agent session id. Raw data: <a href="data.json">data.json</a>.</p>
+<p class="lede">One row per agent session and model. Session ids are the first 8 characters of each agent session id. Raw data: <a href="/ledger/data.json">data.json</a>.</p>
 <div class="card"><table id="sessions"></table></div>
 
 <h2>What this does and does not cover</h2>
@@ -82,7 +82,7 @@ const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.set
 const tip=document.getElementById("tip");
 function hover(node,html){node.addEventListener("mousemove",e=>{tip.innerHTML=html;tip.style.opacity=1;const x=Math.min(e.clientX+12,innerWidth-tip.offsetWidth-8);tip.style.left=x+"px";tip.style.top=(e.clientY+12)+"px"});node.addEventListener("mouseleave",()=>tip.style.opacity=0)}
 function table(id,cols,rows){const t=document.getElementById(id);t.innerHTML="<thead><tr>"+cols.map(c=>"<th>"+c[0]+"</th>").join("")+"</tr></thead><tbody>"+rows.map(r=>"<tr>"+cols.map(c=>"<td>"+c[1](r)+"</td>").join("")+"</tr>").join("")+"</tbody>"}
-fetch("data.json").then(r=>r.json()).then(d=>{
+fetch("/ledger/data.json").then(r=>r.json()).then(d=>{
   const R=d.rows;
   const all=R.reduce((a,r)=>({t:a.t+tot(r),o:a.o+r.output,m:a.m+r.messages,c:a.c+r.cost}),{t:0,o:0,m:0,c:0});
   const models=[...new Set(R.map(r=>r.model))];
