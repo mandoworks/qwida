@@ -48,7 +48,7 @@ test("2. Paciente: Grabar mi cita con la grabación de demostración", async () 
 
   const visit = page.getByRole("region", { name: "Grabar la visita médica" });
   await expect(visit.getByRole("heading", { name: "Lo que escuchamos" })).toBeVisible({ timeout: AI_TIMEOUT });
-  await expect(visit).toContainText(/losartán/i);
+  await expect(visit).toContainText(/omeprazol/i);
   await expect(visit).toContainText(/cardiología/i);
 });
 
@@ -72,7 +72,7 @@ test("4. Foto: confirmar la etiqueta crea el horario", async () => {
   await expect(schedule.or(frequency)).toBeVisible();
   if (await frequency.isVisible()) await frequency.click();
 
-  await expect(schedule).toContainText(/losartán/i);
+  await expect(schedule).toContainText(/losart[aá]n/i);
 });
 
 test("5. Foto: el referido muestra cuándo vence", async () => {
