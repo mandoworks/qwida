@@ -86,14 +86,14 @@ export function VoiceNote() {
     setPhase("review");
   }
 
-  async function sendDemoClip() {
+  async function sendDemoClip(path = "/demo/nota-cita.mp3", name = "nota-cita.mp3", duration = 8) {
     try {
-      const res = await fetch("/demo/nota-cita.mp3");
+      const res = await fetch(path);
       if (!res.ok) throw new Error();
       const blob = await res.blob();
       setAudioBlob(blob);
-      setFilename("nota-cita.mp3");
-      setSeconds(8);
+      setFilename(name);
+      setSeconds(duration);
       setPhase("review");
     } catch {
       setPhase("failed");
@@ -144,8 +144,11 @@ export function VoiceNote() {
           <BigButton onClick={start} icon={<MicIcon />}>
             Presione aquí para hablar
           </BigButton>
-          <BigButton variant="secondary" onClick={sendDemoClip}>
+          <BigButton variant="secondary" onClick={() => sendDemoClip("/demo/nota-cita.mp3", "nota-cita.mp3", 8)}>
             Usar grabación de demostración
+          </BigButton>
+          <BigButton variant="secondary" onClick={() => sendDemoClip("/demo/nota-fence.mp3", "nota-fence.mp3", 6)}>
+            Demostración: ¿Dejar la pastilla?
           </BigButton>
         </>
       )}
