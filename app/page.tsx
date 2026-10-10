@@ -1,4 +1,5 @@
 import { ResetDemoButton } from "@/components/ResetDemoButton";
+import { WarmupButton } from "@/components/WarmupButton";
 import { Art } from "@/components/ui/Art";
 import { BigButton } from "@/components/ui/BigButton";
 import { FenceNotice } from "@/components/ui/FenceNotice";
@@ -29,6 +30,9 @@ export default function RoleChooser() {
         <div className="mt-auto flex flex-wrap justify-center gap-3">
           <ResetDemoButton />
           <ResetDemoButton mode="full" />
+        </div>
+        <div className="flex justify-center">
+          <WarmupButton />
         </div>
       </main>
     </>
