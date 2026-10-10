@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/cuidador", destination: "/familia", permanent: true },
       { source: "/cuidador/:path*", destination: "/familia/:path*", permanent: true },
+      // One page for how Qwida was built: tokens, hand art, people, tools.
+      { source: "/tools", destination: "/ledger", permanent: false },
+      { source: "/tools/", destination: "/ledger", permanent: false },
     ];
   },
   turbopack: {

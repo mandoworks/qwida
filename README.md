@@ -20,7 +20,7 @@ Doña Carmen Rivera (78, Adjuntas) and her daughter Marisol (Orlando). No real h
 3. Try it: Grabar mi Cita (demo clip or your own voice), Foto (a pharmacy label or a handwritten prescription),
    then Familia, Revisar, Confirmar, and send the week card to Mamá.
 4. How it was built: [`/ledger`](https://qwida.vercel.app/ledger) (every AI token, Yari's hand drawn art time,
-   every tool and API) and [`/tools`](https://qwida.vercel.app/tools).
+   every tool and API).
 
 ## Run it
 

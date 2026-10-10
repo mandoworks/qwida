@@ -59,6 +59,30 @@ a{color:var(--bar)}
 
 <div class="tiles" id="tiles"></div>
 
+<h2 id="people">Quiénes lo hicimos <span class="sub">Who made it</span></h2>
+<ul class="used" id="people-list"></ul>
+
+<h2 id="how">Cómo trabajamos <span class="sub">How we worked</span></h2>
+<p class="lede">Context first, then orchestration. Research and decisions were written down before code, and people decided what shipped.</p>
+<ul class="used">
+<li>A private war room repo with <code>HANDOFF.md</code>, decisions and research notes, read by every agent.</li>
+<li><strong>Herdr</strong>: terminal panes to run several coding agents side by side.</li>
+<li><strong>PioRelay</strong>: an agent to agent mailbox on the team's private network.</li>
+<li><strong>Hindsight</strong>: self hosted shared memory, so a decision made by one agent is recalled by the others.</li>
+<li><strong>grill-with-ui</strong>: decision interviews on a browser page, so Armando could choose fast.</li>
+<li>Simulated judge panels before the pitch, scored by a model that did not build the feature.</li>
+<li>Live link QA on every deploy, and an end to end test of the whole demo path.</li>
+</ul>
+<h3>Agents and their jobs</h3>
+<ul class="used">
+<li><strong>Claude Code</strong> (Opus 5.5, Fable 5.1, Sonnet 5.5): lead, architecture, code, reviews.</li>
+<li><strong>Antigravity with Gemini</strong>: research, pitch copy, integration and judge rounds.</li>
+<li><strong>OpenCode with free models</strong> (Space Bunny, Muse Spark): QA, docs, feature work.</li>
+<li><strong>Co-Co on GLM</strong>: red team verification.</li>
+<li><strong>Marley</strong> (agent): head of the UI lane, the Familia dashboard, live QA on every deploy.</li>
+<li><strong>Roman</strong> (agent): orchestration, voices and props.</li>
+</ul>
+
 <h2>Tokens by model</h2>
 <p class="lede">Tokens processed (input, output and prompt cache). Hover a bar for the breakdown. <span class="chip">free</span> marks free tier models.</p>
 <div class="card"><svg id="byModel" role="img" aria-label="Tokens processed by model"></svg></div>
@@ -143,6 +167,7 @@ fetch("/ledger/data.json").then(r=>r.json()).then(d=>{
   if(A){const hh=A.minutes_total/60,tps=Math.round(all.t/A.strokes_total);
     document.getElementById("cmp").innerHTML=`<p><b>Por mano:</b> Yari ${hh.toFixed(1)} h y ${A.strokes_total.toLocaleString()} trazos. Heather, unas 6 a 7 h (estimado de ella). <b>Con IA:</b> ${fmt(all.t)} tokens en ${d.sessions.length} sesiones de agentes, solo repositorios Qwida.</p><p class="lede">By hand: Yari ${hh.toFixed(1)} h, ${A.strokes_total.toLocaleString()} strokes; Heather about 6 to 7 h (her estimate). AI: ${fmt(all.t)} tokens, ${d.sessions.length} Qwida agent sessions. That is about ${tps.toLocaleString()} tokens for every hand stroke.</p>`}
   fetch("/tools/tools.json").then(r=>r.json()).then(t=>{const e=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    document.getElementById("people-list").innerHTML=(t.people||[]).map(p=>`<li><strong>${e(p.name)}</strong>: ${e(p.role)}</li>`).join("");
     document.getElementById("used").innerHTML=(t.everything||[]).map(g=>`<h3>${e(g.group)}</h3><ul class="used">${g.items.map(i=>`<li><strong>${i.url?`<a href="${e(i.url)}" rel="noopener">${e(i.name)}</a>`:e(i.name)}</strong>: ${e(i.does)}</li>`).join("")}</ul>`).join("")});
   const v=d.timelapses||[];
   document.getElementById("vids").innerHTML=v.map(t=>`<figure><video src="${t.file}" controls muted loop playsinline preload="none"></video><figcaption>${t.title}${t.minutes!=null?" · "+t.minutes+" min":""}${t.strokes!=null?" · "+t.strokes+" trazos":""}</figcaption></figure>`).join("");
