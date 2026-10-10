@@ -201,6 +201,42 @@ describe("groupByDay", () => {
   });
 });
 
+describe("timeline paper trail", () => {
+  it("shows who confirmed, when and from which device, from the last confirmation in the history", () => {
+    const [row] = timelineRows([
+      event({
+        kind: "rx_label",
+        status: "CONFIRMADO",
+        payload: {
+          history: [
+            { status: "POR_CONFIRMAR", at: "2026-10-09T13:00:00.000Z", by: null, name: null, device: null },
+            { status: "CONFIRMADO", at: "2026-10-09T13:41:00.000Z", by: "caregiver", name: "Marisol Rivera", device: "iPhone" },
+          ],
+        },
+      }),
+    ]);
+    expect(row.confirmed).toEqual({ by: "caregiver", name: "Marisol Rivera", device: "iPhone", at: "2026-10-09T13:41:00.000Z" });
+  });
+
+  it("falls back to the stamp on older events, and shows nothing without a person", () => {
+    const stamped = event({ kind: "appointment", status: "CONFIRMADO", payload: { confirmedBy: "patient", confirmedAt: "2026-10-09T12:00:00.000Z" } });
+    const seeded = event({ kind: "appointment", status: "CONFIRMADO" });
+    const draft = event({ kind: "appointment", payload: { confirmedBy: "caregiver", confirmedAt: "2026-10-09T12:00:00.000Z" } });
+    const rows = timelineRows([stamped, seeded, draft]);
+    expect(rows.find((r) => r.id === stamped.id)?.confirmed).toEqual({ by: "patient", name: null, device: null, at: "2026-10-09T12:00:00.000Z" });
+    expect(rows.find((r) => r.id === seeded.id)?.confirmed).toBeNull();
+    expect(rows.find((r) => r.id === draft.id)?.confirmed).toBeNull();
+  });
+
+  it("shows the recording consent on a visit only when both people said yes", () => {
+    const yes = event({ kind: "visit", payload: { consent: { patient: true, doctor: true, at: "2026-10-09T14:00:00.000Z", device: "Android" } } });
+    const none = event({ kind: "visit", payload: { consent: null } });
+    const rows = timelineRows([yes, none]);
+    expect(rows.find((r) => r.id === yes.id)?.consent).toEqual({ at: "2026-10-09T14:00:00.000Z", device: "Android" });
+    expect(rows.find((r) => r.id === none.id)?.consent).toBeNull();
+  });
+});
+
 describe("lowConfidence", () => {
   it("flags anything the model was unsure about", () => {
     expect(lowConfidence(event({ kind: "rx_label", confidence: 0.42 }))).toBe(true);

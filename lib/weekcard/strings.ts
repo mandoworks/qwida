@@ -245,6 +245,10 @@ export const STRINGS = {
     "timeline.source.visit": "visita grabada",
     "timeline.source.caregiver": "Marisol",
     "timeline.source.system": "Qwida",
+    "timeline.trail.confirmed": "Confirmado por {who} · {time}{device}",
+    "timeline.trail.role.patient": "paciente",
+    "timeline.trail.role.caregiver": "familia",
+    "timeline.trail.consent": "Consentimiento para grabar: paciente y médico · {time}{device}",
 
     "card.approve": "Aprobar",
     "card.approved": "Aprobada",
@@ -531,6 +535,10 @@ export const STRINGS = {
     "timeline.source.visit": "recorded visit",
     "timeline.source.caregiver": "Marisol",
     "timeline.source.system": "Qwida",
+    "timeline.trail.confirmed": "Confirmed by {who} · {time}{device}",
+    "timeline.trail.role.patient": "patient",
+    "timeline.trail.role.caregiver": "family",
+    "timeline.trail.consent": "Consent to record: patient and doctor · {time}{device}",
 
     "card.approve": "Approve",
     "card.approved": "Approved",

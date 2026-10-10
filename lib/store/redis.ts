@@ -1,5 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { HOUSEHOLD_ID } from "@/lib/seed";
+import { appendHistory, historyEntry } from "./history";
 import { EventStatus, NewEvent, type EventPatch, type EventStore, type QuidaEvent } from "./types";
 
 /** Synthetic demo data: nothing is kept longer than a week. */
@@ -97,7 +98,7 @@ export class RedisStore implements EventStore {
     const event: QuidaEvent = {
       id: crypto.randomUUID(),
       ...parsed,
-      payload: capImage(parsed.payload),
+      payload: capImage({ ...parsed.payload, history: [historyEntry(parsed.status, parsed.payload, ts)] }),
       createdAt: ts,
       updatedAt: ts,
     };
@@ -105,15 +106,23 @@ export class RedisStore implements EventStore {
     return event;
   }
 
-  async update(id: string, patch: EventPatch): Promise<QuidaEvent | null> {
+  async get(id: string): Promise<QuidaEvent | null> {
     const householdId = await this.redis.hget<string>(INDEX_KEY, id);
     if (!householdId) return null;
     const raw = await this.redis.hget<string>(keys(householdId).events, id);
-    if (!raw) return null;
-    const event = JSON.parse(raw) as QuidaEvent;
+    return raw ? (JSON.parse(raw) as QuidaEvent) : null;
+  }
+
+  async update(id: string, patch: EventPatch): Promise<QuidaEvent | null> {
+    const event = await this.get(id);
+    if (!event) return null;
+    const history = event.payload.history;
     if (patch.status) event.status = EventStatus.parse(patch.status);
     if (patch.payload) event.payload = capImage({ ...event.payload, ...patch.payload });
     event.updatedAt = new Date(this.now()).toISOString();
+    event.payload.history = patch.status
+      ? appendHistory(history, historyEntry(event.status, patch.payload, event.updatedAt))
+      : history;
     await this.save(event);
     return event;
   }

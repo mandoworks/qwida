@@ -172,6 +172,25 @@ export function Timeline() {
                           <p className="mt-1 text-c-meta text-ink-soft">
                             {t(`timeline.source.${row.source}` as StringKey)}
                           </p>
+                          {row.confirmed && (
+                            <p className="text-c-meta text-ink-soft">
+                              {t("timeline.trail.confirmed", {
+                                who: row.confirmed.name
+                                  ? `${row.confirmed.name} (${t(`timeline.trail.role.${row.confirmed.by}`)})`
+                                  : t(`timeline.trail.role.${row.confirmed.by}`),
+                                time: clockTime(row.confirmed.at, "es"),
+                                device: row.confirmed.device ? ` · ${row.confirmed.device}` : "",
+                              })}
+                            </p>
+                          )}
+                          {row.consent && (
+                            <p className="text-c-meta text-ink-soft">
+                              {t("timeline.trail.consent", {
+                                time: clockTime(row.consent.at, "es"),
+                                device: row.consent.device ? ` · ${row.consent.device}` : "",
+                              })}
+                            </p>
+                          )}
                         </div>
                       </li>
                     ))}

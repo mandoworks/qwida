@@ -38,6 +38,10 @@ export type TimelineRow = {
   search: string;
   /** Where it came from, for the small source line (4.12). */
   source: "photo" | "voice" | "visit" | "caregiver" | "system";
+  /** The paper trail line: the person who confirmed it, when, and from which device. */
+  confirmed: { by: "patient" | "caregiver"; name: string | null; device: string | null; at: string } | null;
+  /** On a recorded visit: both people consented, when, and from which device. */
+  consent: { at: string; device: string | null } | null;
 };
 
 const str = (v: unknown): string | null => (typeof v === "string" && v.trim() ? v.trim() : null);
@@ -148,6 +152,26 @@ function isoDatePR(iso: string): string {
 }
 
 /** Every event, newest first, with the text the specialty filter searches in. */
+const role = (v: unknown) => (v === "patient" || v === "caregiver" ? v : null);
+
+/** The last person confirmation in the history, or the stamp itself on events written before the history existed. */
+function confirmedOf(e: QuidaEvent): TimelineRow["confirmed"] {
+  if (e.status !== "CONFIRMADO") return null;
+  const history = Array.isArray(e.payload.history) ? (e.payload.history as Record<string, unknown>[]) : [];
+  const last = [...history].reverse().find((h) => h.status === "CONFIRMADO" && role(h.by));
+  const src = last ?? { by: e.payload.confirmedBy, name: e.payload.confirmedName, device: e.payload.confirmedDevice, at: e.payload.confirmedAt };
+  const by = role(src.by);
+  const at = str(src.at);
+  if (!by || !at) return null;
+  return { by, name: str(src.name), device: str(src.device), at };
+}
+
+function consentOf(e: QuidaEvent): TimelineRow["consent"] {
+  const c = e.kind === "visit" ? (e.payload.consent as Record<string, unknown> | null | undefined) : null;
+  const at = c && c.patient === true && c.doctor === true ? str(c.at) : null;
+  return at ? { at, device: str(c?.device) } : null;
+}
+
 export function timelineRows(events: QuidaEvent[]): TimelineRow[] {
   return events
     // The BORRADOR weekcard is the editor autosave, not care history.
@@ -156,7 +180,18 @@ export function timelineRows(events: QuidaEvent[]): TimelineRow[] {
       const facts = factsFor(e);
       const group = GROUP_OF[e.kind];
       const search = normalize([titleFor(e, facts), ...facts.map((f) => f.value)].join(" "));
-      return { id: e.id, group, status: e.status, at: e.createdAt, title: titleFor(e, facts), facts, search, source: sourceKey(e) };
+      return {
+        id: e.id,
+        group,
+        status: e.status,
+        at: e.createdAt,
+        title: titleFor(e, facts),
+        facts,
+        search,
+        source: sourceKey(e),
+        confirmed: confirmedOf(e),
+        consent: consentOf(e),
+      };
     })
     .sort((a, b) => b.at.localeCompare(a.at));
 }

@@ -30,7 +30,10 @@ describe("gateCreate", () => {
 
   it("accepts the caregiver's week card and stamps who and when", () => {
     const r = gateCreate({ kind: "weekcard", source: "caregiver", status: "CONFIRMADO", payload: { a: 1 } }, "caregiver", NOW);
-    expect(r).toEqual({ ok: true, payload: { a: 1, confirmedBy: "caregiver", confirmedAt: NOW.toISOString() } });
+    expect(r).toEqual({
+      ok: true,
+      payload: { a: 1, confirmedBy: "caregiver", confirmedAt: NOW.toISOString(), confirmedName: null, confirmedDevice: null },
+    });
   });
 
   it("refuses a week card the patient claims to approve", () => {
@@ -60,7 +63,20 @@ describe("gatePatch", () => {
 
   it("records who confirmed and when, over any client value", () => {
     const r = gatePatch({ status: "CONFIRMADO", payload: { confirmedBy: "model", x: 2 } }, "patient", NOW);
-    expect(r).toEqual({ ok: true, payload: { x: 2, confirmedBy: "patient", confirmedAt: NOW.toISOString() } });
+    expect(r).toEqual({
+      ok: true,
+      payload: { x: 2, confirmedBy: "patient", confirmedAt: NOW.toISOString(), confirmedName: null, confirmedDevice: null },
+    });
+  });
+
+  it("stamps the person's name and device, and drops any trail or name a client sends", () => {
+    const forged = { confirmedName: "Otra persona", confirmedDevice: "x", history: [], x: 2 };
+    const r = gatePatch({ status: "CONFIRMADO", payload: forged }, "caregiver", NOW, { name: "Marisol Rivera", device: "iPhone" });
+    expect(r).toEqual({
+      ok: true,
+      payload: { x: 2, confirmedBy: "caregiver", confirmedAt: NOW.toISOString(), confirmedName: "Marisol Rivera", confirmedDevice: "iPhone" },
+    });
+    expect(gatePatch({ payload: forged }, undefined, NOW)).toEqual({ ok: true, payload: { x: 2 } });
   });
 });
 
