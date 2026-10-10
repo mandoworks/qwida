@@ -103,7 +103,8 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
       tick();
 
       const mimeType = pickMime();
-      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      // Speech at 24 kbps keeps a 20 minute visit under the 4.4 MB upload cap; Safari's default AAC rate fills it in about 5.
+      const recorder = new MediaRecorder(stream, { audioBitsPerSecond: 24_000, ...(mimeType ? { mimeType } : {}) });
       const chunks: Blob[] = [];
       recorder.ondataavailable = (e) => e.data.size && chunks.push(e.data);
       recorder.onstop = () => {
