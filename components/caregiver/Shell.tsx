@@ -16,7 +16,7 @@ const SECTIONS: { href: string; key: StringKey; icon: "home" | "check" | "timeli
   { href: "/familia/linea-de-tiempo", key: "nav.tiempo", icon: "timeline" },
   { href: "/familia/tarjeta", key: "nav.tarjeta", icon: "card" },
   { href: "/familia/recordatorios", key: "nav.recordatorios", icon: "bell" },
-  { href: "/proveedores", key: "nav.especialistas", icon: "search" },
+  { href: "/familia/proveedores", key: "nav.especialistas", icon: "search" },
   { href: "/familia/ajustes", key: "nav.ajustes", icon: "settings" },
 ];
 
@@ -102,9 +102,7 @@ function ShellBody({ children }: { children: ReactNode }) {
                 const active =
                   section.href === "/familia"
                     ? pathname === section.href
-                    : section.href === "/proveedores"
-                      ? pathname.startsWith(section.href)
-                      : pathname.startsWith(section.href);
+                    : pathname.startsWith(section.href);
                 return (
                   <li key={section.href}>
                     <Link

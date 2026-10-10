@@ -20,6 +20,15 @@ import { useLang } from "./lang-context";
 import { Pending } from "./Pending";
 
 const SEEN_KEY = "quida.cuidador.seenAt";
+const MEDALS: { slot: string; key: StringKey }[] = [
+  { slot: "medal-lista-doctor", key: "logros.lista_doctor" },
+  { slot: "medal-foto-dia", key: "logros.foto_dia" },
+  { slot: "medal-en-familia", key: "logros.en_familia" },
+  { slot: "medal-recordatorio", key: "logros.recordatorio" },
+  { slot: "medal-acompanante", key: "logros.acompanante" },
+  { slot: "medal-primera-llamada", key: "logros.primera_llamada" },
+];
+
 
 const CHANGE_KEY: Record<string, StringKey> = {
   visit: "digest.change.visit",
@@ -158,11 +167,26 @@ export function FamilyDashboard() {
             <span className="text-c-body font-bold leading-tight">{t("nav.recordatorios")}</span>
             <span className="text-c-meta text-ink-soft">{t("nudges.lead")}</span>
           </Link>
-          <Link href="/proveedores" className="flex min-h-tap-c-lg flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4 text-ink shadow-card motion-quick hover:-translate-y-0.5">
+          <Link href="/familia/proveedores" className="flex min-h-tap-c-lg flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4 text-ink shadow-card motion-quick hover:-translate-y-0.5">
             <Search size={28} className="text-accent" />
             <span className="text-c-body font-bold leading-tight">{t("nav.especialistas")}</span>
             <span className="text-c-meta text-ink-soft">{t("dashboard.actions.searchSub")}</span>
           </Link>
+        </div>
+      </section>
+
+      {/* Logros */}
+      <section aria-label={t("dashboard.logros.title")} className="rounded-card border-2 border-line-strong bg-surface p-5 shadow-card">
+        <h3 className="mb-1 text-c-title font-bold">{t("dashboard.logros.title")}</h3>
+        <p className="mb-4 text-c-body text-ink-soft">{t("dashboard.logros.hint")}</p>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {MEDALS.map((medal) => (
+            <div key={medal.slot} className="flex flex-col items-center gap-2 rounded-well bg-sand p-4 opacity-70">
+              <Art slot={medal.slot} alt="" width={80} className="h-auto" />
+              <span className="text-center text-c-body font-bold leading-tight">{t(medal.key)}</span>
+              <span className="rounded-full bg-line px-3 py-1 text-c-meta font-bold text-ink-mute">{t("dashboard.logros.locked")}</span>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -178,6 +202,7 @@ export function FamilyDashboard() {
                 ? t("digest.next.cita", { name: appointment.name, when: dayLabel(appointment.when) })
                 : t("digest.next.citaUnnamed", { when: dayLabel(appointment.when) })}
             </p>
+
           )}
 
           {soonRefill && (
