@@ -1,0 +1,138 @@
+{
+  "timelapses": [],
+  "people": [
+    {
+      "name": "Yari",
+      "role": "Every image in the app, hand drawn in Procreate."
+    },
+    {
+      "name": "Heather",
+      "role": "The pitch deck, built by hand in Canva, with support art by Yari."
+    },
+    {
+      "name": "Armando",
+      "role": "Product, decisions, every push to main."
+    },
+    {
+      "name": "Gregor Rodriguez",
+      "role": "Team member"
+    }
+  ],
+  "services": [
+    {
+      "name": "Vercel",
+      "use": "Hosting"
+    },
+    {
+      "name": "Upstash Redis",
+      "use": "Shared state"
+    },
+    {
+      "name": "OpenAI",
+      "use": "gpt-4o-transcribe and gpt-4o, live in the app"
+    },
+    {
+      "name": "MedSeek PR API",
+      "use": "Provider directory"
+    }
+  ],
+  "stack": [
+    {
+      "group": "Framework",
+      "packages": [
+        {
+          "name": "next",
+          "version": "16.4.0"
+        },
+        {
+          "name": "react",
+          "version": "19.3.0"
+        },
+        {
+          "name": "react-dom",
+          "version": "19.3.0"
+        },
+        {
+          "name": "typescript",
+          "version": "5.9.3"
+        },
+        {
+          "name": "tailwindcss",
+          "version": "4.3.3"
+        },
+        {
+          "name": "@tailwindcss/turbopack",
+          "version": "4.3.3"
+        }
+      ]
+    },
+    {
+      "group": "AI",
+      "packages": [
+        {
+          "name": "ai",
+          "version": "7.0.136"
+        },
+        {
+          "name": "@ai-sdk/openai",
+          "version": "4.0.91"
+        },
+        {
+          "name": "@ai-sdk/gateway",
+          "version": "4.0.110"
+        }
+      ]
+    },
+    {
+      "group": "Data",
+      "packages": [
+        {
+          "name": "@upstash/redis",
+          "version": "1.39.0"
+        },
+        {
+          "name": "zod",
+          "version": "4.6.5"
+        }
+      ]
+    },
+    {
+      "group": "Testing",
+      "packages": [
+        {
+          "name": "vitest",
+          "version": "4.1.11"
+        },
+        {
+          "name": "@playwright/test",
+          "version": "1.64.0"
+        }
+      ]
+    },
+    {
+      "group": "Tooling",
+      "packages": [
+        {
+          "name": "eslint",
+          "version": "9.39.5"
+        },
+        {
+          "name": "eslint-config-next",
+          "version": "16.4.0"
+        },
+        {
+          "name": "@types/node",
+          "version": "20.19.43"
+        },
+        {
+          "name": "@types/react",
+          "version": "19.3.0"
+        },
+        {
+          "name": "@types/react-dom",
+          "version": "19.3.0"
+        }
+      ]
+    }
+  ]
+}
