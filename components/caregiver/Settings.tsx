@@ -9,6 +9,7 @@ import { useEvents } from "@/lib/client/useEvents";
 import { confirmedAppointments } from "@/lib/weekcard/digest";
 import { buildIcs, ICS_FILENAME } from "@/lib/weekcard/ics";
 import type { StringKey } from "@/lib/weekcard/strings";
+import { PushOptIn } from "./PushOptIn";
 import { Download, Globe } from "./icons";
 import { useLang } from "./lang-context";
 
@@ -186,6 +187,8 @@ export function Settings() {
           </p>
         )}
       </fieldset>
+
+      <PushOptIn />
 
       <fieldset className="flex flex-col gap-1 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
         <legend className="text-c-title font-bold">{t("settings.share")}</legend>

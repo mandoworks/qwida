@@ -1,4 +1,5 @@
 import { processNote } from "@/lib/note";
+import { notifyCaregiver } from "@/lib/push/send";
 import { HOUSEHOLD_ID } from "@/lib/seed";
 import { getStore } from "@/lib/store";
 
@@ -57,6 +58,7 @@ export async function POST(request: Request) {
       transcript: text,
       durationSec: Number.isFinite(duration) && duration > 0 ? Math.round(duration) : undefined,
     });
+    await notifyCaregiver(householdId, result.events);
     return Response.json(result);
   } catch (err) {
     console.error("note failed", err);

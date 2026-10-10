@@ -3,6 +3,7 @@ import { checkFence } from "@/lib/fence";
 import { fenceEvent } from "@/lib/fence/event";
 import { ConfirmedBy, gateCreate, gatePatch } from "@/lib/fence/gate";
 import { HOUSEHOLD_ID } from "@/lib/seed";
+import { notifyCaregiver } from "@/lib/push/send";
 import { EventStatus, getStore, NewEvent } from "@/lib/store";
 
 /** A NewEvent plus top level `confirmedBy`: who tapped. */
@@ -52,10 +53,12 @@ export async function POST(request: Request) {
     const fence = checkFence(text);
     if (fence.triggered) {
       const info = { context: "note" as const, simulated: event.payload.simulated === true, noteId: event.id, transcript: text };
-      await store.create(fenceEvent(event.householdId, fence, info));
+      const fenceRow = await store.create(fenceEvent(event.householdId, fence, info));
+      await notifyCaregiver(event.householdId, [event, fenceRow]);
       return Response.json({ event, fence }, { status: 201 });
     }
   }
+  await notifyCaregiver(event.householdId, [event]);
   return Response.json({ event }, { status: 201 });
 }
 

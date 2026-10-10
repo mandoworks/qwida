@@ -1,4 +1,5 @@
 import { processPhoto } from "@/lib/photo/pipeline";
+import { notifyCaregiver } from "@/lib/push/send";
 import { HOUSEHOLD_ID } from "@/lib/seed";
 import { getStore } from "@/lib/store";
 
@@ -47,7 +48,9 @@ export async function POST(request: Request) {
       p instanceof File && p.size > 0 && IMAGE_TYPES.test(p.type)
         ? { bytes: new Uint8Array(await p.arrayBuffer()), mediaType: p.type }
         : undefined;
-    return Response.json(await processPhoto(store, { householdId, image, mediaType, hint, preview }));
+    const result = await processPhoto(store, { householdId, image, mediaType, hint, preview });
+    await notifyCaregiver(householdId, result.events);
+    return Response.json(result);
   } catch (err) {
     console.error("photo pipeline failed", err);
     return Response.json({ error: "No pudimos leer la foto. Intente otra vez." }, { status: 502 });
