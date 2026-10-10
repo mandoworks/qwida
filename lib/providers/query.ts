@@ -41,13 +41,22 @@ export function medseekAttempts(query: NameQuery): MedSeekAttempt[] {
   const raw = query.raw?.trim() ?? "";
   const attempts: MedSeekAttempt[] = [];
 
-  if (nombre && apellidos) {
-    attempts.push({ nombre, apellidos });
+  /**
+   * The UI has one box, so `nombre` often arrives holding the whole name. Split
+   * it the same way `raw` is split, otherwise the attempt above is skipped and
+   * the surname never reaches upstream.
+   */
+  const explicitParts = nombre && !apellidos ? nombre.trim().split(/\s+/).filter(Boolean) : [];
+  const usableNombre = explicitParts.length > 1 ? explicitParts[0] : nombre;
+  const usableApellidos = explicitParts.length > 1 ? explicitParts.slice(1).join(" ") : apellidos;
+
+  if (usableNombre && usableApellidos) {
+    attempts.push({ nombre: usableNombre, apellidos: usableApellidos });
   }
 
   const words = raw.split(/\s+/).filter(Boolean);
 
-  if (!nombre && !apellidos && words.length >= 2) {
+  if (!usableNombre && !usableApellidos && words.length >= 2) {
     // "Gerardo Alayon" -> nombre=Gerardo, apellidos=Alayon.
     attempts.push({ nombre: words[0], apellidos: words.slice(1).join(" ") });
   }
@@ -59,11 +68,13 @@ export function medseekAttempts(query: NameQuery): MedSeekAttempt[] {
   // A single word is still a surname search, not a first name search. The
   // broad `q` above already covered the whole word, so only the first name
   // shape is left to try.
-  if (!nombre && !apellidos && words.length === 1) {
+  if (!usableNombre && !usableApellidos && words.length === 1) {
     attempts.push({ nombre: words[0] });
   }
 
-  if (!raw && (nombre || apellidos)) attempts.push({ nombre: nombre || undefined, apellidos: apellidos || undefined });
+  if (!raw && (usableNombre || usableApellidos)) {
+    attempts.push({ nombre: usableNombre || undefined, apellidos: usableApellidos || undefined });
+  }
 
   // Last resort so the specialty and town filters still return the directory
   // rather than nothing, but only when the caregiver asked for no name at all.
@@ -81,9 +92,8 @@ export function narrowToQuery<T extends { name: string; specialty: string; munic
   rows: readonly T[],
   query: { specialty?: string | null; municipio?: string | null; raw?: string | null; nombre?: string | null; apellidos?: string | null },
 ): T[] {
-  const terms = [query.raw, query.nombre, query.apellidos]
-    .map((v) => normalize(v ?? ""))
-    .filter(Boolean);
+  const allText = [query.raw, query.nombre, query.apellidos].filter(Boolean).join(" ");
+  const terms = Array.from(new Set(allText.split(/\s+/).map((v) => normalize(v)).filter(Boolean)));
   const specialty = normalize(query.specialty ?? "");
   const municipio = normalize(query.municipio ?? "");
 

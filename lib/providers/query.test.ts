@@ -22,6 +22,14 @@ describe("medseekAttempts", () => {
     expect(medseekAttempts({ raw: "Alayon" })).toEqual([{ q: "Alayon" }, { nombre: "Alayon" }]);
   });
 
+  it("splits a full name that arrived in the single nombre box, which is what the UI sends", () => {
+    // The caregiver types "Gerardo Alayon" into one field, so the route sees
+    // nombre="Gerardo Alayon" with no apellidos. Before this case the surname
+    // never reached upstream and the directory fell back to the local catalog.
+    const attempts = medseekAttempts({ raw: "Gerardo Alayon", nombre: "Gerardo Alayon" });
+    expect(attempts[0]).toEqual({ nombre: "Gerardo", apellidos: "Alayon" });
+  });
+
   it("keeps explicit nombre and apellidos ahead of the raw string", () => {
     const attempts = medseekAttempts({ raw: "Ruiz", nombre: "Jorge", apellidos: "Ruiz Diaz" });
     expect(attempts[0]).toEqual({ nombre: "Jorge", apellidos: "Ruiz Diaz" });
@@ -57,6 +65,10 @@ describe("narrowToQuery", () => {
 
   it("returns everything when only a town was chosen", () => {
     expect(narrowToQuery(rows, { municipio: "CAGUAS" }).map((r) => r.name)).toEqual(["JORGE E RUIZ DIAZ"]);
+  });
+
+  it("matches names even when the doctor has a middle initial or multiple surnames", () => {
+    expect(narrowToQuery(rows, { raw: "Jorge Ruiz" }).map((r) => r.name)).toEqual(["JORGE E RUIZ DIAZ"]);
   });
 
   it("returns an empty list when nothing matches, rather than the full directory", () => {
