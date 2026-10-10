@@ -110,7 +110,7 @@ export function FamilyDashboard() {
         {digest.fence && (
           <div className="flex flex-col gap-3 border-b border-line p-5">
             <div className="flex flex-wrap items-center gap-2">
-              <Alert size={20} className="text-warn" />
+              <Art slot="cerca" alt="" width={24} fallback={() => <Alert size={20} className="text-warn" />} />
               <span className="mr-auto text-c-title font-bold">{t("digest.change.fence")}</span>
               <Badge kind="POR_CONFIRMAR" />
             </div>

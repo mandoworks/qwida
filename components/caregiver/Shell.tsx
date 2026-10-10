@@ -58,10 +58,13 @@ function ShellBody({ children }: { children: ReactNode }) {
       <div className="mx-auto w-full max-w-[1120px] flex-1 px-4 py-5 md:px-6">
         <header className="flex flex-wrap items-center gap-4 border-b-2 border-line pb-4">
           <Art slot="logo-quida" alt="QWIDA" width={64} className="h-auto rounded-2xl" />
-          <div className="mr-auto min-w-0">
-            {/* "Cuidando", not "Cuidado": in Spanish "cuidado" reads as "watch out" (Marley QA). */}
-            <h1 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("shell.title")}</h1>
-            <p className="text-c-meta text-ink-mute">Marisol Rivera · Orlando, FL</p>
+          <div className="mr-auto flex items-center gap-3 min-w-0">
+            <Art slot="avatar-marisol" alt="" width={48} className="size-12 shrink-0 rounded-full border-2 border-line-strong object-cover shadow-sm" />
+            <div className="min-w-0">
+              {/* "Cuidando", not "Cuidado": in Spanish "cuidado" reads as "watch out" (Marley QA). */}
+              <h1 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("shell.title")}</h1>
+              <p className="text-c-meta text-ink-mute">Marisol Rivera · Orlando, FL</p>
+            </div>
           </div>
 
           <Link
