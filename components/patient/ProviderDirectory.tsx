@@ -5,7 +5,6 @@ import { useEvents } from "@/lib/client/useEvents";
 import { todayPR } from "@/lib/photo/dates";
 import { activeReferido, expiryLine } from "@/lib/providers/referido";
 import { ReferidoCountdown } from "@/components/photo/ReferidoCountdown";
-import { SyntheticBanner } from "@/components/ui/SyntheticBanner";
 import { Loading } from "./Loading";
 import { useFirstLoad } from "./useFirstLoad";
 
@@ -21,7 +20,8 @@ type Provider = {
 };
 
 /** Patient grade provider directory. Big controls, plain words, live
- *  MedSeek PR data with the local catalog as backup. Synthetic demo. */
+ *  MedSeek PR data with the local catalog as backup. The provider data is
+ *  real and public; the patient and her referido are synthetic. */
 export function ProviderDirectory() {
   const { events } = useEvents();
   const [specialty, setSpecialty] = useState("");
@@ -101,6 +101,7 @@ export function ProviderDirectory() {
     setNameQuery("");
     setResults(null);
   };
+  const live = source === "medseekpr.com";
   const hasFilter = specialty !== "" || municipio !== "" || nameQuery.trim() !== "";
 
   const SELECT =
@@ -263,13 +264,14 @@ export function ProviderDirectory() {
               />
             )}
             <p className="text-p-meta text-ink-mute">
-              Datos de proveedores por {source === "medseekpr.com" ? "MedSeek (medseekpr.com)" : "nuestro directorio local"}. Qwida no recomienda doctores. Datos de ejemplo (SIMULADO).
+              {live
+                ? "Datos públicos reales provistos por MedSeek (medseekpr.com)."
+                : "Datos públicos reales de la ORCPS, de una copia guardada porque MedSeek no respondió."}{" "}
+              Qwida no recomienda doctores. Doña Carmen y su referido son ficticios.
             </p>
           </div>
         )}
       </section>
-
-      <SyntheticBanner />
     </div>
   );
 }
