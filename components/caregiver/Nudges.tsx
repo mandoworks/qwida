@@ -130,7 +130,7 @@ export function Nudges() {
               </div>
               {called === nudge.id && (
                 <div role="status" className="rounded-well bg-sand p-3 text-c-meta font-bold text-accent">
-                  ✓ {t("nudges.called")} · (787) 555-0192 (Simulado · Twilio Voice API)
+                  ✓ {t("nudges.called")} · (787) 555-0192 (Simulado)
                 </div>
               )}
               <p className="text-c-meta text-ink-mute">{t("nudges.foot")}</p>

@@ -9,8 +9,8 @@ interface CallRequest {
 
 /**
  * Outbound voice reminder call endpoint.
- * In production: Triggers an automated outbound call via Twilio Voice API with TwiML / TTS.
- * In demo mode: Returns honest labeled SIMULADO fixture with full TwiML voice payload.
+ * In production: Triggers an automated outbound call via optional telephony API.
+ * In demo mode: Returns honest labeled SIMULADO fixture with voice payload.
  */
 export async function POST(req: Request) {
   try {
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
     const speechScript = `Bendición ${recipientName}. De parte de su familia en Quida le recordamos: ${message}. Que pase un lindo día.`;
 
-    // Real Twilio Voice execution if credentials are provided
+    // Optional telephony execution if credentials are provided
     if (sid && token) {
       const auth = Buffer.from(`${sid}:${token}`).toString("base64");
       const twiml = `<Response><Say language="es-MX" voice="Polly.Mia">${speechScript}</Say></Response>`;
@@ -54,25 +54,25 @@ export async function POST(req: Request) {
           simulated: false,
           callSid: data.sid,
           status: data.status,
-          provider: "Twilio Voice API",
+          provider: "Telephony API",
           to,
           script: speechScript,
         });
       }
     }
 
-    // Standard demo behavior: honest SIMULADO fixture with Twilio schema
+    // Standard demo behavior: honest SIMULADO fixture with speech payload
     return NextResponse.json({
       ok: true,
       simulated: true,
       label: "SIMULADO",
-      provider: "Twilio Voice API",
+      provider: "Llamada automatizada (opcional)",
       to,
       recipientName,
       script: speechScript,
       callSid: `CA_sim_${Date.now().toString(36)}`,
       status: "queued",
-      note: "Modo demo: sin cobro de troncal telefónica. En producción utiliza Twilio Voice API para teléfonos móviles y fijos de Puerto Rico.",
+      note: "Modo demo: síntesis de voz en navegador. En producción la integración con API de telefonía es opcional.",
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Error al procesar llamada";
