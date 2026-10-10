@@ -121,11 +121,11 @@ fetch("/ledger/data.json").then(r=>r.json()).then(d=>{
   table("rows",[["Repository",r=>r.workspace],["Tool",r=>r.client],["Model",r=>r.model],["Input",r=>r.input.toLocaleString()],["Output",r=>r.output.toLocaleString()],["Cache read",r=>r.cacheRead.toLocaleString()],["Cache write",r=>r.cacheWrite.toLocaleString()],["Messages",r=>r.messages.toLocaleString()],["List price",r=>usd(r.cost)]],[...R].sort((a,b)=>tot(b)-tot(a)));
   table("sessions",[["Session",r=>"<code>"+r.session+"</code>"],["Tool",r=>r.client],["Model",r=>r.model],["Input",r=>r.input.toLocaleString()],["Output",r=>r.output.toLocaleString()],["Cache read",r=>r.cacheRead.toLocaleString()],["Messages",r=>r.messages.toLocaleString()],["List price",r=>usd(r.cost)]],d.sessions);
 
-  const A=d.art,ah=d.hours.filter(h=>h.tokens>0||h.messages>0).length;
+  const A=d.art;
   if(A){const hrs=(A.minutes_total/60).toFixed(1);
     document.getElementById("handTiles").innerHTML=
       `<div class="tile"><div class="v">${hrs} h · ${A.strokes_total.toLocaleString()}</div><div class="k">Human time and strokes: <b>${A.artist}</b>, ${A.pieces} pieces in ${A.tool}, tracked by the app (tiempo humano, trazos)</div></div>`+
-      `<div class="tile"><div class="v">${fmt(all.t)} · ${ah} h</div><div class="k">AI tokens processed and hours with agent activity, from the logs below (tiempo de agentes)</div></div>`}
+      `<div class="tile"><div class="v">${fmt(all.t)} · ${d.sessions.length}</div><div class="k">AI tokens processed and agent sessions, Qwida repositories only, from the logs below (tokens y sesiones de agentes)</div></div>`}
   const v=d.timelapses||[];
   document.getElementById("vids").innerHTML=v.map(t=>`<figure><video src="${t.file}" controls muted loop playsinline preload="none"></video><figcaption>${t.title}${t.minutes!=null?" · "+t.minutes+" min":""}${t.strokes!=null?" · "+t.strokes+" trazos":""}</figcaption></figure>`).join("");
 }).catch(()=>{document.getElementById("tiles").textContent="Could not load data.json."});
