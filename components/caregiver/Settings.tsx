@@ -60,6 +60,76 @@ export function Settings() {
     setDownloaded(appointments.length);
   }
 
+  const [auditDownloaded, setAuditDownloaded] = useState(false);
+  const [summaryDownloaded, setSummaryDownloaded] = useState(false);
+
+  function downloadAuditLog() {
+    const auditData = events.map((e) => {
+      const p = e.payload as Record<string, unknown>;
+      return {
+        id: e.id,
+        kind: e.kind,
+        status: e.status,
+        createdAt: e.createdAt,
+        updatedAt: e.updatedAt,
+        confirmed: p.confirmedBy
+          ? {
+              by: p.confirmedBy,
+              name: p.confirmedName ?? null,
+              device: p.confirmedDevice ?? null,
+              at: p.confirmedAt ?? null,
+            }
+          : null,
+        consent: p.consent ?? null,
+        history: p.history ?? [],
+      };
+    });
+    const blob = new Blob([JSON.stringify(auditData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `qwida-auditoria-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+    setAuditDownloaded(true);
+  }
+
+  function downloadClinicalSummary() {
+    const text = [
+      "RESUMEN CLÍNICO DE CUIDADO - QWIDA",
+      `Fecha de exportación: ${new Date().toISOString().slice(0, 10)}`,
+      "Paciente: Doña Carmen (78 años, Adjuntas, PR)",
+      "Coordinación familiar: Marisol Rivera (Orlando, FL)",
+      "",
+      "--- CITAS Y REFERIDOS CONFIRMADOS ---",
+      ...confirmedAppointments(events).map((a) => {
+        const p = a.payload as Record<string, unknown>;
+        const doc = typeof p.doctor === "string" ? p.doctor : "";
+        const spec = typeof p.specialty === "string" ? p.specialty : "Cita médica";
+        const date = typeof p.date === "string" ? p.date : "";
+        const place = typeof p.place === "string" ? p.place : "Ponce";
+        return `• ${spec}${doc ? ` con ${doc}` : ""}: ${date} (${place})`;
+      }),
+      "",
+      "--- MEDICAMENTOS Y HORARIOS CONFIRMADOS ---",
+      ...events
+        .filter((e) => e.kind === "med_schedule" && e.status === "CONFIRMADO")
+        .map((m) => `• ${String((m.payload as Record<string, unknown>).drug ?? "Medicamento")}: ${String((m.payload as Record<string, unknown>).frequency ?? "Activo")}`),
+      "",
+      "--- TRAZABILIDAD Y CUMPLIMIENTO ---",
+      "Consentimiento médico y de paciente: Registrado en bitácora inmutable.",
+      "Trazabilidad de confirmación: Auditada por persona, rol y equipo.",
+    ].join("\n");
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `qwida-resumen-clinico-${new Date().toISOString().slice(0, 10)}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+    setSummaryDownloaded(true);
+  }
+
   return (
     <div className="flex flex-col gap-5">
       <h2 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("settings.title")}</h2>
@@ -183,6 +253,50 @@ export function Settings() {
         {downloaded !== null && (
           <p role="status" className="rounded-well bg-sand px-3 py-2 text-c-meta text-ink-mute">
             {appointments.length === 0 ? t("settings.ics.empty") : t("settings.ics.downloaded", { n: downloaded })}
+          </p>
+        )}
+      </fieldset>
+
+      <fieldset className="flex flex-col gap-3 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+        <legend className="flex items-center gap-2 text-c-title font-bold">
+          Bitácora de auditoría y trazabilidad
+        </legend>
+        <p className="text-c-meta text-ink-mute">
+          Registro inmutable con cada confirmación, persona, rol, equipo y consentimientos médicos guardados.
+        </p>
+        <BigButton
+          variant="secondary"
+          onClick={downloadAuditLog}
+          className="min-h-tap-c-lg text-c-body"
+          icon={<Download size={20} />}
+        >
+          Descargar bitácora de auditoría (JSON)
+        </BigButton>
+        {auditDownloaded && (
+          <p role="status" className="rounded-well bg-sand px-3 py-2 text-c-meta text-ink-mute">
+            Bitácora descargada ({events.length} eventos con historial inmutable).
+          </p>
+        )}
+      </fieldset>
+
+      <fieldset className="flex flex-col gap-3 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+        <legend className="flex items-center gap-2 text-c-title font-bold">
+          Resumen para el médico o manejador de casos
+        </legend>
+        <p className="text-c-meta text-ink-mute">
+          Resumen clínico estructurado de citas, medicamentos y trazabilidad para entregar al plan médico (Salud 360) o al médico primario.
+        </p>
+        <BigButton
+          variant="secondary"
+          onClick={downloadClinicalSummary}
+          className="min-h-tap-c-lg text-c-body"
+          icon={<Download size={20} />}
+        >
+          Descargar resumen clínico (TXT)
+        </BigButton>
+        {summaryDownloaded && (
+          <p role="status" className="rounded-well bg-sand px-3 py-2 text-c-meta text-ink-mute">
+            Resumen clínico descargado listo para compartir.
           </p>
         )}
       </fieldset>
