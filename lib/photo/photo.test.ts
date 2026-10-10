@@ -8,7 +8,7 @@ import { buildIcs } from "@/lib/weekcard/ics";
 import { FIXTURE_APPOINTMENT, FIXTURE_HANDWRITTEN, FIXTURE_LABEL } from "./fixture";
 import { processPhoto } from "./pipeline";
 import { refillCountdown, unitsPerDose } from "./refill";
-import { applyTrust, deriveSlots, HANDWRITTEN_BADGE, LABEL_RESCAN_TEXT } from "./trust";
+import { applyTrust, deriveSlots, drugKey, guardClass, HANDWRITTEN_BADGE, LABEL_RESCAN_TEXT } from "./trust";
 
 const heard = (drug: string, dose: string | null): HeardPrescription => ({
   drug,
@@ -289,5 +289,30 @@ describe("photo pipeline without a key (SIMULADO)", () => {
     const r2 = await processPhoto(capped, { ...input("rx_label"), image: big });
     expect((await capped.list("h"))[0].payload).toMatchObject({ image: null, image_omitted: true });
     expect(String(r2.events[0].payload.image)).toMatch(/^data:image\/jpeg;base64,/);
+  });
+});
+
+describe("drugKey", () => {
+  it("matches English and Spanish spellings of the same drug", () => {
+    expect(drugKey("OMEPRAZOLE 20 MG")).toBe(drugKey("omeprazol"));
+    expect(drugKey("Amlodipine")).toBe(drugKey("amlodipino"));
+    expect(drugKey("Metformin")).toBe(drugKey("metformina"));
+    expect(drugKey("Losartán potásico")).toBe(drugKey("losartan"));
+    expect(drugKey("losartan")).not.toBe(drugKey("omeprazol"));
+  });
+});
+
+describe("guardClass", () => {
+  it("keeps a real label, with pharmacy or Rx number, as a label", () => {
+    expect(guardClass(FIXTURE_LABEL).class).toBe("rx_label");
+  });
+  it("treats a 'label' with no pharmacy and no Rx number as handwriting", () => {
+    const p = FIXTURE_LABEL.prescription!;
+    const pad = {
+      ...FIXTURE_LABEL,
+      prescription: { ...p, pharmacy: { ...p.pharmacy, value: null }, rx_number: { ...p.rx_number, value: null } },
+    };
+    expect(guardClass(pad).class).toBe("rx_handwritten");
+    expect(applyTrust(guardClass(pad)).trusted).toBe(false);
   });
 });

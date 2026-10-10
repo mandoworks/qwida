@@ -31,6 +31,18 @@ export function FamilyOnboarding() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
+  // Mamá needs no account: the link opens her four button screen.
+  const sharePatientLink = async () => {
+    const url = `${window.location.origin}/paciente`;
+    const text = t("onboard.phone.message", { url });
+    try {
+      if (navigator.share) await navigator.share({ text });
+      else window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+    } catch {
+      // Share sheet closed: nothing to do.
+    }
+  };
+
   const next = () => {
     setError("");
     if (step === "welcome") setStep("patient");
@@ -170,6 +182,23 @@ export function FamilyOnboarding() {
           <p className="text-c-body text-ink-soft">{t("onboard.sent.hint")}</p>
           <Link href="/familia" className="text-c-body font-bold text-accent underline">
             {t("onboard.sent.dashboard")}
+          </Link>
+        </section>
+      )}
+
+      {step === "sent" && (
+        <section aria-label={t("onboard.phone.title")} className="flex flex-col gap-4 rounded-card border-2 border-line-strong bg-surface p-6 shadow-card">
+          <h2 className="text-c-hero font-bold leading-tight">{t("onboard.phone.title", { name: patientName.trim() })}</h2>
+          <ol className="flex list-decimal flex-col gap-2 pl-6 text-c-body">
+            <li>{t("onboard.phone.one")}</li>
+            <li>{t("onboard.phone.two")}</li>
+            <li>{t("onboard.phone.three")}</li>
+          </ol>
+          <BigButton onClick={sharePatientLink} className="min-h-tap-c-lg text-c-body">
+            {t("onboard.phone.share")}
+          </BigButton>
+          <Link href="/paciente" className="text-c-body font-bold text-accent underline">
+            {t("onboard.phone.preview")}
           </Link>
         </section>
       )}

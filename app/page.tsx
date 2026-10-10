@@ -26,8 +26,9 @@ export default function RoleChooser() {
 
         <FenceNotice className="text-p-meta" art />
 
-        <div className="mt-auto flex justify-center">
+        <div className="mt-auto flex flex-wrap justify-center gap-3">
           <ResetDemoButton />
+          <ResetDemoButton mode="full" />
         </div>
       </main>
     </>

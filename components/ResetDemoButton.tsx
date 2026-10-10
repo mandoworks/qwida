@@ -2,14 +2,17 @@
 
 import { useState } from "react";
 
-/** One tap demo reset: reseeds shared state through POST /api/reset. */
-export function ResetDemoButton() {
+/**
+ * One tap demo reset: reseeds shared state through POST /api/reset.
+ * "live" starts clean for presenting; "full" preloads a recorded visit for judges exploring alone.
+ */
+export function ResetDemoButton({ mode = "live" }: { mode?: "live" | "full" }) {
   const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
 
   async function reset() {
     setState("busy");
     try {
-      const res = await fetch("/api/reset", { method: "POST" });
+      const res = await fetch(mode === "full" ? "/api/reset?mode=full" : "/api/reset", { method: "POST" });
       setState(res.ok ? "done" : "error");
     } catch {
       setState("error");
@@ -17,7 +20,7 @@ export function ResetDemoButton() {
   }
 
   const label = {
-    idle: "Reiniciar demo",
+    idle: mode === "full" ? "Demo completa, con visita grabada" : "Reiniciar demo",
     busy: "Reiniciando…",
     done: "Demo reiniciada",
     error: "No se pudo reiniciar. Intente otra vez.",

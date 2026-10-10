@@ -117,7 +117,7 @@ export function Settings() {
         .map((m) => `• ${String((m.payload as Record<string, unknown>).drug ?? "Medicamento")}: ${String((m.payload as Record<string, unknown>).frequency ?? "Activo")}`),
       "",
       "--- TRAZABILIDAD Y CUMPLIMIENTO ---",
-      "Consentimiento médico y de paciente: Registrado en bitácora inmutable.",
+      "Consentimiento médico y de paciente: Guardado en el historial de la visita.",
       "Trazabilidad de confirmación: Auditada por persona, rol y equipo.",
     ].join("\n");
     const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
@@ -262,7 +262,7 @@ export function Settings() {
           Bitácora de auditoría y trazabilidad
         </legend>
         <p className="text-c-meta text-ink-mute">
-          Registro inmutable con cada confirmación, persona, rol, equipo y consentimientos médicos guardados.
+          Historial de cada dato: quién lo confirmó, con qué rol y desde qué equipo, más los consentimientos de la visita.
         </p>
         <BigButton
           variant="secondary"
@@ -274,7 +274,7 @@ export function Settings() {
         </BigButton>
         {auditDownloaded && (
           <p role="status" className="rounded-well bg-sand px-3 py-2 text-c-meta text-ink-mute">
-            Bitácora descargada ({events.length} eventos con historial inmutable).
+            Bitácora descargada ({events.length} eventos con su historial).
           </p>
         )}
       </fieldset>
@@ -284,7 +284,7 @@ export function Settings() {
           Resumen para el médico o manejador de casos
         </legend>
         <p className="text-c-meta text-ink-mute">
-          Resumen clínico estructurado de citas, medicamentos y trazabilidad para entregar al plan médico (Salud 360) o al médico primario.
+          Resumen clínico estructurado de citas, medicamentos y trazabilidad para llevarle al médico primario o a quien maneja su caso.
         </p>
         <BigButton
           variant="secondary"
@@ -323,7 +323,10 @@ export function Settings() {
       </fieldset>
 
       <div className="flex flex-col items-start gap-4">
-        <ResetDemoButton />
+        <div className="flex flex-wrap gap-3">
+          <ResetDemoButton />
+          <ResetDemoButton mode="full" />
+        </div>
         <p className="text-c-meta text-ink-mute">
           {t("settings.credit")} · {t("settings.credit.font")} · {t("settings.credit.model")}
         </p>

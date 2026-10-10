@@ -105,6 +105,44 @@
         },
         "plan": "Plan Vital"
       }
+    },
+    {
+      "kind": "weekcard",
+      "status": "CONFIRMADO",
+      "source": "caregiver",
+      "confidence": 1,
+      "payload": {
+        "synthetic": true,
+        "simulated": false,
+        "title": "Su semana, Mamá",
+        "items": [
+          {
+            "day": "Todos los días",
+            "time": "mañana",
+            "text": "Metformina 500 mg con el desayuno y amlodipino 5 mg.",
+            "icon": "☀"
+          },
+          {
+            "day": "Todos los días",
+            "time": "noche",
+            "text": "Metformina 500 mg con la cena.",
+            "icon": "☾"
+          },
+          {
+            "day": "Esta semana",
+            "text": "El referido a cardiología sigue vigente. Yo la llamo para coordinar la cita.",
+            "icon": "➤"
+          },
+          {
+            "day": "Sábado",
+            "text": "La llamo por la tarde, como siempre.",
+            "icon": "♥"
+          }
+        ],
+        "questionsForDoctor": [
+          "¿Sigo igual con la metformina si como poco?"
+        ]
+      }
     }
   ]
 }
