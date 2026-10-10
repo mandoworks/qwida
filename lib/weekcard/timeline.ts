@@ -9,7 +9,7 @@ export const TIMELINE_GROUPS: TimelineGroup[] = ["cita", "receta", "referido", "
 
 /**
  * "nota" is the voice filter: what Doña Carmen said out loud, either a voice
- * note or a recorded visit. The sent card and the reminders are Quida's own
+ * note or a recorded visit. The sent card and the reminders are Qwida's own
  * output, so they sit in "otro" and never show up under NOTAS DE VOZ.
  */
 const GROUP_OF: Record<string, TimelineGroup> = {

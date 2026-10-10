@@ -32,7 +32,7 @@ import { fileURLToPath } from "node:url";
 const ORCPS = "https://orcpsws.salud.pr.gov";
 const VERIFY_URL = "https://orcps.salud.pr.gov/mbps/verificacion";
 const NPPES = "https://npiregistry.cms.hhs.gov/api/";
-const USER_AGENT = "QuidaProviderFetch/0.2 (Quida, Caribbean AI Summit hackathon)";
+const USER_AGENT = "QuidaProviderFetch/0.2 (Qwida, Caribbean AI Summit hackathon)";
 const ATTRIBUTION =
   "Datos públicos de la Junta de Licenciamiento y Disciplina Médica (ORCPS) y CMS NPPES";
 

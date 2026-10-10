@@ -62,13 +62,13 @@ export type IcsOptions = { now: string; minutes?: number; calendarName?: string 
  * out, which is what the test checks.
  */
 export function buildIcs(events: QuidaEvent[], options: IcsOptions): string {
-  const { now, minutes = DEFAULT_MINUTES, calendarName = "Quida (datos sintéticos)" } = options;
+  const { now, minutes = DEFAULT_MINUTES, calendarName = "Qwida (datos sintéticos)" } = options;
   const appointments = events.filter((e) => e.kind === "appointment" && e.status === "CONFIRMADO" && str(e.payload.date));
 
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Quida//Familia//ES",
+    "PRODID:-//Qwida//Familia//ES",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     `X-WR-CALNAME:${escapeIcs(calendarName)}`,
@@ -88,7 +88,7 @@ export function buildIcs(events: QuidaEvent[], options: IcsOptions): string {
       `DTEND${endStamp(iso, minutes)}`,
       `SUMMARY:${escapeIcs(summary)}`,
       ...(place ? [`LOCATION:${escapeIcs(place)}`] : []),
-      "DESCRIPTION:Datos sintéticos de demostración. Quida no da diagnósticos ni cambia medicamentos.",
+      "DESCRIPTION:Datos sintéticos de demostración. Qwida no da diagnósticos ni cambia medicamentos.",
       "STATUS:CONFIRMED",
       "END:VEVENT",
     );

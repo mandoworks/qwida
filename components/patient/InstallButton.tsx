@@ -58,7 +58,7 @@ const INSTALL_BTN =
  * Visible PWA install button for the patient, in Yari's art direction.
  * Android and Chrome: captures beforeinstallprompt and fires it on tap.
  * iPhone and iPad: Safari never fires the prompt, so friendly manual steps in Spanish.
- * Hidden when Quida already runs installed, or after the patient dismisses it.
+ * Hidden when Qwida already runs installed, or after the patient dismisses it.
  */
 export function InstallButton() {
   const [dismissed, setDismissed] = useLocalValue("quida.installButton");
@@ -97,13 +97,13 @@ export function InstallButton() {
   // iPhone and iPad: no install prompt exists, show the manual steps instead.
   if (!promptEvent && ios) {
     return (
-      <section aria-label="Poner Quida en su pantalla" className="yari-card bg-surface p-6">
+      <section aria-label="Poner Qwida en su pantalla" className="yari-card bg-surface p-6">
         <div className="flex items-center gap-4">
           <span className="w-16 shrink-0" aria-hidden="true">
             <Art slot="logo-quida" alt="" width={64} className="h-auto w-full" fallback={VoiceIcon} />
           </span>
           <h2 className="yari-headline min-w-0 flex-1 text-p-subtitle font-bold">
-            Ponga Quida en su pantalla
+            Ponga Qwida en su pantalla
           </h2>
         </div>
         <ol className="mt-4 flex list-decimal flex-col gap-3 pl-8 text-p-body text-ink">
@@ -124,18 +124,18 @@ export function InstallButton() {
   };
 
   return (
-    <section aria-label="Instalar Quida" className="yari-card bg-surface p-6">
+    <section aria-label="Instalar Qwida" className="yari-card bg-surface p-6">
       <div className="flex items-center gap-4">
         <span className="w-16 shrink-0" aria-hidden="true">
           <Art slot="logo-quida" alt="" width={64} className="h-auto w-full" fallback={VoiceIcon} />
         </span>
         <div className="min-w-0">
-          <h2 className="yari-headline text-p-subtitle font-bold">Ponga Quida en su pantalla</h2>
+          <h2 className="yari-headline text-p-subtitle font-bold">Ponga Qwida en su pantalla</h2>
           <p className="mt-1 text-p-body text-ink-soft">Ábrala como una aplicación, sin buscarla.</p>
         </div>
       </div>
       <button type="button" onClick={install} className={`${INSTALL_BTN} mt-5`}>
-        Instalar Quida
+        Instalar Qwida
       </button>
       <div className="text-center">{dismissRow}</div>
     </section>

@@ -12,7 +12,7 @@ export default function RoleChooser() {
         <header className="text-center">
           <Art slot="hero-bendicion" alt="Doña Carmen en Adjuntas y Marisol en Orlando, unidas por un hilo" width={600} height={333} className="mb-6 block h-auto w-full" />
           <h1 className="flex justify-center">
-            <Art slot="logo-quida" alt="Quida" width={160} className="h-auto" />
+            <Art slot="logo-quida" alt="Qwida" width={160} className="h-auto" />
           </h1>
           <p className="mt-3 text-patient">¿Quién usa el teléfono?</p>
         </header>

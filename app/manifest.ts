@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Quida",
-    short_name: "Quida",
+    name: "Qwida",
+    short_name: "Qwida",
     description: "Cuidar a mamá, aunque esté lejos. Datos sintéticos.",
     lang: "es",
     start_url: "/",

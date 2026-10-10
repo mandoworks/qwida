@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     const token = process.env.TWILIO_AUTH_TOKEN;
     const from = process.env.TWILIO_PHONE_NUMBER || "+17875550199";
 
-    const speechScript = `Bendición ${recipientName}. De parte de su familia en Quida le recordamos: ${message}. Que pase un lindo día.`;
+    const speechScript = `Bendición ${recipientName}. De parte de su familia en Qwida le recordamos: ${message}. Que pase un lindo día.`;
 
     // Real Twilio Voice execution if credentials are provided
     if (sid && token) {

@@ -263,7 +263,7 @@ export function ProviderDirectory() {
               />
             )}
             <p className="text-p-meta text-ink-mute">
-              Datos de proveedores por {source === "medseekpr.com" ? "MedSeek (medseekpr.com)" : "nuestro directorio local"}. Quida no recomienda doctores. Datos de ejemplo (SIMULADO).
+              Datos de proveedores por {source === "medseekpr.com" ? "MedSeek (medseekpr.com)" : "nuestro directorio local"}. Qwida no recomienda doctores. Datos de ejemplo (SIMULADO).
             </p>
           </div>
         )}

@@ -1,9 +1,9 @@
-# Art Slot Wiring Design: Quida Patient UI
+# Art Slot Wiring Design: Qwida Patient UI
 
 Summary of decisions made during the art slot wiring grill session on Friday Oct 9, 2026.
 
 ## Summary
-Hand drawn artwork by Yari provides the human warmth and cultural resonance for Quida. The art slots in the UI render transparent PNGs from `public/art/`, gracefully falling back to line icons or null when files are not present. This document locks the slot locations, alt text policy, and authoritative contract.
+Hand drawn artwork by Yari provides the human warmth and cultural resonance for Qwida. The art slots in the UI render transparent PNGs from `public/art/`, gracefully falling back to line icons or null when files are not present. This document locks the slot locations, alt text policy, and authoritative contract.
 
 ## Terms
 - **slot**: A named location in the UI where a hand-drawn PNG from `public/art/` is displayed with a fallback line icon.

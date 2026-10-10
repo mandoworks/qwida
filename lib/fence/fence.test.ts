@@ -120,7 +120,7 @@ describe("Fence: clean text", () => {
 describe("Fence: copy is fixed", () => {
   it("uses the exact strings from ui/AGENTS.md", () => {
     expect(FENCE_COPY.medChange).toBe(
-      "Quida no da diagnósticos ni cambia medicamentos. Eso lo decide su médico.",
+      "Qwida no da diagnósticos ni cambia medicamentos. Eso lo decide su médico.",
     );
     expect(FENCE_COPY.emergency).toBe("Si es una emergencia, llame al 911.");
   });

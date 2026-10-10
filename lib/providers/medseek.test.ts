@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { mapMedSeekToProvider, type MedSeekRawProvider } from "./medseek";
 
 describe("MedSeek PR mapping", () => {
-  it("maps raw MedSeek provider to Quida Provider format", () => {
+  it("maps raw MedSeek provider to Qwida Provider format", () => {
     const raw: MedSeekRawProvider = {
       nombre: "GERARDO",
       inicial: null,

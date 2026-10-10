@@ -31,7 +31,7 @@ export type ProtocolCardData = z.infer<typeof ProtocolCardSchema>;
 
 /**
  * Fixed line under every simulated card. Those requirements mention holding or
- * stopping a medicine, and Quida never tells a patient to start, stop, skip,
+ * stopping a medicine, and Qwida never tells a patient to start, stop, skip,
  * raise or lower one on its own: only her own doctor says so.
  */
 export const MEDICATION_CAUTION =

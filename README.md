@@ -1,9 +1,9 @@
-# Quida
+# Qwida
 
-Quida is a Spanish first web app (PWA) for Puerto Rican families caring for an elder. The elder
+Qwida is a Spanish first web app (PWA) for Puerto Rican families caring for an elder. The elder
 talks or takes a photo; her family, on the island or in the States, reviews and approves what
 changed; the elder gets back one simple card of what to do. A fixed safety Fence runs before any
-AI: Quida never diagnoses and never changes medication, and emergencies point to 911.
+AI: Qwida never diagnoses and never changes medication, and emergencies point to 911.
 
 Built for the Caribbean AI Summit Healthcare Hackathon, Puerto Rico, October 2026.
 

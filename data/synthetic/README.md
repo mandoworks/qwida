@@ -13,7 +13,7 @@ Five households, each with its own `householdId`. Dates are stored relative to t
 | File | Persona | Voice id | What it exercises |
 |---|---|---|---|
 | `carmen.json` | Doña Carmen Rivera, 78, Adjuntas; hija Marisol in Orlando | `patient-f-01` | Golden path: meds, cardiology referido and appointment with Dra. Isabel Ferrer (ficticia) in Ponce. The live demo adds the visit (`public/demo/visita-1.mp3`) and the handwritten losartán photo. |
-| `maria.json` | Doña María Torres, 83, Ponce; sobrino Javier in Ponce | `patient-f-02` | Downplayed symptoms: tired three mornings in a week, the digest shows the pattern, Quida never interprets it. |
+| `maria.json` | Doña María Torres, 83, Ponce; sobrino Javier in Ponce | `patient-f-02` | Downplayed symptoms: tired three mornings in a week, the digest shows the pattern, Qwida never interprets it. |
 | `rosa.json` | Doña Rosa Delgado, 71, Carolina | `patient-f-03` | Appointment confusion: who, when, what to bring, who drives her. |
 | `ramon.json` | Don Ramón Díaz, 87, Mayagüez | `patient-m-04` | He says he took his pills; his daughter corrects it. Both stay on the timeline. |
 | `rafael.json` | Don Rafael Ortiz, 89, Humacao | `patient-m-08` | Refill countdown: 3 days of pills left, reminder due. |

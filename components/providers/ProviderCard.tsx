@@ -19,7 +19,7 @@ type ProviderCardProps = {
  * One licensed professional. Everything on it is public record: name,
  * certifications as ORCPS sends them, municipio of work, license number, the
  * date the registry was read, and the practice phone when NPPES published one.
- * The two questions Quida cannot answer stay on screen as answered questions.
+ * The two questions Qwida cannot answer stay on screen as answered questions.
  */
 export function ProviderCard({ provider, expiry, sent, busy, onUseReferido }: ProviderCardProps) {
   return (

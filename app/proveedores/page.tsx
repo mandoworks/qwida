@@ -7,7 +7,7 @@ import { formatConsulted } from "@/lib/providers/format";
 import { ASES_RULE } from "@/lib/providers/referido";
 
 export const metadata: Metadata = {
-  title: "Profesionales de la salud en Puerto Rico | Quida",
+  title: "Profesionales de la salud en Puerto Rico | Qwida",
   description:
     "Busque profesionales de la salud de Puerto Rico en el directorio público de MedSeek PR.",
 };
@@ -24,7 +24,7 @@ export default function ProveedoresPage() {
       <h1 className="mt-3 text-3xl font-bold md:text-4xl">Profesionales de la salud en Puerto Rico</h1>
 
       <p role="note" className="mt-4 rounded-2xl border-2 border-ink-soft bg-surface p-4 text-lg">
-        Datos públicos reales, consultados el {consulted}. Quida no recomienda médicos.
+        Datos públicos reales, consultados el {consulted}. Qwida no recomienda médicos.
       </p>
 
       <div className="mt-6 text-caregiver">

@@ -273,7 +273,7 @@ export function ProviderSearch() {
 
       {!referral && (
         <p role="note" className="rounded-2xl border-2 border-ink-soft bg-surface p-4 text-lg">
-          Todavía no hay un referido confirmado en Quida. Cuando confirme la foto del referido, cada tarjeta
+          Todavía no hay un referido confirmado en Qwida. Cuando confirme la foto del referido, cada tarjeta
           mostrará la fecha de vencimiento y el botón para usarlo.
         </p>
       )}

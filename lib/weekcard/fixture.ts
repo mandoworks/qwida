@@ -105,7 +105,7 @@ export function buildFixtureCard(events: QuidaEvent[], today: string): WeekCard 
 
   const questions = [...facts.questions];
   if (!questions.length && facts.pending > 0) {
-    questions.push("¿Puede revisar en Quida los datos que todavía están en POR CONFIRMAR?");
+    questions.push("¿Puede revisar en Qwida los datos que todavía están en POR CONFIRMAR?");
   }
   if (!questions.length) {
     questions.push("¿Necesita usted que le repitamos algo en la próxima cita?");

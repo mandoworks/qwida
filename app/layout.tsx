@@ -10,10 +10,10 @@ const atkinson = Atkinson_Hyperlegible({
 });
 
 export const metadata: Metadata = {
-  title: "Quida",
+  title: "Qwida",
   description:
-    "Quida ayuda a las familias puertorriqueñas a cuidar a sus mayores. Datos sintéticos.",
-  appleWebApp: { capable: true, title: "Quida", statusBarStyle: "default" },
+    "Qwida ayuda a las familias puertorriqueñas a cuidar a sus mayores. Datos sintéticos.",
+  appleWebApp: { capable: true, title: "Qwida", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {

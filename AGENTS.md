@@ -1,4 +1,4 @@
-# Quida app
+# Qwida app
 
 Hackathon app for the Caribbean AI Summit (submissions close Sat Oct 10, 12:00 AST). Master plan
 and UI rules live in the private war room repo (`qwida-warroom/plan/MASTER-PLAN.md`,
