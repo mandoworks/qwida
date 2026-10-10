@@ -1,7 +1,7 @@
 import { HOUSEHOLD_ID } from "@/lib/seed";
 import { getStore } from "@/lib/store";
 import { deviceLabel } from "@/lib/audit";
-import { processVisit, type VisitConsent } from "@/lib/visit/pipeline";
+import { NothingHeardError, processVisit, type VisitConsent } from "@/lib/visit/pipeline";
 
 export const maxDuration = 60;
 
@@ -56,6 +56,7 @@ export async function POST(request: Request) {
     const result = await processVisit(store, { householdId, audio, transcript: text, consent: consentFrom(request, form) });
     return Response.json(result);
   } catch (err) {
+    if (err instanceof NothingHeardError) return Response.json({ error: err.message }, { status: 422 });
     console.error("visit pipeline failed", err);
     return Response.json(
       { error: "No pudimos procesar la grabación. Intente otra vez." },

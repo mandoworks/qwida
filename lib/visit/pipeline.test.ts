@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { FENCE_COPY } from "@/lib/fence";
 import { MockStore } from "@/lib/store/mock";
 import { FIXTURE_EXTRACTION, FIXTURE_TRANSCRIPT } from "./fixture";
-import { EMPTY_EXTRACTION, enforceUncertainty, processVisit } from "./pipeline";
+import { EMPTY_EXTRACTION, enforceUncertainty, isPromptEcho, processVisit } from "./pipeline";
 
 vi.mock("ai", async (importOriginal) => ({
   ...(await importOriginal<typeof import("ai")>()),
@@ -218,5 +218,20 @@ describe("POST /api/visit when the gateway refuses", () => {
     const body = await res.json();
     expect(body.simulated).toBe(true);
     expect(body.extraction).toEqual(FIXTURE_EXTRACTION);
+  });
+});
+
+describe("isPromptEcho", () => {
+  it("flags the vocabulary hint echoed back from near silent audio", () => {
+    expect(
+      isPromptEcho(
+        "Doña Carmen, Marisol. Metformina, amlodipino, atorvastatina, omeprazol, losartán, miligramos, referido, cardiología, endocrinología, plan médico, Plan Vital, Adjuntas.",
+      ),
+    ).toBe(true);
+    expect(isPromptEcho("")).toBe(true);
+  });
+  it("keeps a real visit, even one that names the same drugs", () => {
+    expect(isPromptEcho(FIXTURE_TRANSCRIPT)).toBe(false);
+    expect(isPromptEcho("Doctor: le voy a recetar omeprazol en ayunas y nos vemos en tres semanas.")).toBe(false);
   });
 });

@@ -303,6 +303,13 @@ function VisitResult({ result, onAgain }: { result: VisitResponse; onAgain: () =
       <p className="text-xl">Esto es un borrador. Su familia lo revisa y lo confirma.</p>
       {fence.triggered && <FenceNotice className="text-xl" />}
 
+      {result.transcript && (
+        <details className="rounded-2xl border-2 border-line-strong bg-surface p-4">
+          <summary className="cursor-pointer text-xl font-bold">Lo que se escuchó (transcripción)</summary>
+          <p className="mt-3 whitespace-pre-line text-lg text-ink-soft">{result.transcript}</p>
+        </details>
+      )}
+
       {/* On an emergency nothing is extracted on purpose; this line would read as if we listened and found nothing. */}
       {empty && !fence.emergency && <p>No encontramos recetas, referidos, laboratorios ni citas en la grabación.</p>}
 

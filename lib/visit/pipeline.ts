@@ -1,6 +1,6 @@
 import { generateText, Output, transcribe } from "ai";
 import { firstThatWorks, hasOpenAIKey, textModels, transcriptionModels } from "@/lib/ai/providers";
-import { checkFence, type FenceResult } from "@/lib/fence";
+import { checkFence, normalize, type FenceResult } from "@/lib/fence";
 import { fenceEvent } from "@/lib/fence/event";
 import type { EventStore, NewEvent, QuidaEvent } from "@/lib/store/types";
 import { FIXTURE_EXTRACTION, FIXTURE_TRANSCRIPT } from "./fixture";
@@ -26,6 +26,23 @@ Reglas:
 - labs: cada laboratorio o estudio que el médico ordenó (sangre, orina, placa, sonograma). fasting en true solo si dijo "en ayunas" para ese laboratorio.
 - doctor_notes: cualquier otra indicación del médico que no sea receta, referido, laboratorio ni cita (dieta, ejercicio, señales de alarma, qué traer). source_quote son sus palabras exactas; topic son dos o tres palabras. Nunca la reescribas ni añadas nada.
 - No des consejos médicos ni recomendaciones. Solo extrae.`;
+
+/** Thrown when the recording held no speech the model could hear. Nothing is saved. */
+export class NothingHeardError extends Error {}
+
+export const NOTHING_HEARD =
+  "No se escuchó bien la grabación. Acerque el teléfono a quien habla, o use la grabación de demostración.";
+
+/**
+ * With near silent audio the speech model echoes the vocabulary hint back as if it were
+ * the visit. A transcript made almost only of hint words (or empty) means nothing was heard.
+ */
+export function isPromptEcho(transcript: string): boolean {
+  const words = normalize(transcript).split(/[^a-z0-9]+/).filter((w) => w.length > 2);
+  if (words.length === 0) return true;
+  const hint = new Set(normalize(TRANSCRIBE_PROMPT).split(/[^a-z0-9]+/));
+  return words.filter((w) => hint.has(w)).length / words.length >= 0.8;
+}
 
 export function hasAiKey(): boolean {
   // On Vercel the AI Gateway authenticates through OIDC per request, so no env var is visible here.
@@ -130,6 +147,11 @@ export async function processVisit(store: EventStore, input: VisitInput): Promis
       simulated = true;
       transcript = FIXTURE_TRANSCRIPT;
     }
+  }
+
+  // Real audio that came back as an echo of the hint was not heard: save nothing, invent nothing.
+  if (input.audio && !input.transcript && !simulated && isPromptEcho(transcript)) {
+    throw new NothingHeardError(NOTHING_HEARD);
   }
 
   // Speech to text has to run first on audio: the Fence needs words to check.
