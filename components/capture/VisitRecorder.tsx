@@ -12,6 +12,7 @@ type Phase =
   | { name: "consent" }
   | { name: "ready" }
   | { name: "recording" }
+  | { name: "listening"; label: string }
   | { name: "processing" }
   | { name: "done"; result: VisitResponse }
   | { name: "error"; message: string };
@@ -56,7 +57,7 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
   const recorderRef = useRef<MediaRecorder | null>(null);
   const playerRef = useRef<HTMLAudioElement | null>(null);
   const [clip, setClip] = useState(0);
-  const [playing, setPlaying] = useState<string | null>(null);
+  const clipRef = useRef<{ blob: Blob; file: string } | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -155,28 +156,37 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
   function stopClip() {
     playerRef.current?.pause();
     playerRef.current = null;
-    setPlaying(null);
+  }
+
+  /** Ends the "visit": stops the clip and sends the whole file, like stopping a recording. */
+  function analyzeClip() {
+    const pending = clipRef.current;
+    stopClip();
+    clipRef.current = null;
+    if (pending) upload(pending.blob, pending.file);
   }
 
   /**
-   * Plays the chosen role played visit out loud while the same file goes through the real
-   * pipeline, so the room hears the doctor while Qwida reads it.
+   * The room hears the role played visit first, as if it were happening; when it ends (or the
+   * presenter taps Analizar ahora) the same file goes through the real pipeline.
    */
   async function sendDemoClip() {
     const { file, label } = DEMO_CLIPS[clip];
     stopClip();
-    const player = new Audio(`/demo/${file}`);
-    player.onended = () => setPlaying(null);
-    playerRef.current = player;
-    setPlaying(label);
-    player.play().catch(() => setPlaying(null));
     try {
       const res = await fetch(`/demo/${file}`);
       if (!res.ok) throw new Error();
-      upload(await res.blob(), file);
+      clipRef.current = { blob: await res.blob(), file };
     } catch {
       setPhase({ name: "error", message: "No encontramos la grabación de demostración." });
+      return;
     }
+    const player = new Audio(`/demo/${file}`);
+    player.onended = analyzeClip;
+    playerRef.current = player;
+    setPhase({ name: "listening", label });
+    // No sound allowed (autoplay rules): analyze right away rather than wait in silence.
+    player.play().catch(analyzeClip);
   }
 
   function restart() {
@@ -298,12 +308,11 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
         </>
       )}
 
-      {playing && (
-        <div role="status" className="flex items-center gap-3 rounded-2xl bg-sand px-4 py-3 text-lg">
-          <span className="mr-auto">Sonando: {playing}</span>
-          <button type="button" onClick={stopClip} className="font-bold underline">
-            Detener
-          </button>
+      {phase.name === "listening" && (
+        <div role="status" className="flex flex-col gap-4 rounded-2xl bg-sand p-5">
+          <p className="text-2xl font-bold">Escuchando la consulta…</p>
+          <p className="text-lg text-ink-soft">{phase.label}</p>
+          <BigButton onClick={analyzeClip}>Analizar ahora</BigButton>
         </div>
       )}
 

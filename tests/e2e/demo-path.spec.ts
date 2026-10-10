@@ -45,6 +45,9 @@ test("2. Paciente: Grabar mi cita con la grabación de demostración", async () 
   await page.getByLabel("Médico acepta").check();
   await page.getByRole("button", { name: "Continuar" }).click();
   await page.getByRole("button", { name: /Usar la grabación de demostración/ }).click();
+  // The clip plays first like a real visit; the presenter can end it early.
+  // If the browser blocks sound, analysis starts on its own and the button never shows.
+  await page.getByRole("button", { name: "Analizar ahora" }).click({ timeout: 5_000 }).catch(() => {});
 
   const visit = page.getByRole("region", { name: "Grabar la visita médica" });
   await expect(visit.getByRole("heading", { name: "Lo que escuchamos" })).toBeVisible({ timeout: AI_TIMEOUT });
