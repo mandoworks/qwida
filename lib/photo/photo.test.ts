@@ -8,7 +8,7 @@ import { buildIcs } from "@/lib/weekcard/ics";
 import { FIXTURE_APPOINTMENT, FIXTURE_HANDWRITTEN, FIXTURE_LABEL } from "./fixture";
 import { processPhoto } from "./pipeline";
 import { refillCountdown, unitsPerDose } from "./refill";
-import { applyTrust, deriveSlots, drugKey, HANDWRITTEN_BADGE, LABEL_RESCAN_TEXT } from "./trust";
+import { applyTrust, deriveSlots, drugKey, guardClass, HANDWRITTEN_BADGE, LABEL_RESCAN_TEXT } from "./trust";
 
 const heard = (drug: string, dose: string | null): HeardPrescription => ({
   drug,
@@ -299,5 +299,20 @@ describe("drugKey", () => {
     expect(drugKey("Metformin")).toBe(drugKey("metformina"));
     expect(drugKey("Losartán potásico")).toBe(drugKey("losartan"));
     expect(drugKey("losartan")).not.toBe(drugKey("omeprazol"));
+  });
+});
+
+describe("guardClass", () => {
+  it("keeps a real label, with pharmacy or Rx number, as a label", () => {
+    expect(guardClass(FIXTURE_LABEL).class).toBe("rx_label");
+  });
+  it("treats a 'label' with no pharmacy and no Rx number as handwriting", () => {
+    const p = FIXTURE_LABEL.prescription!;
+    const pad = {
+      ...FIXTURE_LABEL,
+      prescription: { ...p, pharmacy: { ...p.pharmacy, value: null }, rx_number: { ...p.rx_number, value: null } },
+    };
+    expect(guardClass(pad).class).toBe("rx_handwritten");
+    expect(applyTrust(guardClass(pad)).trusted).toBe(false);
   });
 });

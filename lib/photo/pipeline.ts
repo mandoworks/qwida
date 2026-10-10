@@ -7,7 +7,7 @@ import type { HeardPrescription } from "@/lib/visit/schema";
 import { referidoExpiresOn } from "./dates";
 import { pickFixture } from "./fixture";
 import { PhotoExtraction, type PhotoResponse } from "./schema";
-import { applyTrust, LABEL_RESCAN_TEXT } from "./trust";
+import { applyTrust, guardClass, LABEL_RESCAN_TEXT } from "./trust";
 
 /** Vision model through the Vercel AI Gateway. Swap here, nowhere else. */
 export const PHOTO_MODEL = "anthropic/claude-sonnet-5.5";
@@ -81,7 +81,7 @@ export async function processPhoto(store: EventStore, input: PhotoInput): Promis
   let extraction: PhotoExtraction | null = null;
   if (!simulated) {
     try {
-      extraction = await extractPhoto(input.image, input.mediaType, input.hint);
+      extraction = guardClass(await extractPhoto(input.image, input.mediaType, input.hint));
     } catch (err) {
       console.error("photo extraction failed, using SIMULADO fixture", err);
       simulated = true;

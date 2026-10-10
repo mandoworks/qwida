@@ -95,6 +95,16 @@ export type TrustResult = {
 };
 
 /** Deterministic trust rules for one photo. The model only reads; this decides what is believed. */
+/**
+ * A pharmacy label always prints the pharmacy and an Rx number. A "label" with neither
+ * is a prescription pad the model misread, so it is treated as handwriting: never trusted.
+ */
+export function guardClass(x: PhotoExtraction): PhotoExtraction {
+  const p = x.prescription;
+  if (x.class !== "rx_label" || !p) return x;
+  return p.pharmacy.value || p.rx_number.value ? x : { ...x, class: "rx_handwritten" };
+}
+
 export function applyTrust(x: PhotoExtraction, visit?: HeardPrescription[]): TrustResult {
   switch (x.class) {
     case "rx_handwritten":
