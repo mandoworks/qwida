@@ -112,6 +112,22 @@ export function ProviderDirectory() {
     <div className="flex flex-col gap-6">
       {!loaded && <Loading />}
 
+      {/* Credit the data source up front, before any search. */}
+      <div className="flex items-center gap-4 rounded-2xl border-2 border-line-strong bg-surface p-4">
+        {/* eslint-disable-next-line @next/next/no-img-element -- small partner logo, static file */}
+        <img src="/art/medseek-logo.png" alt="MedSeek" width={120} height={40} className="h-10 w-auto shrink-0 object-contain" />
+        <p className="text-p-meta text-ink-soft">
+          Datos públicos reales de médicos en Puerto Rico, gracias a MedSeek PR ·{" "}
+          <a href="https://medseekpr.com" target="_blank" rel="noreferrer noopener" className="font-bold underline">
+            medseekpr.com
+          </a>{" "}
+          ·{" "}
+          <a href="https://www.instagram.com/medseekpr/" target="_blank" rel="noreferrer noopener" className="font-bold underline">
+            @medseekpr
+          </a>
+        </p>
+      </div>
+
       {/* Referral countdown on top */}
       {referido && (
         <section aria-label="Su referido" className="yari-card bg-surface p-6">
@@ -226,6 +242,8 @@ export function ProviderDirectory() {
                 <p className="text-p-body font-bold text-ink">{p.name}</p>
                 <p className="mt-1 text-p-body capitalize text-ink-soft">{p.specialty}</p>
                 <p className="mt-1 text-p-body text-ink-soft">{p.municipio}</p>
+                {p.address && <p className="mt-1 text-p-meta text-ink-soft">{p.address}</p>}
+                {p.license_status && <p className="mt-1 text-p-meta text-ink-mute">Licencia: {p.license_status.toLowerCase()}</p>}
                 {p.phone && (
                   <a
                     href={`tel:${p.phone.replace(/[^+\d]/g, "")}`}
