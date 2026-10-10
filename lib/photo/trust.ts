@@ -41,9 +41,13 @@ function trustFields(raw: Record<string, Field>, handwritten: boolean): TrustedF
   return out;
 }
 
-/** First word of a drug name, without accents: "Losartán potásico" and "losartan" match. */
-function drugKey(s: string): string {
-  return normalize(s).split(" ")[0] ?? "";
+/**
+ * First word of a drug name, without accents or a final vowel: "Losartán potásico" and
+ * "losartan" match, and so do English and Spanish spellings ("omeprazole", "omeprazol";
+ * "amlodipine", "amlodipino"; "metformin", "metformina").
+ */
+export function drugKey(s: string): string {
+  return (normalize(s).split(" ")[0] ?? "").replace(/[aeo]$/, "");
 }
 
 /** "50 mg", "50 miligramos" and "50mg" compare equal. Returns null when no number is present. */
