@@ -11,6 +11,8 @@ export const EVENT_KINDS = [
   "nudge",
   "fence",
   "voice_note",
+  "lab",
+  "doctor_note",
 ] as const;
 
 export const EVENT_STATUSES = ["BORRADOR", "POR_CONFIRMAR", "CONFIRMADO"] as const;

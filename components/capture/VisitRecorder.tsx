@@ -288,7 +288,8 @@ function ItemCard({
 
 function VisitResult({ result, onAgain }: { result: VisitResponse; onAgain: () => void }) {
   const { extraction: x, fence } = result;
-  const empty = !x.prescriptions.length && !x.referidos.length && !x.next_appointment;
+  const empty =
+    !x.prescriptions.length && !x.referidos.length && !x.labs.length && !x.doctor_notes.length && !x.next_appointment;
   return (
     <div className="flex flex-col gap-5">
       {fence.emergency && <EmergencyBanner className="-mx-5" />}
@@ -301,7 +302,7 @@ function VisitResult({ result, onAgain }: { result: VisitResponse; onAgain: () =
       {fence.triggered && <FenceNotice className="text-xl" />}
 
       {/* On an emergency nothing is extracted on purpose; this line would read as if we listened and found nothing. */}
-      {empty && !fence.emergency && <p>No encontramos recetas, referidos ni citas en la grabación.</p>}
+      {empty && !fence.emergency && <p>No encontramos recetas, referidos, laboratorios ni citas en la grabación.</p>}
 
       {x.prescriptions.length > 0 && (
         <div>
@@ -325,6 +326,34 @@ function VisitResult({ result, onAgain }: { result: VisitResponse; onAgain: () =
             {x.referidos.map((r, i) => (
               <ItemCard key={i} title={r.specialty ?? "Especialista"} needsConfirmation={r.needs_confirmation} quote={r.source_quote}>
                 <Field label="Especialidad" value={r.specialty} />
+              </ItemCard>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {x.labs.length > 0 && (
+        <div>
+          <h3 className="mb-3 text-2xl font-bold">Laboratorios</h3>
+          <ul className="flex flex-col gap-4">
+            {x.labs.map((l, i) => (
+              <ItemCard key={i} title={l.test ?? "Laboratorio"} needsConfirmation={l.needs_confirmation} quote={l.source_quote}>
+                <Field label="Laboratorio" value={l.test} />
+                <Field label="Cuándo" value={l.timing_text} />
+                {l.fasting && <Field label="En ayunas" value="Sí" />}
+              </ItemCard>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {x.doctor_notes.length > 0 && (
+        <div>
+          <h3 className="mb-3 text-2xl font-bold">El médico también dijo</h3>
+          <ul className="flex flex-col gap-4">
+            {x.doctor_notes.map((n, i) => (
+              <ItemCard key={i} title={n.topic} needsConfirmation={false} quote={n.source_quote}>
+                {null}
               </ItemCard>
             ))}
           </ul>

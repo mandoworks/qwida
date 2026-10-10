@@ -23,6 +23,8 @@ Reglas:
 - source_quote debe ser una cita literal de la transcripción.
 - resolved_date solo si se dijo una fecha de calendario exacta; "en tres meses" deja resolved_date en null.
 - Medicamentos que la paciente ya toma y no cambiaron no son recetas nuevas.
+- labs: cada laboratorio o estudio que el médico ordenó (sangre, orina, placa, sonograma). fasting en true solo si dijo "en ayunas" para ese laboratorio.
+- doctor_notes: cualquier otra indicación del médico que no sea receta, referido, laboratorio ni cita (dieta, ejercicio, señales de alarma, qué traer). source_quote son sus palabras exactas; topic son dos o tres palabras. Nunca la reescribas ni añadas nada.
 - No des consejos médicos ni recomendaciones. Solo extrae.`;
 
 export function hasAiKey(): boolean {
@@ -74,6 +76,12 @@ export function enforceUncertainty(x: VisitExtraction): VisitExtraction {
       ...r,
       needs_confirmation: r.needs_confirmation || !r.specialty,
     })),
+    labs: x.labs.map((l) => ({
+      ...l,
+      needs_confirmation: l.needs_confirmation || !l.test || !l.timing_text,
+    })),
+    // A note is the doctor's own words; one without a quote is not something the doctor said.
+    doctor_notes: x.doctor_notes.filter((n) => n.source_quote.trim() !== ""),
     next_appointment: appt
       ? {
           ...appt,
@@ -91,6 +99,8 @@ type VisitInput = { householdId: string; audio?: Uint8Array; transcript?: string
 export const EMPTY_EXTRACTION: VisitExtraction = {
   prescriptions: [],
   referidos: [],
+  labs: [],
+  doctor_notes: [],
   next_appointment: null,
   questions_back: [],
 };
@@ -170,6 +180,12 @@ async function saveVisit(
   const children: NewEvent[] = [
     ...v.extraction.referidos.map(
       (r): NewEvent => ({ ...base, kind: "referido", payload: { ...tag, ...r, visitId: visit.id } }),
+    ),
+    ...v.extraction.labs.map(
+      (l): NewEvent => ({ ...base, kind: "lab", payload: { ...tag, ...l, visitId: visit.id } }),
+    ),
+    ...v.extraction.doctor_notes.map(
+      (n): NewEvent => ({ ...base, kind: "doctor_note", payload: { ...tag, ...n, visitId: visit.id } }),
     ),
     ...(v.extraction.next_appointment
       ? [
