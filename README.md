@@ -12,6 +12,16 @@ Built for the Caribbean AI Summit Healthcare Hackathon, Puerto Rico, October 202
 Every person, doctor, pharmacy, plan and recording in this repo is fictional. The demo case is
 Doña Carmen Rivera (78, Adjuntas) and her daughter Marisol (Orlando). No real health information.
 
+## Judges quickstart (no login)
+
+1. Open https://qwida.vercel.app and choose **Paciente** (Doña Carmen) or **Familia** (Marisol).
+2. **Demo completa, con visita grabada** (home screen) loads a recorded visit waiting for Familia to review.
+   **Reiniciar demo** starts clean. Everything is synthetic: no real patient data anywhere.
+3. Try it: Grabar mi Cita (demo clip or your own voice), Foto (a pharmacy label or a handwritten prescription),
+   then Familia, Revisar, Confirmar, and send the week card to Mamá.
+4. How it was built: [`/ledger`](https://qwida.vercel.app/ledger) (every AI token, Yari's hand drawn art time,
+   every tool and API) and [`/tools`](https://qwida.vercel.app/tools).
+
 ## Run it
 
 ```bash
