@@ -134,5 +134,117 @@
         }
       ]
     }
+  ],
+  "everything": [
+    {
+      "group": "APIs the live app calls · APIs que usa la app",
+      "items": [
+        {
+          "name": "OpenAI gpt-4o-transcribe",
+          "does": "Speech to text for visit recordings, through the Vercel AI SDK, tried after the AI Gateway as fallback.",
+          "url": "https://platform.openai.com/docs/models/gpt-4o-transcribe"
+        },
+        {
+          "name": "OpenAI gpt-4o",
+          "does": "Visit extraction, photo reading and the week card, through the Vercel AI SDK with fallback.",
+          "url": "https://platform.openai.com/docs/models/gpt-4o"
+        },
+        {
+          "name": "MedSeek PR API",
+          "does": "Real provider directory for Puerto Rico. Thanks to MedSeek (Instagram @medseekpr).",
+          "url": "https://medseekpr.com"
+        },
+        {
+          "name": "ORCPS public license snapshot",
+          "does": "Local backup of public provider licenses, used when the live directory is not available."
+        },
+        {
+          "name": "Upstash Redis",
+          "does": "Event store behind the shared care state.",
+          "url": "https://upstash.com"
+        },
+        {
+          "name": "Vercel",
+          "does": "Hosting and the AI Gateway.",
+          "url": "https://vercel.com"
+        },
+        {
+          "name": "Web Speech API",
+          "does": "The browser reads the card aloud (speech synthesis).",
+          "url": "https://developer.mozilla.org/docs/Web/API/Web_Speech_API"
+        }
+      ]
+    },
+    {
+      "group": "How we built it · Cómo lo construimos",
+      "items": [
+        {
+          "name": "Claude Code (Opus and Sonnet)",
+          "does": "Coding agent for most app code, under human review.",
+          "url": "https://claude.com/claude-code"
+        },
+        {
+          "name": "Antigravity CLI (Gemini)",
+          "does": "Second coding agent family, used for parallel work."
+        },
+        {
+          "name": "OpenCode",
+          "does": "Coding agent that ran on free tier models.",
+          "url": "https://opencode.ai"
+        },
+        {
+          "name": "Herdr",
+          "does": "Terminal panes to run several agents side by side."
+        },
+        {
+          "name": "Hindsight",
+          "does": "Self-hosted shared memory for all agents across our machines."
+        },
+        {
+          "name": "PioRelay",
+          "does": "Agent to agent mailbox between our agents."
+        },
+        {
+          "name": "tokscale",
+          "does": "Reads the agents' own logs and feeds the token numbers on this page.",
+          "url": "https://github.com/junhoyeo/tokscale"
+        },
+        {
+          "name": "Playwright and Vitest",
+          "does": "End to end and unit tests.",
+          "url": "https://playwright.dev"
+        },
+        {
+          "name": "edge-tts and ffmpeg",
+          "does": "Synthetic voices and video processing for the demo audio.",
+          "url": "https://ffmpeg.org"
+        },
+        {
+          "name": "GitHub",
+          "does": "Source code and review.",
+          "url": "https://github.com/mandoworks/qwida"
+        },
+        {
+          "name": "Vercel",
+          "does": "Builds and deploys every push.",
+          "url": "https://vercel.com"
+        }
+      ]
+    },
+    {
+      "group": "Made by hand · Hecho a mano",
+      "items": [
+        {
+          "name": "Procreate (Yari)",
+          "does": "Every image, icon and the logo, drawn by hand.",
+          "url": "https://procreate.com"
+        },
+        {
+          "name": "Canva (Heather)",
+          "does": "The pitch deck, built by hand.",
+          "url": "https://www.canva.com"
+        }
+      ]
+    }
   ]
 }

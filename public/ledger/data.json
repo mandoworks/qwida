@@ -1388,6 +1388,60 @@
   "tool": "Procreate",
   "pieces": 13,
   "minutes_total": 758,
-  "strokes_total": 9545
+  "strokes_total": 9545,
+  "per_piece": [
+   {
+    "minutes": 131,
+    "strokes": 1464
+   },
+   {
+    "minutes": 100,
+    "strokes": 1242
+   },
+   {
+    "minutes": 80,
+    "strokes": 918
+   },
+   {
+    "minutes": 61,
+    "strokes": 759
+   },
+   {
+    "minutes": 32,
+    "strokes": 333
+   },
+   {
+    "minutes": 15,
+    "strokes": 214
+   },
+   {
+    "minutes": 32,
+    "strokes": 428
+   },
+   {
+    "minutes": 24,
+    "strokes": 373
+   },
+   {
+    "minutes": 20,
+    "strokes": 386
+   },
+   {
+    "minutes": 91,
+    "strokes": 1567
+   },
+   {
+    "minutes": 51,
+    "strokes": 805
+   },
+   {
+    "minutes": 61,
+    "strokes": 715
+   },
+   {
+    "minutes": 60,
+    "strokes": 341
+   }
+  ]
  }
 }

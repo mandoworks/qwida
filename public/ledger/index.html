@@ -36,6 +36,7 @@ video{width:100%;max-width:320px;border-radius:12px;border:1px solid var(--line)
 .vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 .vids figure{margin:0}.vids video{max-width:100%;display:block}
 figcaption{font-size:13px;color:var(--muted);margin-top:4px}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}h3{font-size:15px;margin:0 0 8px}.used li{margin:6px 0}ul.used{padding-left:18px;margin:6px 0}
 .sub{font-size:13px;font-weight:400;color:var(--muted);margin-left:8px}
 .tiles.two{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .tile .k b{color:var(--ink)}
@@ -50,6 +51,9 @@ a{color:var(--bar)}
 
 <h2 id="hand">Hecho a mano <span class="sub">Made by hand</span></h2>
 <div class="tiles two" id="handTiles"></div>
+<div class="card" id="cmp"></div>
+<div class="charts"><div class="card"><h3>Minutos por pieza <span class="sub">Minutes per piece</span></h3><svg id="artMin" role="img" aria-label="Minutes per piece"></svg></div>
+<div class="card"><h3>Trazos por pieza <span class="sub">Strokes per piece</span></h3><svg id="artStr" role="img" aria-label="Strokes per piece"></svg></div></div>
 <div class="vids" id="vids"></div>
 <p class="lede">Arte de Yari, dibujado a mano en Procreate. Presentación de Heather, hecha a mano en Canva (unas 6 a 7 horas, estimado de ella).</p>
 
@@ -69,6 +73,9 @@ a{color:var(--bar)}
 <h2>Every session</h2>
 <p class="lede">One row per agent session and model. Session ids are the first 8 characters of each agent session id. Raw data: <a href="/ledger/data.json">data.json</a>.</p>
 <div class="card"><table id="sessions"></table></div>
+
+<h2 id="everything">Todo lo que usamos <span class="sub">Everything we used</span></h2>
+<div id="used"></div>
 
 <h2>What this does and does not cover</h2>
 <div class="note">
@@ -126,6 +133,17 @@ fetch("/ledger/data.json").then(r=>r.json()).then(d=>{
     document.getElementById("handTiles").innerHTML=
       `<div class="tile"><div class="v">${hrs} h · ${A.strokes_total.toLocaleString()}</div><div class="k">Human time and strokes: <b>${A.artist}</b>, ${A.pieces} pieces in ${A.tool}, tracked by the app (tiempo humano, trazos)</div></div>`+
       `<div class="tile"><div class="v">${fmt(all.t)} · ${d.sessions.length}</div><div class="k">AI tokens processed and agent sessions, Qwida repositories only, from the logs below (tokens y sesiones de agentes)</div></div>`}
+
+  const PP=(A&&A.per_piece)||[],PM=PP.map(x=>x.minutes),PS=PP.map(x=>x.strokes);
+  function bars(id,vals,unit){const sv=document.getElementById(id),w=420,rh=22,lw=62,mx=Math.max(...vals);sv.setAttribute("viewBox",`0 0 ${w} ${vals.length*rh+4}`);sv.setAttribute("width","100%");
+    vals.forEach((v,i)=>{const y=i*rh+2,bw=Math.max(3,(w-lw-56)*v/mx),g=el("g",{},sv);el("text",{x:lw-6,y:y+14,"text-anchor":"end",class:"lbl"},sv).textContent="Pieza "+(i+1);
+      el("rect",{x:lw,y:y+2,width:bw,height:rh-6,rx:3,class:"bar"},g);el("rect",{x:0,y,width:w,height:rh,fill:"transparent"},g);el("text",{x:lw+bw+6,y:y+14},sv).textContent=v.toLocaleString();
+      hover(g,`<b>Pieza ${i+1}</b><br>${v.toLocaleString()} ${unit}`)})}
+  bars("artMin",PM,"min");bars("artStr",PS,"trazos");
+  if(A){const hh=A.minutes_total/60,tps=Math.round(all.t/A.strokes_total);
+    document.getElementById("cmp").innerHTML=`<p><b>Por mano:</b> Yari ${hh.toFixed(1)} h y ${A.strokes_total.toLocaleString()} trazos. Heather, unas 6 a 7 h (estimado de ella). <b>Con IA:</b> ${fmt(all.t)} tokens en ${d.sessions.length} sesiones de agentes, solo repositorios Qwida.</p><p class="lede">By hand: Yari ${hh.toFixed(1)} h, ${A.strokes_total.toLocaleString()} strokes; Heather about 6 to 7 h (her estimate). AI: ${fmt(all.t)} tokens, ${d.sessions.length} Qwida agent sessions. That is about ${tps.toLocaleString()} tokens for every hand stroke.</p>`}
+  fetch("/tools/tools.json").then(r=>r.json()).then(t=>{const e=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    document.getElementById("used").innerHTML=(t.everything||[]).map(g=>`<h3>${e(g.group)}</h3><ul class="used">${g.items.map(i=>`<li><strong>${i.url?`<a href="${e(i.url)}" rel="noopener">${e(i.name)}</a>`:e(i.name)}</strong>: ${e(i.does)}</li>`).join("")}</ul>`).join("")});
   const v=d.timelapses||[];
   document.getElementById("vids").innerHTML=v.map(t=>`<figure><video src="${t.file}" controls muted loop playsinline preload="none"></video><figcaption>${t.title}${t.minutes!=null?" · "+t.minutes+" min":""}${t.strokes!=null?" · "+t.strokes+" trazos":""}</figcaption></figure>`).join("");
 }).catch(()=>{document.getElementById("tiles").textContent="Could not load data.json."});
