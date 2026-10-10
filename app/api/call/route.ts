@@ -7,6 +7,15 @@ interface CallRequest {
   trigger?: string;
 }
 
+/** Real calls go only to these numbers (CALL_ALLOWED_NUMBERS, comma separated E.164). Empty: never a real call. */
+function allowedNumbers(): Set<string> {
+  return new Set((process.env.CALL_ALLOWED_NUMBERS ?? "").split(",").map((n) => n.trim()).filter(Boolean));
+}
+
+function escapeXml(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+}
+
 /**
  * Outbound voice reminder call endpoint.
  * In production: Triggers an automated outbound call via Twilio Voice API with TwiML / TTS.
@@ -17,7 +26,7 @@ export async function POST(req: Request) {
     const body: CallRequest = await req.json().catch(() => ({}));
     const to = body.to || "+17875550192";
     const recipientName = body.recipientName || "Doña Carmen";
-    const message = body.message || "Recordatorio de medicamento.";
+    const message = (body.message || "Recordatorio de medicamento.").slice(0, 300);
 
     const sid = process.env.TWILIO_ACCOUNT_SID;
     const token = process.env.TWILIO_AUTH_TOKEN;
@@ -25,10 +34,13 @@ export async function POST(req: Request) {
 
     const speechScript = `Bendición ${recipientName}. De parte de su familia en Qwida le recordamos: ${message}. Que pase un lindo día.`;
 
-    // Real Twilio Voice execution if credentials are provided
+    // Real Twilio Voice execution only with credentials and a number on the family list.
+    if (sid && token && !allowedNumbers().has(to)) {
+      return NextResponse.json({ ok: false, error: "Ese número no está en la lista de la familia." }, { status: 403 });
+    }
     if (sid && token) {
       const auth = Buffer.from(`${sid}:${token}`).toString("base64");
-      const twiml = `<Response><Say language="es-MX" voice="Polly.Mia">${speechScript}</Say></Response>`;
+      const twiml = `<Response><Say language="es-MX" voice="Polly.Mia">${escapeXml(speechScript)}</Say></Response>`;
       
       const params = new URLSearchParams();
       params.set("To", to);

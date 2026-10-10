@@ -75,6 +75,10 @@ describe("processVisit without a key", () => {
       expect(r.events.map((e) => e.kind)).toEqual(["visit", "referido", "appointment"]);
       expect(r.events.every((e) => e.status === "BORRADOR")).toBe(true);
       expect(r.events.every((e) => e.payload.synthetic === true && e.payload.simulated === true)).toBe(true);
+      expect(r.events[0].payload.consent).toBeNull();
+      const consent = { patient: true, doctor: true, at: "2026-10-10T13:00:00.000Z", device: "iPhone" } as const;
+      const withConsent = await processVisit(store, { householdId: "h", transcript: "x", consent });
+      expect(withConsent.events[0].payload.consent).toEqual(consent);
     } finally {
       if (saved.key !== undefined) process.env.AI_GATEWAY_API_KEY = saved.key;
       if (saved.oidc !== undefined) process.env.VERCEL_OIDC_TOKEN = saved.oidc;

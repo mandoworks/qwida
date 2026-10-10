@@ -1,6 +1,7 @@
 import { HOUSEHOLD_ID } from "@/lib/seed";
 import { getStore } from "@/lib/store";
-import { processVisit } from "@/lib/visit/pipeline";
+import { deviceLabel } from "@/lib/audit";
+import { processVisit, type VisitConsent } from "@/lib/visit/pipeline";
 
 export const maxDuration = 60;
 
@@ -15,6 +16,13 @@ const AUDIO_TYPES = /^(audio\/(webm|ogg|mp4|m4a|x-m4a|mpeg|mp3|wav|x-wav|aac)|vi
  *   householdId  optional, defaults to the demo household
  * Returns VisitResponse. Events are saved as BORRADOR.
  */
+/** The consent screen sends `consent=paciente,medico` once both boxes are checked. */
+function consentFrom(request: Request, form: FormData): VisitConsent | null {
+  const who = String(form.get("consent") ?? "").split(",");
+  if (!who.includes("paciente") || !who.includes("medico")) return null;
+  return { patient: true, doctor: true, at: new Date().toISOString(), device: deviceLabel(request.headers.get("user-agent")) };
+}
+
 export async function POST(request: Request) {
   let form: FormData;
   try {
@@ -45,7 +53,7 @@ export async function POST(request: Request) {
 
   try {
     const store = await getStore();
-    const result = await processVisit(store, { householdId, audio, transcript: text });
+    const result = await processVisit(store, { householdId, audio, transcript: text, consent: consentFrom(request, form) });
     return Response.json(result);
   } catch (err) {
     console.error("visit pipeline failed", err);

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { whoFrom } from "@/lib/audit";
 import { confirmPhoto } from "@/lib/photo/confirm";
 import { ConfirmBody } from "@/lib/photo/schema";
 import { HOUSEHOLD_ID } from "@/lib/seed";
@@ -16,7 +17,9 @@ export async function POST(request: Request) {
     return Response.json({ error: z.treeifyError(body.error) }, { status: 400 });
   }
   const store = await getStore();
-  const result = await confirmPhoto(store, { ...body.data, householdId: body.data.householdId ?? HOUSEHOLD_ID });
+  const householdId = body.data.householdId ?? HOUSEHOLD_ID;
+  const who = whoFrom(request, householdId, body.data.confirmedBy);
+  const result = await confirmPhoto(store, { ...body.data, householdId }, undefined, who);
   if (!result.ok) {
     return Response.json({ error: result.error, needsFrequency: result.needsFrequency ?? false }, { status: result.status });
   }

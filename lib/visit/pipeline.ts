@@ -85,7 +85,10 @@ export function enforceUncertainty(x: VisitExtraction): VisitExtraction {
   };
 }
 
-type VisitInput = { householdId: string; audio?: Uint8Array; transcript?: string };
+/** Both people said yes on the consent screen, when, and from which device. Stored on the visit. */
+export type VisitConsent = { patient: true; doctor: true; at: string; device: string | null };
+
+type VisitInput = { householdId: string; audio?: Uint8Array; transcript?: string; consent?: VisitConsent | null };
 
 /** What an emergency visit returns: nothing was extracted, on purpose. */
 export const EMPTY_EXTRACTION: VisitExtraction = {
@@ -143,14 +146,14 @@ export async function processVisit(store: EventStore, input: VisitInput): Promis
     }
   }
 
-  const events = await saveVisit(store, input.householdId, { transcript, fence, extraction, simulated });
+  const events = await saveVisit(store, input.householdId, { transcript, fence, extraction, simulated, consent: input.consent ?? null });
   return { simulated, transcript, fence, extraction, events };
 }
 
 async function saveVisit(
   store: EventStore,
   householdId: string,
-  v: { transcript: string; fence: FenceResult; extraction: VisitExtraction; simulated: boolean },
+  v: { transcript: string; fence: FenceResult; extraction: VisitExtraction; simulated: boolean; consent: VisitConsent | null },
 ): Promise<QuidaEvent[]> {
   const base = { householdId, source: "voice" as const, status: "BORRADOR" as const, confidence: null };
   const tag = { synthetic: true, simulated: v.simulated };
@@ -164,6 +167,7 @@ async function saveVisit(
       prescriptions: v.extraction.prescriptions,
       questions_back: v.extraction.questions_back,
       fence: v.fence.triggered ? v.fence : null,
+      consent: v.consent,
     },
   });
 

@@ -1,3 +1,4 @@
+import type { Who } from "@/lib/audit";
 import type { EventStore, QuidaEvent } from "@/lib/store/types";
 import { isIsoDate, referidoExpiresOn, todayPR } from "./dates";
 import { refillCountdown, unitsPerDose } from "./refill";
@@ -38,6 +39,8 @@ export async function confirmPhoto(
   store: EventStore,
   body: Required<Pick<ConfirmBody, "eventId" | "householdId">> & { values: Values; confirmedBy: "patient" | "caregiver" },
   today = todayPR(),
+  who: Who = { name: null, device: null },
+  now = new Date(),
 ): Promise<ConfirmResult> {
   const event = (await store.list(body.householdId)).find((e) => e.id === body.eventId);
   if (!event) return { ok: false, status: 404, error: "No encontramos esa foto." };
@@ -51,13 +54,19 @@ export async function confirmPhoto(
     return { ok: false, status: 400, error: "Esta foto no se puede confirmar." };
   }
 
+  const stamp = {
+    confirmedBy: body.confirmedBy,
+    confirmedAt: now.toISOString(),
+    confirmedName: who.name,
+    confirmedDevice: who.device,
+  };
   const v = mergeValues((event.payload.fields ?? {}) as TrustedFields, body.values);
   const edited = Object.keys(body.values);
   const common = {
     synthetic: true,
     simulated: event.payload.simulated === true,
     fromEventId: event.id,
-    confirmedBy: body.confirmedBy,
+    ...stamp,
     edited,
   };
   const source = body.confirmedBy === "caregiver" ? "caregiver" : "photo";
@@ -99,7 +108,7 @@ export async function confirmPhoto(
     // The label itself is now confirmed and points at its schedule.
     const confirmed = await store.update(event.id, {
       status: "CONFIRMADO",
-      payload: { confirmedBy: body.confirmedBy, edited, scheduleId: created.id },
+      payload: { ...stamp, edited, scheduleId: created.id },
     });
     return { ok: true, confirmed: confirmed ?? event, created };
   }
@@ -113,7 +122,7 @@ export async function confirmPhoto(
     const confirmed = await store.update(event.id, {
       status: "CONFIRMADO",
       payload: {
-        confirmedBy: body.confirmedBy,
+        ...stamp,
         edited,
         date: time ? `${day}T${time}:00${PR_OFFSET}` : day,
         time,
@@ -134,7 +143,7 @@ export async function confirmPhoto(
   const confirmed = await store.update(event.id, {
     status: "CONFIRMADO",
     payload: {
-      confirmedBy: body.confirmedBy,
+      ...stamp,
       edited,
       specialty: str(v.specialty),
       issue_date: issue,

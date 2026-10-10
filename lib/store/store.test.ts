@@ -145,8 +145,38 @@ describe.each(stores)("EventStore contract: %s", (_, make) => {
     await s.create(ev("h", { old: true }));
     const before = await s.lastResetAt("h");
     await s.reset([ev("h", { seed: 1 }), ev("h", { seed: 2 })]);
-    expect((await s.list("h")).map((e) => e.payload)).toEqual([{ seed: 1 }, { seed: 2 }]);
+    expect(await s.list("h")).toMatchObject([{ payload: { seed: 1 } }, { payload: { seed: 2 } }]);
+    expect(await s.list("h")).toHaveLength(2);
     expect((await s.lastResetAt("h")) > before).toBe(true);
+  });
+
+  it("get returns one event by id, or null", async () => {
+    const s = make();
+    const a = await s.create(ev("h", { p: 1 }));
+    expect(await s.get(a.id)).toMatchObject({ id: a.id, payload: { p: 1 } });
+    expect(await s.get("missing")).toBeNull();
+  });
+
+  it("keeps a paper trail: create starts it, each status change appends, a payload edit does not", async () => {
+    const s = make();
+    const a = await s.create(ev("h", { p: 1 }));
+    expect(a.payload.history).toEqual([{ status: "BORRADOR", at: a.createdAt, by: null, name: null, device: null }]);
+    await s.update(a.id, { payload: { p: 2 } });
+    const stamp = { confirmedBy: "caregiver", confirmedName: "Marisol Rivera", confirmedDevice: "iPhone" };
+    const u = await s.update(a.id, { status: "CONFIRMADO", payload: stamp });
+    expect(u!.payload.history).toEqual([
+      { status: "BORRADOR", at: a.createdAt, by: null, name: null, device: null },
+      { status: "CONFIRMADO", at: u!.updatedAt, by: "caregiver", name: "Marisol Rivera", device: "iPhone" },
+    ]);
+  });
+
+  it("never lets a payload patch replace the trail", async () => {
+    const s = make();
+    const a = await s.create(ev("h"));
+    const u = await s.update(a.id, { status: "POR_CONFIRMAR", payload: { history: [] } });
+    expect(u!.payload.history).toHaveLength(2);
+    const v = await s.update(a.id, { payload: { history: [] } });
+    expect(v!.payload.history).toHaveLength(2);
   });
 
   it("returns copies, not live references", async () => {
@@ -172,14 +202,15 @@ describe("RedisStore specifics", () => {
     await store.ensureSeeded("h", [ev("h", { seed: 1 })]);
     await store.create(ev("h", { live: 1 }));
     await new RedisStore(fake as unknown as Redis, 0).ensureSeeded("h", [ev("h", { seed: 1 })]);
-    expect((await store.list("h")).map((e) => e.payload)).toEqual([{ seed: 1 }, { live: 1 }]);
+    expect(await store.list("h")).toMatchObject([{ payload: { seed: 1 } }, { payload: { live: 1 } }]);
+    expect(await store.list("h")).toHaveLength(2);
   });
 
   it("keeps oversized photos out of Redis", async () => {
     const { store } = redisStore();
     const big = "data:image/jpeg;base64," + "A".repeat(MAX_IMAGE_CHARS);
     const e = await store.create(ev("h", { image: big, drug: "losartán" }));
-    expect(e.payload).toEqual({ image: null, image_omitted: true, drug: "losartán" });
+    expect(e.payload).toMatchObject({ image: null, image_omitted: true, drug: "losartán" });
     expect(capImage({ image: "data:small" })).toEqual({ image: "data:small" });
   });
 

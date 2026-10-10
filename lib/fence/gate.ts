@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Who } from "@/lib/audit";
 import type { EventKind, EventSource, EventStatus } from "@/lib/store/types";
 
 /** Who tapped. Only a person can move an event to CONFIRMADO. */
@@ -19,16 +20,25 @@ const CREATE_CONFIRMED: Partial<Record<EventKind, (payload: Record<string, unkno
 
 export type GateResult = { ok: true; payload: Record<string, unknown> } | { ok: false; error: string };
 
-/** Clients cannot write these keys; the gate sets them. */
+/** Clients cannot write these keys; the gate and the store set them. */
 function strip(payload: Record<string, unknown>): Record<string, unknown> {
   const rest = { ...payload };
   delete rest.confirmedBy;
   delete rest.confirmedAt;
+  delete rest.confirmedName;
+  delete rest.confirmedDevice;
+  delete rest.history;
   return rest;
 }
 
-function stamp(payload: Record<string, unknown>, by: ConfirmedBy, now: Date) {
-  return { ...payload, confirmedBy: by, confirmedAt: now.toISOString() };
+function stamp(payload: Record<string, unknown>, by: ConfirmedBy, now: Date, who?: Who) {
+  return {
+    ...payload,
+    confirmedBy: by,
+    confirmedAt: now.toISOString(),
+    confirmedName: who?.name ?? null,
+    confirmedDevice: who?.device ?? null,
+  };
 }
 
 const NEEDS_PERSON = 'CONFIRMADO necesita confirmedBy: "patient" o "caregiver".';
@@ -38,6 +48,7 @@ export function gateCreate(
   input: { kind: EventKind; source: EventSource; status: EventStatus; payload: Record<string, unknown> },
   confirmedBy: ConfirmedBy | undefined,
   now = new Date(),
+  who?: Who,
 ): GateResult {
   const payload = strip(input.payload);
   if (input.status !== "CONFIRMADO") return { ok: true, payload };
@@ -46,7 +57,7 @@ export function gateCreate(
   if (input.source === "system" || !allowed || !allowed(payload, confirmedBy)) {
     return { ok: false, error: `No se puede crear un ${input.kind} ya CONFIRMADO. Créelo como BORRADOR y confírmelo.` };
   }
-  return { ok: true, payload: stamp(payload, confirmedBy, now) };
+  return { ok: true, payload: stamp(payload, confirmedBy, now, who) };
 }
 
 /** Gate for PATCH /api/events. Any kind may be confirmed, but only by a person. */
@@ -54,9 +65,10 @@ export function gatePatch(
   patch: { status?: EventStatus; payload?: Record<string, unknown> },
   confirmedBy: ConfirmedBy | undefined,
   now = new Date(),
+  who?: Who,
 ): { ok: true; payload?: Record<string, unknown> } | { ok: false; error: string } {
   const payload = patch.payload && strip(patch.payload);
   if (patch.status !== "CONFIRMADO") return { ok: true, payload };
   if (!confirmedBy) return { ok: false, error: NEEDS_PERSON };
-  return { ok: true, payload: stamp(payload ?? {}, confirmedBy, now) };
+  return { ok: true, payload: stamp(payload ?? {}, confirmedBy, now, who) };
 }

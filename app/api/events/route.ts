@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { checkFence } from "@/lib/fence";
 import { fenceEvent } from "@/lib/fence/event";
+import { whoFrom } from "@/lib/audit";
 import { ConfirmedBy, gateCreate, gatePatch } from "@/lib/fence/gate";
 import { HOUSEHOLD_ID } from "@/lib/seed";
 import { EventStatus, getStore, NewEvent } from "@/lib/store";
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
     return Response.json({ error: z.treeifyError(body.error) }, { status: 400 });
   }
   const { confirmedBy, ...input } = body.data;
-  const gate = gateCreate(input, confirmedBy);
+  const gate = gateCreate(input, confirmedBy, new Date(), whoFrom(request, input.householdId, confirmedBy));
   if (!gate.ok) return Response.json({ error: gate.error }, { status: 403 });
 
   const store = await getStore();
@@ -72,7 +73,8 @@ const PatchBody = z
 
 /**
  * PATCH /api/events with { id, status?, payload?, confirmedBy? }. Payload merges
- * shallowly. Status CONFIRMADO needs confirmedBy, recorded with a timestamp.
+ * shallowly. Status CONFIRMADO needs confirmedBy, recorded with the person's name,
+ * device and a timestamp; every status change adds a line to `payload.history`.
  */
 export async function PATCH(request: Request) {
   const body = PatchBody.safeParse(await request.json().catch(() => null));
@@ -80,9 +82,11 @@ export async function PATCH(request: Request) {
     return Response.json({ error: z.treeifyError(body.error) }, { status: 400 });
   }
   const { id, confirmedBy, status, payload } = body.data;
-  const gate = gatePatch({ status, payload }, confirmedBy);
-  if (!gate.ok) return Response.json({ error: gate.error }, { status: 403 });
   const store = await getStore();
+  const current = await store.get(id);
+  if (!current) return Response.json({ error: "not found" }, { status: 404 });
+  const gate = gatePatch({ status, payload }, confirmedBy, new Date(), whoFrom(request, current.householdId, confirmedBy));
+  if (!gate.ok) return Response.json({ error: gate.error }, { status: 403 });
   const event = await store.update(id, { status, payload: gate.payload });
   if (!event) return Response.json({ error: "not found" }, { status: 404 });
   return Response.json({ event });

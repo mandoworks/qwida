@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { whoFrom } from "@/lib/audit";
 import { approveCard } from "@/lib/weekcard/approve";
 import { cleanCard } from "@/lib/weekcard/safety";
 import { WeekCard } from "@/lib/weekcard/schema";
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
   const result = await approveCard(store, body.data.card, {
     householdId: body.data.householdId,
     simulated: body.data.simulated,
+    who: whoFrom(request, body.data.householdId, "caregiver"),
   });
   return Response.json(result);
 }

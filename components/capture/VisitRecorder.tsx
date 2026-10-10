@@ -68,6 +68,7 @@ export function VisitRecorder({ onDone }: { onDone?: (result: VisitResponse) => 
     try {
       const form = new FormData();
       form.append("audio", blob, filename);
+      if (consent.paciente && consent.medico) form.append("consent", "paciente,medico");
       const res = await fetch("/api/visit", { method: "POST", body: form });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error ?? `Error ${res.status}`);

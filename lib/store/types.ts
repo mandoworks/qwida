@@ -65,7 +65,12 @@ export interface EventStore {
    */
   list(householdId: string, since?: string): Promise<QuidaEvent[]>;
   create(input: NewEvent): Promise<QuidaEvent>;
-  /** Sets status and shallow merges payload; bumps updatedAt. Returns null when the id does not exist. */
+  /** One event by id, or null. */
+  get(id: string): Promise<QuidaEvent | null>;
+  /**
+   * Sets status and shallow merges payload; bumps updatedAt. A status change appends one line to
+   * `payload.history` (see history.ts). Returns null when the id does not exist.
+   */
   update(id: string, patch: EventPatch): Promise<QuidaEvent | null>;
   /** Thin wrapper over update. Returns null when the id does not exist. */
   updateStatus(id: string, status: EventStatus): Promise<QuidaEvent | null>;
