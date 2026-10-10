@@ -19,6 +19,8 @@ const CHIPS: { id: TimelineGroup | "all"; key: StringKey }[] = [
   { id: "cita", key: "timeline.filter.cita" },
   { id: "receta", key: "timeline.filter.receta" },
   { id: "referido", key: "timeline.filter.referido" },
+  { id: "laboratorio", key: "timeline.filter.laboratorio" },
+  { id: "indicacion", key: "timeline.filter.indicacion" },
   { id: "nota", key: "timeline.filter.nota" },
   { id: "alerta", key: "timeline.filter.alerta" },
 ];
@@ -35,6 +37,8 @@ const FACT_LABEL: Record<string, StringKey> = {
   questions: "timeline.fact.questions",
   drug: "timeline.fact.drug",
   source: "timeline.fact.source",
+  when: "timeline.fact.when",
+  quote: "timeline.fact.quote",
 };
 
 /** Everything medical in order, filtered by type and by specialty (5.6). */

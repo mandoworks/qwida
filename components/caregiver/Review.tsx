@@ -30,6 +30,11 @@ const FIELDS: Partial<Record<QuidaEvent["kind"], { name: string; key: StringKey;
     { name: "specialty", key: "review.specialty" },
     { name: "referring_doctor", key: "timeline.fact.doctor" },
   ],
+  lab: [
+    { name: "test", key: "digest.change.lab" },
+    { name: "timing_text", key: "timeline.fact.when" },
+  ],
+  doctor_note: [{ name: "topic", key: "digest.change.doctorNote" }],
   voice_note: [{ name: "text", key: "review.transcript" }],
   fence: [{ name: "context", key: "timeline.fact.source" }],
 };
@@ -242,6 +247,8 @@ const ITEM_LABEL: Partial<Record<QuidaEvent["kind"], StringKey>> = {
   fence: "digest.change.fence",
   appointment: "digest.change.appointment",
   referido: "digest.change.referido",
+  lab: "digest.change.lab",
+  doctor_note: "digest.change.doctorNote",
 };
 
 /** Source quote plus the editable fields for the item being reviewed. */

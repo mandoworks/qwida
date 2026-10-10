@@ -32,6 +32,8 @@ describe("enforceUncertainty", () => {
     const out = enforceUncertainty({
       prescriptions: [{ drug: "omeprazol", dose: null, frequency: "en ayunas", needs_confirmation: false, source_quote: "q" }],
       referidos: [{ specialty: null, needs_confirmation: false, source_quote: "q" }],
+      labs: [],
+      doctor_notes: [],
       next_appointment: null,
       questions_back: [],
     });
@@ -43,6 +45,8 @@ describe("enforceUncertainty", () => {
     const out = enforceUncertainty({
       prescriptions: [],
       referidos: [],
+      labs: [],
+      doctor_notes: [],
       next_appointment: { date_text: "en tres meses", resolved_date: "enero", needs_confirmation: false, source_quote: "q" },
       questions_back: [],
     });
@@ -54,11 +58,44 @@ describe("enforceUncertainty", () => {
     const out = enforceUncertainty({
       prescriptions: [],
       referidos: [],
+      labs: [],
+      doctor_notes: [],
       next_appointment: { date_text: "el 15 de enero", resolved_date: "2027-01-15", needs_confirmation: false, source_quote: "q" },
       questions_back: [],
     });
     expect(out.next_appointment?.resolved_date).toBe("2027-01-15");
     expect(out.next_appointment?.needs_confirmation).toBe(false);
+  });
+
+  it("forces confirmation on a lab without a test name or a time", () => {
+    const out = enforceUncertainty({
+      prescriptions: [],
+      referidos: [],
+      labs: [
+        { test: null, timing_text: "antes de la cita", fasting: true, needs_confirmation: false, source_quote: "q" },
+        { test: "hemoglobina glucosilada", timing_text: null, fasting: null, needs_confirmation: false, source_quote: "q" },
+        { test: "hemoglobina glucosilada", timing_text: "antes de la cita", fasting: true, needs_confirmation: false, source_quote: "q" },
+      ],
+      doctor_notes: [],
+      next_appointment: null,
+      questions_back: [],
+    });
+    expect(out.labs.map((l) => l.needs_confirmation)).toEqual([true, true, false]);
+  });
+
+  it("drops a doctor note that has no quote: it is not something the doctor said", () => {
+    const out = enforceUncertainty({
+      prescriptions: [],
+      referidos: [],
+      labs: [],
+      doctor_notes: [
+        { topic: "Caminar", source_quote: "camine veinte minutos" },
+        { topic: "Inventado", source_quote: "  " },
+      ],
+      next_appointment: null,
+      questions_back: [],
+    });
+    expect(out.doctor_notes).toEqual([{ topic: "Caminar", source_quote: "camine veinte minutos" }]);
   });
 });
 
@@ -72,7 +109,7 @@ describe("processVisit without a key", () => {
       const r = await processVisit(store, { householdId: "h", transcript: "x" });
       expect(r.simulated).toBe(true);
       expect(r.extraction).toEqual(FIXTURE_EXTRACTION);
-      expect(r.events.map((e) => e.kind)).toEqual(["visit", "referido", "appointment"]);
+      expect(r.events.map((e) => e.kind)).toEqual(["visit", "referido", "lab", "doctor_note", "appointment"]);
       expect(r.events.every((e) => e.status === "BORRADOR")).toBe(true);
       expect(r.events.every((e) => e.payload.synthetic === true && e.payload.simulated === true)).toBe(true);
       expect(r.events[0].payload.consent).toBeNull();
@@ -150,7 +187,7 @@ describe("processVisit when the gateway refuses", () => {
     expect(r.transcript).toBe(FIXTURE_TRANSCRIPT);
     expect(r.extraction).toEqual(FIXTURE_EXTRACTION);
     expect(generateText).not.toHaveBeenCalled();
-    expect(r.events.map((e) => e.kind)).toEqual(["visit", "referido", "appointment"]);
+    expect(r.events.map((e) => e.kind)).toEqual(["visit", "referido", "lab", "doctor_note", "appointment"]);
     expect(r.events.every((e) => e.status === "BORRADOR" && e.payload.simulated === true)).toBe(true);
   });
 

@@ -3,9 +3,9 @@ import { daysBetween } from "@/lib/photo/dates";
 import type { EventStatus, QuidaEvent } from "@/lib/store/types";
 import { whenLabel } from "./dates";
 
-export type TimelineGroup = "cita" | "receta" | "referido" | "nota" | "alerta" | "otro";
+export type TimelineGroup = "cita" | "receta" | "referido" | "laboratorio" | "indicacion" | "nota" | "alerta" | "otro";
 /** The groups a caregiver can filter by. "otro" has no chip, it is the rest. */
-export const TIMELINE_GROUPS: TimelineGroup[] = ["cita", "receta", "referido", "nota", "alerta"];
+export const TIMELINE_GROUPS: TimelineGroup[] = ["cita", "receta", "referido", "laboratorio", "indicacion", "nota", "alerta"];
 
 /**
  * "nota" is the voice filter: what Doña Carmen said out loud, either a voice
@@ -18,6 +18,8 @@ const GROUP_OF: Record<string, TimelineGroup> = {
   rx_label: "receta",
   med_schedule: "receta",
   referido: "referido",
+  lab: "laboratorio",
+  doctor_note: "indicacion",
   visit: "nota",
   voice_note: "nota",
   weekcard: "otro",
@@ -33,7 +35,7 @@ export type TimelineRow = {
   /** Data derived Spanish text, for example "Cita de cardiología". */
   title: string;
   /** Extra facts already computed, so the row is a pure function of the event. */
-  facts: { key: "doctor" | "place" | "specialty" | "date" | "expires" | "prescriptions" | "questions" | "drug" | "source" | "days"; value: string }[];
+  facts: { key: "doctor" | "place" | "specialty" | "date" | "expires" | "prescriptions" | "questions" | "drug" | "source" | "days" | "when" | "quote"; value: string }[];
   /** Matches the specialty text filter. */
   search: string;
   /** Where it came from, for the small source line (4.12). */
@@ -78,6 +80,11 @@ function factsFor(e: QuidaEvent): TimelineRow["facts"] {
     push("questions", questions ? String(questions) : null);
     const specialty = str(p.specialty);
     push("specialty", specialty);
+  } else if (e.kind === "lab") {
+    push("when", [str(p.timing_text), p.fasting === true ? "en ayunas" : null].filter(Boolean).join(", "));
+    push("quote", str(p.source_quote));
+  } else if (e.kind === "doctor_note") {
+    push("quote", str(p.source_quote));
   } else if (e.kind === "voice_note") {
     push("source", str(p.text));
   } else if (e.kind === "weekcard") {
@@ -101,6 +108,10 @@ function titleFor(e: QuidaEvent, facts: TimelineRow["facts"]): string {
       return e.kind === "med_schedule" ? `Horario confirmado: ${value("drug") ?? "medicamento"}` : `Receta: ${value("drug") ?? "sin nombre"}`;
     case "referido":
       return `Referido de ${value("specialty") ?? "especialidad"}`;
+    case "laboratorio":
+      return `Laboratorio: ${str(e.payload.test) ?? "por confirmar"}`;
+    case "indicacion":
+      return `El médico dijo: ${str(e.payload.topic) ?? "una indicación"}`;
     case "alerta":
       return e.payload.emergency === true ? "Alerta: palabras de emergencia" : "Alerta: cambio de medicina";
     default:
@@ -114,7 +125,7 @@ function titleFor(e: QuidaEvent, facts: TimelineRow["facts"]): string {
 /** Where the row came from, for the small source line under it (DESIGN 4.12). */
 export function sourceKey(e: QuidaEvent): "photo" | "voice" | "visit" | "caregiver" | "system" {
   if (e.kind === "voice_note") return "voice";
-  if (e.kind === "visit") return "visit";
+  if (e.kind === "visit" || e.kind === "lab" || e.kind === "doctor_note" || typeof e.payload.visitId === "string") return "visit";
   if (e.kind === "rx_label" || e.kind === "rx_handwritten") return "photo";
   if (e.source === "system") return "system";
   return "caregiver";
