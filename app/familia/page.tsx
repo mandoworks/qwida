@@ -1,5 +1,5 @@
-import { Digest } from "@/components/caregiver/Digest";
+import { FamilyDashboard } from "@/components/caregiver/FamilyDashboard";
 
 export default function FamiliaHomePage() {
-  return <Digest />;
+  return <FamilyDashboard />;
 }
