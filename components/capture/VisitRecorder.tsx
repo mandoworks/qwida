@@ -17,8 +17,9 @@ type Phase =
   | { name: "done"; result: VisitResponse }
   | { name: "error"; message: string };
 
-/** Role played synthetic visits (actors, fictional doctors) in public/demo. The first is the main demo. */
+/** Role played synthetic visits (synthetic voices, fictional doctors) in public/demo. The first is the stage default. */
 const DEMO_CLIPS = [
+  { file: "visita-corta.mp3", label: "Corta (20 s), Doña Carmen: losartán y referido a cardiología" },
   { file: "visita-1.mp3", label: "Visita completa de Doña Carmen: losartán, omeprazol, laboratorio" },
   { file: "visita-cardiologia.mp3", label: "Doña Carmen: losartán y referido a cardiología" },
   { file: "visita-etiqueta.mp3", label: "Doña Carmen: la etiqueta de la farmacia manda" },
