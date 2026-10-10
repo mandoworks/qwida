@@ -6,7 +6,7 @@ import { Art } from "@/components/ui/Art";
 import { FenceNotice } from "@/components/ui/FenceNotice";
 import { useEvents } from "@/lib/client/useEvents";
 import { InstallButton } from "./InstallButton";
-import { CameraIcon, CardIcon, MicIcon, VoiceIcon } from "./Icons";
+import { CameraIcon, CardIcon, MicIcon, PhoneIcon, VoiceIcon } from "./Icons";
 import { activeNotices, cardKey, greetingFor, latestWeekcard } from "./logic";
 import { Notices } from "./Notices";
 import { useLocalValue } from "./useLocalValue";
@@ -135,7 +135,11 @@ export function PatientHome() {
         >
           Emergencia: Llamar al 911
         </a>
-        <a href={MARISOL_TEL} className="inline-block py-2 text-p-meta text-ink-mute underline underline-offset-4">
+        <a
+          href={MARISOL_TEL}
+          className="inline-flex min-h-btn-patient items-center justify-center gap-2 rounded-2xl border-2 border-line-strong bg-surface px-5 py-3 text-p-body font-bold text-ink transition-transform active:scale-[0.98]"
+        >
+          <PhoneIcon />
           Llamar a Marisol
         </a>
       </div>

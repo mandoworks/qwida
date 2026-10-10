@@ -28,6 +28,8 @@ const CHANGE_KEY: Record<string, StringKey> = {
   weekcard: "digest.change.weekcard",
   referido: "digest.change.referido",
   appointment: "digest.change.appointment",
+  lab: "digest.change.lab",
+  doctor_note: "digest.change.doctor_note",
 };
 
 const ACTION_KEY: Record<DigestAction["key"], StringKey> = {

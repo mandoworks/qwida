@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { SyntheticBanner } from "@/components/ui/SyntheticBanner";
+import { Art } from "@/components/ui/Art";
 import type { StringKey } from "@/lib/weekcard/strings";
 import { ChevronLeft } from "./icons";
 import { LangProvider } from "./LangProvider";
@@ -53,8 +54,10 @@ function ShellBody({ children }: { children: ReactNode }) {
 
       <SyntheticBanner />
 
+      <div className="yari-bg flex min-h-dvh flex-col">
       <div className="mx-auto w-full max-w-[1120px] flex-1 px-4 py-5 md:px-6">
-        <header className="flex flex-wrap items-start gap-4 border-b-2 border-line pb-4">
+        <header className="flex flex-wrap items-center gap-4 border-b-2 border-line pb-4">
+          <Art slot="logo-quida" alt="QWIDA" width={64} className="h-auto rounded-2xl" />
           <div className="mr-auto min-w-0">
             {/* "Cuidando", not "Cuidado": in Spanish "cuidado" reads as "watch out" (Marley QA). */}
             <h1 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("shell.title")}</h1>
@@ -134,6 +137,7 @@ function ShellBody({ children }: { children: ReactNode }) {
             {children}
           </main>
         </div>
+      </div>
       </div>
     </>
   );
