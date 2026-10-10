@@ -5,7 +5,15 @@ import { isoDate } from "./dates";
 /** A referral gets a digest line inside this window, or when it already expired. */
 const REFERIDO_WINDOW_DAYS = 30;
 
-export type ChangeKind = "visit" | "photo" | "fence" | "weekcard" | "referido" | "appointment";
+export type ChangeKind =
+  | "visit"
+  | "photo"
+  | "fence"
+  | "weekcard"
+  | "referido"
+  | "appointment"
+  | "lab"
+  | "doctor_note";
 export type Change = { id: string; kind: ChangeKind; at: string };
 export type NextKind = "cita" | "recarga" | "referido";
 export type NextThing = { id: string; kind: NextKind; days: number; when: string; name: string | null };
@@ -44,6 +52,8 @@ const CHANGE_KIND: Record<string, ChangeKind> = {
   weekcard: "weekcard",
   referido: "referido",
   appointment: "appointment",
+  lab: "lab",
+  doctor_note: "doctor_note",
 };
 
 const str = (v: unknown): string | null => (typeof v === "string" && v.trim() ? v.trim() : null);
