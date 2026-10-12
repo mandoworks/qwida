@@ -22,7 +22,7 @@ type Provider = {
 /** Patient grade provider directory. Big controls, plain words, live
  *  MedSeek PR data with the local catalog as backup. The provider data is
  *  real and public; the patient and her referido are synthetic. */
-export function ProviderDirectory() {
+export function ProviderDirectory({ compact = false }: { compact?: boolean } = {}) {
   const { events } = useEvents();
   const [specialty, setSpecialty] = useState("");
   const [municipio, setMunicipio] = useState("");
@@ -237,13 +237,13 @@ export function ProviderDirectory() {
 
         {results !== null && !searching && results.length > 0 && (
           <ul className="mt-4 flex flex-col gap-5">
-            {results.map((p, i) => (
+            {(compact ? results.slice(0, 5) : results).map((p, i) => (
               <li key={`${p.name}-${i}`} className="yari-card bg-surface p-6">
                 <p className="text-p-body font-bold text-ink">{p.name}</p>
                 <p className="mt-1 text-p-body capitalize text-ink-soft">{p.specialty}</p>
                 <p className="mt-1 text-p-body text-ink-soft">{p.municipio}</p>
                 {p.address && <p className="mt-1 text-p-meta text-ink-soft">{p.address}</p>}
-                {p.license_status && <p className="mt-1 text-p-meta text-ink-mute">Licencia: {p.license_status.toLowerCase()}</p>}
+                {!compact && p.license_status && <p className="mt-1 text-p-meta text-ink-mute">Licencia: {p.license_status.toLowerCase()}</p>}
                 {p.phone && (
                   <a
                     href={`tel:${p.phone.replace(/[^+\d]/g, "")}`}
@@ -252,7 +252,7 @@ export function ProviderDirectory() {
                     Llamar: {p.phone}
                   </a>
                 )}
-                {p.npi && (
+                {!compact && p.npi && (
                   <div className="mt-2">
                     <a
                       href={`https://medseekpr.com/p/${p.npi}`}

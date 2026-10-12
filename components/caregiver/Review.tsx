@@ -14,6 +14,7 @@ import type { HeardPrescription } from "@/lib/visit/schema";
 import type { StringKey } from "@/lib/weekcard/strings";
 import { useClock } from "./clock";
 import { useLang } from "./lang-context";
+import { useAdvanced } from "./advanced-context";
 import { Pending } from "./Pending";
 
 const PHOTO_KINDS = new Set(["rx_handwritten", "rx_label"]);
@@ -45,6 +46,7 @@ const str = (v: unknown): string => (typeof v === "string" ? v : "");
 export function Review() {
   const { events } = useEvents();
   const { t } = useLang();
+  const { advanced } = useAdvanced();
   const [selected, setSelected] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -138,6 +140,33 @@ export function Review() {
 
       {done && !event && <p className="rounded-card border-2 border-ok bg-surface px-5 py-4 font-bold text-ok">{t("review.confirmed")}</p>}
         <p className="rounded-card border-2 border-line-strong bg-surface shadow-card px-5 py-6">{t("review.empty")}</p>
+      </div>
+    );
+  }
+
+  // Warm summary: pending items as cards. Full review UI lives in Vista avanzada.
+  if (!advanced) {
+    return (
+      <div className="flex flex-col gap-5">
+        <h2 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("review.title")}</h2>
+        {queue.length === 0 ? (
+          <p className="rounded-card border-2 border-line-strong bg-surface shadow-card px-5 py-6">{t("review.empty")}</p>
+        ) : (
+          <ul className="flex flex-col gap-3">
+            {queue.slice(0, 5).map((e) => (
+              <li key={e.id} className="rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+                <p className="text-c-body font-bold">{itemLabel(e, t)}</p>
+                <span className="mt-2 flex flex-wrap items-center gap-2">
+                  <Badge kind={e.status} />
+                  {lowConfidence(e) && <span className="font-bold text-warn">{t("review.lowConfidence")}</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+        {queue.length > 5 && (
+          <p className="text-c-body text-ink-soft">{t("review.more", { n: queue.length - 5 })}</p>
+        )}
       </div>
     );
   }

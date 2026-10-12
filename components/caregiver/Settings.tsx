@@ -11,6 +11,7 @@ import { buildIcs, ICS_FILENAME } from "@/lib/weekcard/ics";
 import type { StringKey } from "@/lib/weekcard/strings";
 import { Download, Globe } from "./icons";
 import { useLang } from "./lang-context";
+import { useAdvanced } from "./advanced-context";
 
 const DETAIL = ["brief", "points", "full"] as const;
 type Detail = (typeof DETAIL)[number];
@@ -34,6 +35,7 @@ const CHANNEL_LABEL: Record<Channel, StringKey> = {
 export function Settings() {
   const { events } = useEvents();
   const { t, lang, setLang } = useLang();
+  const { advanced } = useAdvanced();
   const [savedDetail, setSavedDetail] = useLocalValue("quida.cuidador.detail");
   const detail: Detail = DETAIL.includes(savedDetail as Detail) ? (savedDetail as Detail) : "points";
   const [savedChannel, setSavedChannel] = useLocalValue("quida.cuidador.channel");
@@ -134,6 +136,7 @@ export function Settings() {
     <div className="flex flex-col gap-5">
       <h2 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("settings.title")}</h2>
 
+      {advanced && (
       <fieldset className="flex flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
         <legend className="flex items-center gap-2 text-c-title font-bold">
           {t("settings.detail")}
@@ -161,6 +164,7 @@ export function Settings() {
         </div>
         <p className="text-c-meta text-ink-mute">{t("settings.detail.note")}</p>
       </fieldset>
+      )}
 
       <fieldset className="flex flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
         <legend className="flex items-center gap-2 text-c-title font-bold">
@@ -236,6 +240,8 @@ export function Settings() {
         </div>
       </fieldset>
 
+      {advanced && (
+        <>
       <fieldset className="flex flex-col gap-3 rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
         <legend className="flex items-center gap-2 text-c-title font-bold">
           {t("settings.ics")}
@@ -331,6 +337,8 @@ export function Settings() {
           {t("settings.credit")} · {t("settings.credit.font")} · {t("settings.credit.model")}
         </p>
       </div>
+        </>
+      )}
     </div>
   );
 }

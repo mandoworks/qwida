@@ -12,6 +12,7 @@ import type { StringKey } from "@/lib/weekcard/strings";
 import { useClock } from "./clock";
 import { Eye } from "./icons";
 import { useLang } from "./lang-context";
+import { useAdvanced } from "./advanced-context";
 import { Pending } from "./Pending";
 
 const CHIPS: { id: TimelineGroup | "all"; key: StringKey }[] = [
@@ -45,6 +46,7 @@ const FACT_LABEL: Record<string, StringKey> = {
 export function Timeline() {
   const { events } = useEvents();
   const { t } = useLang();
+  const { advanced } = useAdvanced();
   const [group, setGroup] = useState<TimelineGroup | "all">("all");
   const [specialty, setSpecialty] = useState("");
   const [typed, setTyped] = useState("");
@@ -65,6 +67,34 @@ export function Timeline() {
   const rows = filterRows(all, group, specialty);
   const groups = groupByDay(rows, today);
   const activeSpecialty = specialty === "" ? "" : specialty === "otra" ? typed : specialty;
+
+  if (!advanced) {
+    const recent = all.slice(0, 5);
+    return (
+      <div className="flex flex-col gap-5">
+        <h2 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("timeline.title")}</h2>
+        {recent.length === 0 ? (
+          <div className="flex flex-col items-center gap-3 rounded-card border-2 border-line-strong bg-surface p-8 text-center shadow-card">
+            <Eye size={48} className="text-ink-mute" />
+            <p className="text-c-title font-bold">{t("timeline.empty.title")}</p>
+            <p className="text-c-body text-ink-soft">{t("timeline.empty.body")}</p>
+          </div>
+        ) : (
+          <ul className="flex flex-col gap-3">
+            {recent.map((row) => (
+              <li key={row.id} className="rounded-card border-2 border-line-strong bg-surface p-4 shadow-card">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-c-meta tabular-nums text-ink-mute">{clockTime(row.at, "es")}</span>
+                  <Badge kind={row.status} />
+                </div>
+                <p className="mt-1 text-c-body font-bold">{row.title}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4">

@@ -17,6 +17,7 @@ import type { StringKey } from "@/lib/weekcard/strings";
 import { useClock } from "./clock";
 import { Clock, Pencil, Plus, Seal, X } from "./icons";
 import { useLang } from "./lang-context";
+import { useAdvanced } from "./advanced-context";
 import { Pending } from "./Pending";
 
 type DraftResponse = {
@@ -48,6 +49,7 @@ const blankItem = (): CardItem => ({ day: "", text: "", icon: CARD_ICONS[0] });
 export function WeekCardEditor() {
   const polled = useEvents();
   const { t } = useLang();
+  const { advanced } = useAdvanced();
   const clock = useClock();
   const [card, setCard] = useState<WeekCard | null>(null);
   const [simulated, setSimulated] = useState(false);
@@ -184,6 +186,35 @@ export function WeekCardEditor() {
       <Pending label={t("card.loading")}>
         <div className="h-40 rounded-card border-2 border-line bg-surface" />
       </Pending>
+    );
+  }
+
+  // Warm summary: read-only card preview. Full editor lives in Vista avanzada.
+  if (!advanced) {
+    return (
+      <div className="flex flex-col gap-5">
+        <h2 className="scroll-mt-24 text-c-hero font-bold leading-tight">{t("card.title")}</h2>
+        {!card ? (
+          <p className="rounded-card border-2 border-line-strong bg-surface px-5 py-6 text-c-body text-ink-soft shadow-card">{t("card.empty")}</p>
+        ) : (
+          <article className="rounded-card border-2 border-line-strong bg-surface p-5 shadow-card">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="mr-auto text-c-title font-bold">{card.title}</h3>
+              {sent && <Badge kind="CONFIRMADO" />}
+              {!sent && <Badge kind="BORRADOR" />}
+            </div>
+            <ul className="mt-4 flex flex-col gap-2">
+              {card.items.slice(0, 5).map((item, i) => (
+                <li key={i} className="rounded-well bg-sand px-4 py-3 text-c-body">
+                  <span className="font-bold">{item.day}</span>
+                  {item.time && <span className="text-ink-soft"> · {item.time}</span>}
+                  {item.text && <span className="block text-ink-soft">{item.text}</span>}
+                </li>
+              ))}
+            </ul>
+          </article>
+        )}
+      </div>
     );
   }
 

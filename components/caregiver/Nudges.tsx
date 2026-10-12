@@ -10,6 +10,7 @@ import type { StringKey } from "@/lib/weekcard/strings";
 import { useClock } from "./clock";
 import { Bell, Copy, Message, Phone } from "./icons";
 import { useLang } from "./lang-context";
+import { useAdvanced } from "./advanced-context";
 import { Pending } from "./Pending";
 
 const KIND_LABEL: Record<NudgeKind, StringKey> = {
@@ -26,6 +27,7 @@ const KIND_LABEL: Record<NudgeKind, StringKey> = {
 export function Nudges() {
   const { events } = useEvents();
   const { t } = useLang();
+  const { advanced } = useAdvanced();
   const [copied, setCopied] = useState<string | null>(null);
   const [calling, setCalling] = useState<string | null>(null);
   const [called, setCalled] = useState<string | null>(null);
@@ -139,7 +141,8 @@ export function Nudges() {
         </ul>
       )}
 
-      {/* Send behaviour, stated plainly (5.9 item 4). */}
+      {/* Send behaviour, stated plainly (5.9 item 4). Full detail in Vista avanzada. */}
+      {advanced && (
       <section aria-label={t("nudges.auto")} className="flex flex-col gap-2 rounded-card border-2 border-line-strong bg-surface p-4">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="mr-auto text-c-title font-bold">{t("nudges.auto")}</h3>
@@ -148,12 +151,13 @@ export function Nudges() {
         <p className="rounded-well bg-sand px-3 py-2 text-c-meta text-ink-mute">{t("nudges.autoNote")}</p>
         <p className="rounded-well bg-sand px-3 py-2 text-c-meta text-ink-mute">{t("nudges.callNote")}</p>
       </section>
+      )}
 
       <p role="status" aria-live="polite" className="sr-only">
         {copied ? t("nudges.copiedStatus") : ""}
       </p>
 
-      <FenceNotice />
+      {advanced && <FenceNotice />}
     </div>
   );
 }

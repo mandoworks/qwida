@@ -9,6 +9,8 @@ import type { StringKey } from "@/lib/weekcard/strings";
 import { ChevronLeft } from "./icons";
 import { LangProvider } from "./LangProvider";
 import { useLang } from "./lang-context";
+import { AdvancedProvider } from "./AdvancedProvider";
+import { useAdvanced } from "./advanced-context";
 
 const SECTIONS: { href: string; key: StringKey; icon: "home" | "check" | "timeline" | "card" | "bell" | "settings" | "search" }[] = [
   { href: "/familia", key: "nav.inicio", icon: "home" },
@@ -30,17 +32,20 @@ const ICON = {
   search: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14M20 20l-4-4",
 };
 
-/** Header, ES/EN toggle, the sections and the way back to the role chooser. */
+/** Header, ES/EN toggle, vista avanzada toggle, the sections and the way back to the role chooser. */
 export function CaregiverShell({ children }: { children: ReactNode }) {
   return (
     <LangProvider>
-      <ShellBody>{children}</ShellBody>
+      <AdvancedProvider>
+        <ShellBody>{children}</ShellBody>
+      </AdvancedProvider>
     </LangProvider>
   );
 }
 
 function ShellBody({ children }: { children: ReactNode }) {
   const { t, lang, setLang } = useLang();
+  const { advanced, setAdvanced } = useAdvanced();
   const pathname = usePathname();
 
   return (
@@ -74,6 +79,30 @@ function ShellBody({ children }: { children: ReactNode }) {
             <ChevronLeft size={20} />
             {t("shell.back")}
           </Link>
+
+          <button
+            type="button"
+            onClick={() => setAdvanced(!advanced)}
+            aria-pressed={advanced}
+            title={advanced ? t("vista.simple") : t("vista.avanzada")}
+            className={`flex min-h-tap-c items-center gap-2 rounded-full border-2 px-4 text-c-body font-bold motion-quick ${
+              advanced ? "border-accent bg-accent text-white" : "border-line-strong bg-surface text-ink hover:bg-sand"
+            }`}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="size-5 shrink-0"
+            >
+              <path d="M4 6h16M4 12h16M4 18h10" />
+            </svg>
+            {advanced ? t("vista.simple") : t("vista.avanzada")}
+          </button>
 
           <div className="flex items-center gap-2">
             <span className="sr-only">{t("lang.label")}</span>

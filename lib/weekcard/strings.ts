@@ -13,6 +13,8 @@ export const STRINGS = {
     "nav.ajustes": "Ajustes",
     "nav.menu": "Secciones de Qwida para la familia",
     "nav.especialistas": "Buscar especialista",
+    "vista.avanzada": "Vista avanzada",
+    "vista.simple": "Vista simple",
     "shell.title": "Cuidando a Doña Carmen",
     "shell.back": "Cambiar de persona",
     "shell.skip": "Saltar al contenido",
@@ -63,6 +65,7 @@ export const STRINGS = {
 
     "review.title": "Revisar",
     "review.empty": "No hay nada para revisar.",
+    "review.more": "Y {n} m\u00e1s por revisar.",
     "review.queue": "Esperan su revisión",
     "review.photo": "Foto de un papel médico",
     "review.source": "Lo que se dijo",
@@ -327,6 +330,8 @@ export const STRINGS = {
     "nav.ajustes": "Settings",
     "nav.menu": "Qwida sections for the family",
     "nav.especialistas": "Find a specialist",
+    "vista.avanzada": "Advanced view",
+    "vista.simple": "Simple view",
     "shell.title": "Caring for Doña Carmen",
     "shell.back": "Switch person",
     "shell.skip": "Skip to content",
@@ -377,6 +382,7 @@ export const STRINGS = {
 
     "review.title": "Review",
     "review.empty": "Nothing to review.",
+    "review.more": "And {n} more to review.",
     "review.queue": "Waiting for your review",
     "review.photo": "Photo of a medical paper",
     "review.source": "What was said",
